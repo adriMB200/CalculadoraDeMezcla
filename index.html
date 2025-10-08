@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Mezcla</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+
+<body>
+
+    <div class="calculator">
+        <h1>Calculadora de Mezcla</h1>
+
+        <div id="display">0</div>
+
+        <div class="keypad">
+            <button onclick="appendDisplay('7')">7</button>
+            <button onclick="appendDisplay('8')">8</button>
+            <button onclick="appendDisplay('9')">9</button>
+
+            <button onclick="appendDisplay('4')">4</button>
+            <button onclick="appendDisplay('5')">5</button>
+            <button onclick="appendDisplay('6')">6</button>
+
+            <button onclick="appendDisplay('1')">1</button>
+            <button onclick="appendDisplay('2')">2</button>
+            <button onclick="appendDisplay('3')">3</button>
+
+            <button onclick="appendDisplay('0')">0</button>
+            <button onclick="appendDisplay('.')">.</button>
+            <button onclick="appendDisplay(',')">,</button>
+
+            <button class="operator" onclick="setVolume()">Volumen (L)</button>
+            <button class="operator" onclick="setPercentage()">% Deseado</button>
+            <button class="clear" onclick="clearCalculator()">C (Borrar)</button>
+        </div>
+
+        <div id="result-container">
+            <p><strong>Volumen Total:</strong> <span id="volume-output">0</span> L</p>
+            <p><strong>Porcentaje Deseado:</strong> <span id="percentage-output">0</span> %</p>
+            <p><strong>Resultado (Cantidad a Añadir):</strong> <span id="result-output">0</span> ml</p>
+        </div>
+
+    </div>
+
+    <script>
+        // ----------------------------------------------------------------
+        // LÓGICA DE JAVASCRIPT
+        // ----------------------------------------------------------------
+        let currentVolume = 0; // Almacena el volumen total en Litros
+        let currentPercentage = 0; // Almacena el porcentaje deseado
+        let display = document.getElementById('display');
+        const volumeOutput = document.getElementById('volume-output');
+        const percentageOutput = document.getElementById('percentage-output');
+        const resultOutput = document.getElementById('result-output');
+
+        // Inicializar el display
+        clearDisplay();
+
+        function clearDisplay() {
+            display.textContent = '0';
+        }
+
+        function clearCalculator() {
+            currentVolume = 0;
+            currentPercentage = 0;
+            clearDisplay();
+            updateOutputs();
+        }
+
+        function appendDisplay(value) {
+            if (display.textContent === '0' || display.textContent === 'Error') {
+                display.textContent = value === '.' || value === ',' ? '0' + value.replace(',', '.') : value;
+            } else {
+                // Reemplaza la coma con punto internamente para cálculos
+                const internalValue = value.replace(',', '.');
+                // Evita múltiples puntos (comas)
+                if (internalValue === '.' && display.textContent.includes('.')) {
+                    return;
+                }
+                display.textContent += value;
+            }
+        }
+
+        function calculateResult() {
+            if (currentVolume > 0 && currentPercentage > 0) {
+                // Fórmula: Volumen (L) * (Porcentaje / 100)
+                const resultInLiters = currentVolume * (currentPercentage / 100);
+                // Convertir a mililitros (1 L = 1000 ml) y redondear
+                const resultInMl = Math.round(resultInLiters * 1000 * 100) / 100; // Redondea a 2 decimales
+                resultOutput.textContent = resultInMl.toLocaleString('es-ES'); // Formato de número local
+
+            } else {
+                resultOutput.textContent = '0';
+            }
+        }
+
+        function updateOutputs() {
+            volumeOutput.textContent = currentVolume.toLocaleString('es-ES', { maximumFractionDigits: 2 });
+            percentageOutput.textContent = currentPercentage.toLocaleString('es-ES', { maximumFractionDigits: 2 });
+            calculateResult();
+            clearDisplay();
+        }
+
+        function setVolume() {
+            // Convierte la coma o punto ingresado a un número de punto flotante
+            const value = parseFloat(display.textContent.replace(',', '.'));
+            if (!isNaN(value) && value >= 0) {
+                currentVolume = value;
+                updateOutputs();
+            } else {
+                display.textContent = 'Error';
+                setTimeout(clearDisplay, 1000); // Limpia después de un segundo
+            }
+        }
+
+        function setPercentage() {
+            // Convierte la coma o punto ingresado a un número de punto flotante
+            const value = parseFloat(display.textContent.replace(',', '.'));
+            if (!isNaN(value) && value >= 0) {
+                currentPercentage = value;
+                updateOutputs();
+            } else {
+                display.textContent = 'Error';
+                setTimeout(clearDisplay, 1000);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
