@@ -1,19 +1,37 @@
+/* ====================================== */
+/* ESTILOS GLOBALES Y CONTENEDOR PRINCIPAL */
+/* ====================================== */
 body {
     font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /* QUITAMOS FLEX para que la calculadora y la tabla se apilen verticalmente */
+    /* y que el ancho de la tabla no fuerce el centrado */
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
     min-height: 100vh;
     margin: 0;
-    background-color: #f4f4f4;
+    padding-top: 50px;
+    /* Espacio superior para el contenido */
+    padding-bottom: 50px;
+    background-image: url('imagen/img.jpg');
+    background-size: contain;
+    background-attachment: fixed;
+    /* Opcional: fija el fondo al hacer scroll */
 }
 
+/* ====================================== */
+/* ESTILOS DE LA CALCULADORA */
+/* ====================================== */
 .calculator {
+    /* Centramos la calculadora quitando la propiedad display:flex del body */
+    margin: 0 auto;
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     width: 300px;
+    margin-bottom: 30px;
+    /* Espacio antes de la tabla */
 }
 
 #display {
@@ -51,7 +69,6 @@ button:active {
 
 .operator {
     background-color: #3772ff;
-    /* Un azul para los operadores */
     color: white;
 }
 
@@ -87,5 +104,72 @@ button:active {
 #result-output {
     font-weight: bold;
     color: #007bff;
-    /* Color para destacar el resultado */
+}
+
+/* ====================================== */
+/* ESTILOS DE LA TABLA TÉCNICA (NUEVOS) */
+/* ====================================== */
+.info-container {
+    max-width: 800px;
+    /* Ancho máximo para que no se extienda demasiado */
+    margin: 30px auto;
+    /* Centra el contenedor y le da margen vertical */
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.info-container h2 {
+    color: #ff5722;
+    /* Tono naranja/rojo KTM/GASGAS */
+    border-bottom: 2px solid #ff5722;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    font-size: 0.9em;
+}
+
+th {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+}
+
+.nm-header {
+    background-color: #ff5722;
+    /* Naranja para Pares de Apriete */
+    text-align: center;
+    color: white;
+}
+
+.ml-header {
+    background-color: #4CAF50;
+    /* Verde para Capacidad de Aceite */
+    text-align: center;
+    color: white;
+}
+
+.note {
+    font-size: 0.85em;
+    color: #555;
+    margin-top: 20px;
+    padding: 10px;
+    border-left: 3px solid #ff5722;
+    background-color: #fff3e0;
+    border-radius: 4px;
 }

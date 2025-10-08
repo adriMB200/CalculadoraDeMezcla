@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Mezcla</title>
+    <link rel="icon" href="imagen/img.jpg" />
+
+    <title>Calculadora de Mezcla y Ficha Técnica</title>
     <link rel="stylesheet" href="estilo.css">
 </head>
 
@@ -12,6 +14,7 @@
 
     <div class="calculator">
         <h1>Calculadora de Mezcla</h1>
+        <h2>Enduro Nalon</h2>
 
         <div id="display">0</div>
 
@@ -29,7 +32,6 @@
             <button onclick="appendDisplay('3')">3</button>
 
             <button onclick="appendDisplay('0')">0</button>
-            <button onclick="appendDisplay('.')">.</button>
             <button onclick="appendDisplay(',')">,</button>
 
             <button class="operator" onclick="setVolume()">Volumen (L)</button>
@@ -42,15 +44,105 @@
             <p><strong>Porcentaje Deseado:</strong> <span id="percentage-output">0</span> %</p>
             <p><strong>Resultado (Cantidad a Añadir):</strong> <span id="result-output">0</span> ml</p>
         </div>
-
     </div>
 
+    <div class="info-container">
+        <h2>Ficha Técnica Rápida KTM & GASGAS (Enduro/Motocross)</h2>
+
+        <div class="note">
+            ⚠️ **AVISO IMPORTANTE:** Estos son valores de referencia. **DEBES CONSULTAR SIEMPRE** el manual de servicio
+            oficial de tu modelo específico (año y cilindrada) para obtener el par de apriete exacto.
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="3" class="nm-header">PARES DE APRIETE (Nm)</th>
+                </tr>
+                <tr>
+                    <th>Componente del Motor GASGAS 2004-2006</th>
+                    <th>Valor (Nm)</th>
+                    <th>Comentarios (Aluminio)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>**Tuercas Aceite**</td>
+                    <td>**20Nm**</td>
+                    <td>Par bajo esencial en cárteres. Utilizar dinamométrica.</td>
+                </tr>
+                <tr>
+                    <td>**Tornillos base cilindro**</td>
+                    <td>**25 Nm**</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>**Tornillos culata**</td>
+                    <td>**25 Nm**</td>
+                    <td>Recomendable sustituir arandelas de cobre</td>
+                </tr>
+                <tr>
+                    <td>**Tornillos Tapa de Embrague**</td>
+                    <td>**10 Nm**</td>
+                    <td></td>
+                </tr>
+            </tbody>
+            <thead>
+                <tr>
+                    <th colspan="3" class="ml-header">CAPACIDAD ACEITE CAJA DE CAMBIOS (ml)</th>
+                </tr>
+                <tr>
+                    <th>Modelo (Ejemplo de Referencia)</th>
+                    <th>Capacidad (ml)</th>
+                    <th>Tipo de Aceite Común</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>**KTM (Caja de Cambios)**</td>
+                    <td>**800 ml**</td>
+                </tr>
+                <tr>
+                    <td>**GASGAS (Caja de Cambios)**</td>
+                    <td>**900 ml**</td>
+                    <td>Recomendado por Angel hechar 1L</td>
+                </tr>
+
+            </tbody>
+            <thead>
+                <tr>
+                    <th colspan="3" class="ml-header">MANUALES DE USUARIO Y TALLER</th>
+                </tr>
+                <tr>
+                    <th>Modelo</th>
+                    <th>Manual usuario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GASGAS EC 2004-2006</td>
+                    <td><a href="https://www.motocrosscenter.com/pdf_manual_gasgas/2005_ec2t_manual_es.pdf"
+                            target="_blank">Descargar</a></td>
+                </tr>
+                <tr>
+                    <td>GASGAS EC 2018</td>
+                    <td><a href="https://www.motocrosscenter.com/pdf_manual_gasgas/18-11-08-mu-gasgas-2t-ec-18v3---esp.pdf"
+                            target="_blank">Descargar</a></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <div class="note">
+            ⚙️ **Consejo:** Usar una **llave dinamométrica** es obligatorio para evitar barrer las roscas o fisurar los
+            cárteres de aluminio. Un par de apriete incorrecto compromete la fiabilidad del motor.
+        </div>
+    </div>
+
+
     <script>
-        // ----------------------------------------------------------------
-        // LÓGICA DE JAVASCRIPT
-        // ----------------------------------------------------------------
-        let currentVolume = 0; // Almacena el volumen total en Litros
-        let currentPercentage = 0; // Almacena el porcentaje deseado
+        let currentVolume = 0;
+        let currentPercentage = 0;
         let display = document.getElementById('display');
         const volumeOutput = document.getElementById('volume-output');
         const percentageOutput = document.getElementById('percentage-output');
@@ -74,9 +166,7 @@
             if (display.textContent === '0' || display.textContent === 'Error') {
                 display.textContent = value === '.' || value === ',' ? '0' + value.replace(',', '.') : value;
             } else {
-                // Reemplaza la coma con punto internamente para cálculos
                 const internalValue = value.replace(',', '.');
-                // Evita múltiples puntos (comas)
                 if (internalValue === '.' && display.textContent.includes('.')) {
                     return;
                 }
@@ -86,12 +176,9 @@
 
         function calculateResult() {
             if (currentVolume > 0 && currentPercentage > 0) {
-                // Fórmula: Volumen (L) * (Porcentaje / 100)
                 const resultInLiters = currentVolume * (currentPercentage / 100);
-                // Convertir a mililitros (1 L = 1000 ml) y redondear
-                const resultInMl = Math.round(resultInLiters * 1000 * 100) / 100; // Redondea a 2 decimales
-                resultOutput.textContent = resultInMl.toLocaleString('es-ES'); // Formato de número local
-
+                const resultInMl = Math.round(resultInLiters * 1000 * 100) / 100;
+                resultOutput.textContent = resultInMl.toLocaleString('es-ES');
             } else {
                 resultOutput.textContent = '0';
             }
@@ -105,19 +192,17 @@
         }
 
         function setVolume() {
-            // Convierte la coma o punto ingresado a un número de punto flotante
             const value = parseFloat(display.textContent.replace(',', '.'));
             if (!isNaN(value) && value >= 0) {
                 currentVolume = value;
                 updateOutputs();
             } else {
                 display.textContent = 'Error';
-                setTimeout(clearDisplay, 1000); // Limpia después de un segundo
+                setTimeout(clearDisplay, 1000);
             }
         }
 
         function setPercentage() {
-            // Convierte la coma o punto ingresado a un número de punto flotante
             const value = parseFloat(display.textContent.replace(',', '.'));
             if (!isNaN(value) && value >= 0) {
                 currentPercentage = value;
