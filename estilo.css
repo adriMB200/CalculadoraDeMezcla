@@ -1,37 +1,31 @@
 /* ====================================== */
-/* ESTILOS GLOBALES Y CONTENEDOR PRINCIPAL */
+/* ESTILOS GLOBALES Y CENTRADO */
 /* ====================================== */
 body {
     font-family: Arial, sans-serif;
-    /* QUITAMOS FLEX para que la calculadora y la tabla se apilen verticalmente */
-    /* y que el ancho de la tabla no fuerce el centrado */
-    /* display: flex; */
-    /* justify-content: center; */
-    /* align-items: center; */
+    /* Quitamos display: flex del body para que los elementos se apilen verticalmente. */
+    /* Ahora centramos el contenido con margin: 0 auto; en los contenedores individuales. */
     min-height: 100vh;
     margin: 0;
-    padding-top: 50px;
-    /* Espacio superior para el contenido */
+    padding-top: 50px; /* Espacio superior para el contenido */
     padding-bottom: 50px;
     background-image: url('imagen/img.jpg');
     background-size: contain;
-    background-attachment: fixed;
-    /* Opcional: fija el fondo al hacer scroll */
+    background-attachment: fixed; /* Mantiene la imagen fija al hacer scroll */
+    text-align: center; /* Ayuda a centrar los contenedores con margin: auto */
 }
 
 /* ====================================== */
-/* ESTILOS DE LA CALCULADORA */
+/* ESTILOS DE LA CALCULADORA (TU CÓDIGO ORIGINAL) */
 /* ====================================== */
 .calculator {
-    /* Centramos la calculadora quitando la propiedad display:flex del body */
-    margin: 0 auto;
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     width: 300px;
-    margin-bottom: 30px;
-    /* Espacio antes de la tabla */
+    margin: 0 auto 30px auto; /* Centra la calculadora y le da espacio abajo */
+    text-align: center;
 }
 
 #display {
@@ -93,7 +87,7 @@ button:active {
     border: 1px solid #ddd;
     border-radius: 5px;
     background-color: #e9ecef;
-    text-align: center;
+    text-align: left; /* Alineación a la izquierda dentro del contenedor */
 }
 
 #result-container p {
@@ -107,69 +101,17 @@ button:active {
 }
 
 /* ====================================== */
-/* ESTILOS DE LA TABLA TÉCNICA (NUEVOS) */
+/* ESTILOS DE LA TABLA TÉCNICA (UNIFICADOS) */
 /* ====================================== */
 .info-container {
     max-width: 800px;
-    /* Ancho máximo para que no se extienda demasiado */
-    margin: 30px auto;
-    /* Centra el contenedor y le da margen vertical */
+    margin: 30px auto; /* Centra el contenedor y le da margen vertical */
     padding: 20px;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Asegura que el contenido interno de la tabla se alinee a la izquierda */
 }
 
-.info-container h2 {
-    color: #ff5722;
-    /* Tono naranja/rojo KTM/GASGAS */
-    border-bottom: 2px solid #ff5722;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-th,
-td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-    font-size: 0.9em;
-}
-
-th {
-    background-color: #333;
-    color: white;
-    font-weight: bold;
-}
-
-.nm-header {
-    background-color: #ff5722;
-    /* Naranja para Pares de Apriete */
-    text-align: center;
-    color: white;
-}
-
-.ml-header {
-    background-color: #4CAF50;
-    /* Verde para Capacidad de Aceite */
-    text-align: center;
-    color: white;
-}
-
-.note {
-    font-size: 0.85em;
-    color: #555;
-    margin-top: 20px;
-    padding: 10px;
-    border-left: 3px solid #ff5722;
-    background-color: #fff3e0;
-    border-radius: 4px;
-}
+.info
