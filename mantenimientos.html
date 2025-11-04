@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="imagen/img.jpg" />
+    <title>Gestor de Motos y Mantenimientos</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+
+<body>
+
+    <div style="text-align:center; margin: 20px 0;">
+        <button onclick="window.location.href='index.html'" class="operator">🏠 Volver al inicio</button>
+    </div>
+
+    <div class="info-container">
+        <h2>📘 Mis Motos y Mantenimientos</h2>
+
+        <form id="motoForm" style="margin-bottom: 20px;">
+
+            <!-- Selector de marca -->
+            <label for="marca"><strong>Marca:</strong></label>
+            <select id="marca" required onchange="actualizarModelos()">
+                <option value="">Selecciona una marca</option>
+                <option value="KTM">KTM</option>
+                <option value="GasGas">GasGas</option>
+            </select>
+
+            <!-- Selector de modelo -->
+            <label for="modelo"><strong>Modelo:</strong></label>
+            <select id="modelo" required>
+                <option value="">Selecciona un modelo</option>
+            </select>
+
+            <!-- Selector de año -->
+            <label for="anio"><strong>Año:</strong></label>
+            <select id="anio" required>
+                <option value="">Selecciona un año</option>
+            </select>
+
+            <button type="submit" class="operator">➕ Añadir Moto</button>
+        </form>
+
+        <div id="motoList"></div>
+    </div>
+
+    <script>
+        // ======= Datos predefinidos =======
+        const modelosPorMarca = {
+            "KTM": ["EXC 250", "EXC 300", "EXC-F 450"],
+            "GasGas": ["EC 200", "EC 250", "EC 300"],
+        };
+
+        const selectAnio = document.getElementById("anio");
+        const anios = [];
+        for (let i = 2000; i <= 2025; i++) {
+            anios.push(i);
+        }
+        anios.reverse().forEach(a => {
+            const option = document.createElement("option");
+            option.value = a;
+            option.textContent = a;
+            selectAnio.appendChild(option);
+        });
+
+        function actualizarModelos() {
+            const marcaSeleccionada = document.getElementById("marca").value;
+            const selectModelo = document.getElementById("modelo");
+            selectModelo.innerHTML = "<option value=''>Selecciona un modelo</option>";
+
+            if (modelosPorMarca[marcaSeleccionada]) {
+                modelosPorMarca[marcaSeleccionada].forEach(modelo => {
+                    const option = document.createElement("option");
+                    option.value = modelo;
+                    option.textContent = modelo;
+                    selectModelo.appendChild(option);
+                });
+            }
+        }
+
+        // ======= Gestión de motos =======
+        const motoForm = document.getElementById("motoForm");
+        const motoList = document.getElementById("motoList");
+        let motos = JSON.parse(localStorage.getItem("motos")) || [];
+
+        function guardarMotos() {
+            localStorage.setItem("motos", JSON.stringify(motos));
+        }
+
+        function renderMotos() {
+            motoList.innerHTML = "";
+
+            if (motos.length === 0) {
+                motoList.innerHTML = "<p>No hay motos registradas.</p>";
+                return;
+            }
+
+            motos.forEach((moto, index) => {
+                const div = document.createElement("div");
+                div.classList.add("moto-card");
+                div.style.border = "1px solid #ccc";
+                div.style.padding = "10px";
+                div.style.marginBottom = "10px";
+                div.innerHTML = `
+                    <h3>🏍️ ${moto.marca} ${moto.modelo} (${moto.anio})</h3>
+                    <button onclick="agregarMantenimiento(${index})" class="operator">🛠️ Añadir mantenimiento</button>
+                    <button onclick="eliminarMoto(${index})" class="clear">🗑️ Eliminar moto</button>
+                    <ul>
+                        ${moto.mantenimientos.map(m => `
+                            <li>📅 ${m.fecha} — 🕒 ${m.horas} h — ${m.descripcion}</li>`).join('')}
+                    </ul>
+                `;
+                motoList.appendChild(div);
+            });
+        }
+
+        motoForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const marca = document.getElementById("marca").value;
+            const modelo = document.getElementById("modelo").value;
+            const anio = document.getElementById("anio").value;
+
+            if (!marca || !modelo || !anio) return alert("Selecciona todos los campos");
+
+            motos.push({ marca, modelo, anio, mantenimientos: [] });
+            guardarMotos();
+            renderMotos();
+            motoForm.reset();
+        });
+
+        function eliminarMoto(index) {
+            if (confirm("¿Eliminar esta moto?")) {
+                motos.splice(index, 1);
+                guardarMotos();
+                renderMotos();
+            }
+        }
+
+        function agregarMantenimiento(index) {
+            const descripcion = prompt("Descripción del mantenimiento (ej: cambio aceite, revisión pastillas...)");
+            if (!descripcion) return;
+
+            const horas = prompt("Introduce las horas del motor al realizar este mantenimiento (ej: 80)");
+            if (horas === null || horas.trim() === "" || isNaN(horas)) {
+                alert("Debes introducir un número válido de horas");
+                return;
+            }
+
+            const fecha = new Date().toLocaleDateString('es-ES');
+            motos[index].mantenimientos.push({ fecha, horas: parseFloat(horas), descripcion });
+            guardarMotos();
+            renderMotos();
+        }
+
+        renderMotos();
+    </script>
+
+</body>
+
+</html>
