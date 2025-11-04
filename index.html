@@ -12,7 +12,13 @@
 
 <body>
 
-    <div class="calculator">
+    <div style="text-align: center; margin: 20px 0;">
+        <button id="toggleCalcBtn" class="operator" onclick="toggleCalculator()">
+            🧮 Calculadora de mezcla
+        </button>
+    </div>
+
+    <div id="calculatorContainer" class="calculator" style="display: none;">
         <h1>Calculadora de Mezcla</h1>
         <h2>Enduro Nalon</h2>
 
@@ -52,6 +58,7 @@
         <div class="note">
             ⚠️ **AVISO IMPORTANTE:** Estos son valores de referencia. **DEBES CONSULTAR SIEMPRE** el manual de servicio
             oficial de tu modelo específico (año y cilindrada) para obtener el par de apriete exacto.
+
         </div>
 
         <table>
@@ -94,20 +101,52 @@
                 <tr>
                     <th>Modelo (Ejemplo de Referencia)</th>
                     <th>Capacidad (ml)</th>
-                    <th>Tipo de Aceite Común</th>
+                    <th>Bujías</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>**KTM (Caja de Cambios)**</td>
                     <td>**800 ml**</td>
+                    <td>Bujía NGK BR 7 ES</td>
                 </tr>
                 <tr>
                     <td>**GASGAS (Caja de Cambios)**</td>
                     <td>**900 ml**</td>
-                    <td>Recomendado por Angel hechar 1L</td>
+                    <td>Bujía NGK BR 8 EG</td>
                 </tr>
 
+            </tbody>
+            <thead>
+                <tr>
+                    <th colspan="3" class="ml-header">KTM exc 450 2003</th>
+                </tr>
+                <tr>
+                    <th>Componente</th>
+                    <th>Referencia/valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Filtro 1 de aceite</td>
+                    <td> HF155 </td>
+                </tr>
+                <tr>
+                    <td>Filtro 2 de aceite</td>
+                    <td> HF157 </td>
+                </tr>
+                <tr>
+                    <td>Filtro de aire</td>
+                    <td> HFF5013 </td>
+                </tr>
+                <tr>
+                    <td>Bujía</td>
+                    <td> NGK DCPR 8 E </td>
+                </tr>
+                <tr>
+                    <td>Aceite</td>
+                    <td> Motul 300v 10w50 </td>
+                </tr>
             </tbody>
             <thead>
                 <tr>
@@ -129,9 +168,36 @@
                     <td><a href="https://www.motocrosscenter.com/pdf_manual_gasgas/18-11-08-mu-gasgas-2t-ec-18v3---esp.pdf"
                             target="_blank">Descargar</a></td>
                 </tr>
+                <tr>
+                    <td>KTM EXC 450 2003</td>
+                    <td><a href="manuales/ktm450.pdf" download>Descargar</a></td>
+                </tr>
+                <tr>
+                    <td>KTM EXC 300 2017</td>
+                    <td><a href="manuales/manual_KTM_300_2017.pdf" download>Descargar manual de usuario</a></td>
+                </tr>
+                <tr>
+                    <td>KTM EXC 300 2017</td>
+                    <td><a href="manuales/KTM_300_2017_manual_reparacion.pdf" download>Descargar manual de taller</a>
+                    </td>
+                </tr>
 
             </tbody>
         </table>
+
+        <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+            <button onclick="window.location.href='ktm450_2003.html'" class="operator">
+                🔩 Pares de apriete KTM 450 2003
+            </button>
+
+            <button onclick="window.location.href='ktm300_2017.html'" class="operator">
+                🔩 Pares de apriete KTM 300 2017
+            </button>
+
+            <button onclick="window.location.href='gg_04-06.html'" class="operator">
+                🔩 Pares de apriete GG 2004-2006
+            </button>
+        </div>
 
         <div class="note">
             ⚙️ **Consejo:** Usar una **llave dinamométrica** es obligatorio para evitar barrer las roscas o fisurar los
@@ -212,6 +278,19 @@
                 setTimeout(clearDisplay, 1000);
             }
         }
+
+        function toggleCalculator() {
+            const calc = document.getElementById('calculatorContainer');
+            const btn = document.getElementById('toggleCalcBtn');
+            if (calc.style.display === 'none') {
+                calc.style.display = 'block';
+                btn.textContent = '🔽 Ocultar calculadora';
+            } else {
+                calc.style.display = 'none';
+                btn.textContent = '🧮 Calculadora de mezcla';
+            }
+        }
+
     </script>
 
 </body>
