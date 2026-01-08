@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Mecánico Enduro</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 20px;
+        }
+
+        #chat {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        #input {
+            width: 70%;
+            padding: 5px;
+        }
+
+        button {
+            padding: 5px 10px;
+        }
+
+        .user {
+            color: blue;
+        }
+
+        .ia {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Chat Mecánico de Enduro</h2>
+    <div id="chat"></div>
+    <input id="input" placeholder="Pregunta sobre tu moto...">
+    <button onclick="preguntar()">Enviar</button>
+
+    <script>
+        const token = "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"; // <--- Pon aquí tu token
+
+        async function preguntar() {
+            const pregunta = document.getElementById('input').value;
+            if (!pregunta) return;
+
+            // Mostrar mensaje del usuario
+            const chatDiv = document.getElementById('chat');
+            chatDiv.innerHTML += `<p class="user"><b>Tú:</b> ${pregunta}</p>`;
+            chatDiv.scrollTop = chatDiv.scrollHeight;
+
+            // Llamada al modelo HuggingFace
+            const res = await fetch("https://api-inference.huggingface.co/models/TheBloke/WizardLM-7B-V1.0-Uncensored-GPTQ", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    inputs: `Eres un mecánico experto en motos de enduro y trail. Responde a esta pregunta de manera clara y práctica: ${pregunta}`,
+                    parameters: { max_new_tokens: 200 }
+                })
+            });
+
+            const data = await res.json();
+            const respuesta = data?.generated_text || "No pude generar respuesta.";
+
+            chatDiv.innerHTML += `<p class="ia"><b>IA:</b> ${respuesta}</p>`;
+            chatDiv.scrollTop = chatDiv.scrollHeight;
+
+            document.getElementById('input').value = "";
+        }
+    </script>
+</body>
+
+</html>
