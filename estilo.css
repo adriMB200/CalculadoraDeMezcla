@@ -7,13 +7,18 @@ body {
     /* Ahora centramos el contenido con margin: 0 auto; en los contenedores individuales. */
     min-height: 100vh;
     margin: 0;
-    padding-top: 50px; /* Espacio superior para el contenido */
+    padding-top: 50px;
+    /* Espacio superior para el contenido */
     padding-bottom: 50px;
     background-image: url('imagen/img.jpg');
     background-size: contain;
-    background-attachment: fixed; /* Mantiene la imagen fija al hacer scroll */
-    text-align: center; /* Ayuda a centrar los contenedores con margin: auto */
+    background-attachment: fixed;
+    /* Mantiene la imagen fija al hacer scroll */
+    text-align: center;
+    /* Ayuda a centrar los contenedores con margin: auto */
 }
+
+
 
 /* ====================================== */
 /* ESTILOS DE LA CALCULADORA (TU CÓDIGO ORIGINAL) */
@@ -24,7 +29,8 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     width: 300px;
-    margin: 0 auto 30px auto; /* Centra la calculadora y le da espacio abajo */
+    margin: 0 auto 30px auto;
+    /* Centra la calculadora y le da espacio abajo */
     text-align: center;
 }
 
@@ -87,7 +93,8 @@ button:active {
     border: 1px solid #ddd;
     border-radius: 5px;
     background-color: #e9ecef;
-    text-align: left; /* Alineación a la izquierda dentro del contenedor */
+    text-align: left;
+    /* Alineación a la izquierda dentro del contenedor */
 }
 
 #result-container p {
@@ -105,13 +112,15 @@ button:active {
 /* ====================================== */
 .info-container {
     max-width: 800px;
-    margin: 30px auto; /* Centra el contenedor y le da margen vertical */
+    margin: 30px auto;
+    /* Centra el contenedor y le da margen vertical */
     padding: 20px;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: left; /* Asegura que el contenido interno de la tabla se alinee a la izquierda */
+    text-align: left;
+    /* Asegura que el contenido interno de la tabla se alinee a la izquierda */
 }
 
 .info-container h2 {
@@ -128,7 +137,8 @@ table {
     margin-top: 15px;
 }
 
-th, td {
+th,
+td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
@@ -161,4 +171,118 @@ th {
     border-left: 3px solid #ff5722;
     background-color: #fff3e0;
     border-radius: 4px;
+}
+
+/* ====================================== */
+/* ESTILOS PORTADA / INDEX */
+/* ====================================== */
+
+.portada {
+    min-height: 100vh;
+    background-image: url('imagen/fondo_enduro.jpg');
+    /* imagen portada */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+}
+
+/* Capa oscura encima de la imagen */
+.portada::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+}
+
+/* Contenido centrado */
+.portada-contenido {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    color: #fff;
+}
+
+.portada h1 {
+    font-size: 3.5rem;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.portada h2 {
+    font-size: 1.4rem;
+    font-weight: normal;
+    color: #ddd;
+    margin-bottom: 40px;
+}
+
+/* Botones portada */
+.portada-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.portada-botones button {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    font-weight: bold;
+    background-color: #ff5722;
+    color: #fff;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.portada-botones button:hover {
+    background-color: #ff784e;
+    transform: scale(1.05);
+}
+
+/* Frase final */
+.portada-frase {
+    margin-top: 40px;
+    font-size: 0.95em;
+    color: #ccc;
+}
+
+.portada-frase span {
+    color: #ff5722;
+    font-weight: bold;
+}
+
+.link-enduro {
+    display: inline-block;
+    padding: 14px 28px;
+    background-color: #fff;
+    color: #000;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    border-radius: 30px;
+    border: 2px solid #000;
+    transition: all 0.25s ease;
+}
+
+.link-enduro:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+
+/* Responsive */
+@media (max-width: 600px) {
+    .portada h1 {
+        font-size: 2.5rem;
+    }
+
+    .portada h2 {
+        font-size: 1.1rem;
+    }
 }

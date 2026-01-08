@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="imagen/img.jpg">
+    <title>Calculadora de Mezcla | Enduro Nalón</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+
+<body>
+
+    <!-- BOTÓN HOME -->
+    <div style="text-align:center; margin-bottom:20px;">
+        <button class="operator" onclick="location.href='index.html'">🏠 Home</button>
+    </div>
+
+    <!-- CALCULADORA SIEMPRE VISIBLE -->
+    <div id="calculatorContainer" class="calculator">
+        <h1>Calculadora de Mezcla</h1>
+        <h2>Enduro Nalón</h2>
+
+        <div id="display">0</div>
+
+        <div class="keypad">
+            <button onclick="appendDisplay('7')">7</button>
+            <button onclick="appendDisplay('8')">8</button>
+            <button onclick="appendDisplay('9')">9</button>
+
+            <button onclick="appendDisplay('4')">4</button>
+            <button onclick="appendDisplay('5')">5</button>
+            <button onclick="appendDisplay('6')">6</button>
+
+            <button onclick="appendDisplay('1')">1</button>
+            <button onclick="appendDisplay('2')">2</button>
+            <button onclick="appendDisplay('3')">3</button>
+
+            <button onclick="appendDisplay('0')">0</button>
+            <button onclick="appendDisplay(',')">,</button>
+
+            <button class="operator" onclick="setVolume()">Volumen (L)</button>
+            <button class="operator" onclick="setPercentage()">% Deseado</button>
+            <button class="clear" onclick="clearCalculator()">C (Borrar)</button>
+        </div>
+
+        <div id="result-container">
+            <p><strong>Volumen Total:</strong> <span id="volume-output">0</span> L</p>
+            <p><strong>Porcentaje Deseado:</strong> <span id="percentage-output">0</span> %</p>
+            <p><strong>Resultado:</strong> <span id="result-output">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        let currentVolume = 0;
+        let currentPercentage = 0;
+        let display = document.getElementById('display');
+        const volumeOutput = document.getElementById('volume-output');
+        const percentageOutput = document.getElementById('percentage-output');
+        const resultOutput = document.getElementById('result-output');
+
+        clearDisplay();
+
+        function clearDisplay() {
+            display.textContent = '0';
+        }
+
+        function clearCalculator() {
+            currentVolume = 0;
+            currentPercentage = 0;
+            updateOutputs();
+        }
+
+        function appendDisplay(value) {
+            if (display.textContent === '0') {
+                display.textContent = value;
+            } else {
+                if (value === ',' && display.textContent.includes(',')) return;
+                display.textContent += value;
+            }
+        }
+
+        function updateOutputs() {
+            volumeOutput.textContent = currentVolume;
+            percentageOutput.textContent = currentPercentage;
+            calculateResult();
+            clearDisplay();
+        }
+
+        function calculateResult() {
+            if (currentVolume > 0 && currentPercentage > 0) {
+                resultOutput.textContent =
+                    Math.round(currentVolume * currentPercentage * 10) + ' ml';
+            } else {
+                resultOutput.textContent = '0';
+            }
+        }
+
+        function setVolume() {
+            currentVolume = parseFloat(display.textContent.replace(',', '.')) || 0;
+            updateOutputs();
+        }
+
+        function setPercentage() {
+            currentPercentage = parseFloat(display.textContent.replace(',', '.')) || 0;
+            updateOutputs();
+        }
+    </script>
+
+</body>
+
+</html>
