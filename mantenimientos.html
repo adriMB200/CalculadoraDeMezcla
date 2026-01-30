@@ -55,9 +55,7 @@
 
         const selectAnio = document.getElementById("anio");
         const anios = [];
-        for (let i = 2000; i <= 2025; i++) {
-            anios.push(i);
-        }
+        for (let i = 2000; i <= 2025; i++) anios.push(i);
         anios.reverse().forEach(a => {
             const option = document.createElement("option");
             option.value = a;
@@ -69,7 +67,6 @@
             const marcaSeleccionada = document.getElementById("marca").value;
             const selectModelo = document.getElementById("modelo");
             selectModelo.innerHTML = "<option value=''>Selecciona un modelo</option>";
-
             if (modelosPorMarca[marcaSeleccionada]) {
                 modelosPorMarca[marcaSeleccionada].forEach(modelo => {
                     const option = document.createElement("option");
@@ -80,82 +77,100 @@
             }
         }
 
-        // ======= Gestión de motos =======
+        // ======= Gestión de motos con Neon DB =======
         const motoForm = document.getElementById("motoForm");
         const motoList = document.getElementById("motoList");
-        let motos = JSON.parse(localStorage.getItem("motos")) || [];
 
-        function guardarMotos() {
-            localStorage.setItem("motos", JSON.stringify(motos));
-        }
+        // Renderizar motos desde la DB
+        async function renderMotos() {
+            motoList.innerHTML = "<p>Cargando motos...</p>";
 
-        function renderMotos() {
-            motoList.innerHTML = "";
+            try {
+                const res = await fetch('/.netlify/functions/getMotos'); // función que devuelve todas las motos
+                if (!res.ok) throw new Error(await res.text());
+                const motos = await res.json();
 
-            if (motos.length === 0) {
-                motoList.innerHTML = "<p>No hay motos registradas.</p>";
-                return;
-            }
+                if (motos.length === 0) {
+                    motoList.innerHTML = "<p>No hay motos registradas.</p>";
+                    return;
+                }
 
-            motos.forEach((moto, index) => {
-                const div = document.createElement("div");
-                div.classList.add("moto-card");
-                div.style.border = "1px solid #ccc";
-                div.style.padding = "10px";
-                div.style.marginBottom = "10px";
-                div.innerHTML = `
-                    <h3>🏍️ ${moto.marca} ${moto.modelo} (${moto.anio})</h3>
-                    <button onclick="agregarMantenimiento(${index})" class="operator">🛠️ Añadir mantenimiento</button>
-                    <button onclick="eliminarMoto(${index})" class="clear">🗑️ Eliminar moto</button>
-                    <ul>
-                        ${moto.mantenimientos.map(m => `
-                            <li>📅 ${m.fecha} — 🕒 ${m.horas} h — ${m.descripcion}</li>`).join('')}
-                    </ul>
+                motoList.innerHTML = '';
+                motos.forEach(moto => {
+                    const div = document.createElement("div");
+                    div.classList.add("moto-card");
+                    div.style.border = "1px solid #ccc";
+                    div.style.padding = "10px";
+                    div.style.marginBottom = "10px";
+
+                    const mantenimientosHtml = (moto.mantenimientos || []).map(m =>
+                        `<li>📅 ${m.fecha} — 🕒 ${m.horas} h — ${m.descripcion}</li>`).join('');
+
+                    div.innerHTML = `
+                    <h3>🏍️ ${moto.marca} ${moto.modelo} (${moto.anio}) — Mat: ${moto.matricula}</h3>
+                    <button onclick="agregarMantenimiento('${moto.matricula}')" class="operator">🛠️ Añadir mantenimiento</button>
+                    <ul>${mantenimientosHtml}</ul>
                 `;
-                motoList.appendChild(div);
-            });
+                    motoList.appendChild(div);
+                });
+            } catch (err) {
+                motoList.innerHTML = `<p>Error cargando motos: ${err.message}</p>`;
+            }
         }
 
-        motoForm.addEventListener("submit", (e) => {
+        // Añadir nueva moto
+        motoForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             const marca = document.getElementById("marca").value;
             const modelo = document.getElementById("modelo").value;
-            const anio = document.getElementById("anio").value;
+            const anio = parseInt(document.getElementById("anio").value);
+
+            const matricula = prompt("Introduce la matrícula de la moto (ej: 1234ABC)");
+            if (!matricula) return alert("Debes introducir una matrícula");
 
             if (!marca || !modelo || !anio) return alert("Selecciona todos los campos");
 
-            motos.push({ marca, modelo, anio, mantenimientos: [] });
-            guardarMotos();
-            renderMotos();
-            motoForm.reset();
+            try {
+                const res = await fetch('/.netlify/functions/addMoto', {
+                    method: 'POST',
+                    body: JSON.stringify({ matricula, marca, modelo, anio })
+                });
+                if (!res.ok) throw new Error(await res.text());
+                alert("Moto registrada correctamente");
+                renderMotos();
+                motoForm.reset();
+            } catch (err) {
+                alert("Error al registrar moto: " + err.message);
+            }
         });
 
-        function eliminarMoto(index) {
-            if (confirm("¿Eliminar esta moto?")) {
-                motos.splice(index, 1);
-                guardarMotos();
-                renderMotos();
-            }
-        }
-
-        function agregarMantenimiento(index) {
+        // Añadir mantenimiento
+        async function agregarMantenimiento(matricula) {
             const descripcion = prompt("Descripción del mantenimiento (ej: cambio aceite, revisión pastillas...)");
             if (!descripcion) return;
 
             const horas = prompt("Introduce las horas del motor al realizar este mantenimiento (ej: 80)");
             if (horas === null || horas.trim() === "" || isNaN(horas)) {
-                alert("Debes introducir un número válido de horas");
-                return;
+                return alert("Debes introducir un número válido de horas");
             }
 
-            const fecha = new Date().toLocaleDateString('es-ES');
-            motos[index].mantenimientos.push({ fecha, horas: parseFloat(horas), descripcion });
-            guardarMotos();
-            renderMotos();
+            try {
+                const res = await fetch('/.netlify/functions/addMantenimiento', {
+                    method: 'POST',
+                    body: JSON.stringify({ matricula, descripcion, horas: parseInt(horas) })
+                });
+                if (!res.ok) throw new Error(await res.text());
+                alert("Mantenimiento registrado correctamente");
+                renderMotos();
+            } catch (err) {
+                alert("Error al registrar mantenimiento: " + err.message);
+            }
         }
 
+        // Inicializa todo al cargar
         renderMotos();
     </script>
+
 
 </body>
 
