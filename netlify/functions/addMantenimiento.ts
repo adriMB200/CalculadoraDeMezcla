@@ -4,12 +4,12 @@ import { mantenimientos } from '../../db/schema';
 
 export const handler = async (event: HandlerEvent, context: HandlerContext) => {
     try {
-        if (!event.body) return { statusCode: 400, body: 'Falta body' };
+        if (!event.body) return { statusCode: 400, body: JSON.stringify({ error: 'Falta body' }) };
 
         const { matricula, descripcion, horas } = JSON.parse(event.body);
 
         if (!matricula || !descripcion || !horas) {
-            return { statusCode: 400, body: 'Faltan datos' };
+            return { statusCode: 400, body: JSON.stringify({ error: 'Faltan datos' }) };
         }
 
         const fecha = new Date().toLocaleDateString('es-ES');
@@ -21,9 +21,9 @@ export const handler = async (event: HandlerEvent, context: HandlerContext) => {
             fecha,
         });
 
-        return { statusCode: 200, body: 'Mantenimiento registrado' };
+        return { statusCode: 200, body: JSON.stringify({ message: 'Mantenimiento registrado' }) };
     } catch (error) {
         console.error(error);
-        return { statusCode: 500, body: 'Error al registrar mantenimiento' };
+        return { statusCode: 500, body: JSON.stringify({ error: 'Error al registrar mantenimiento' }) };
     }
 };
