@@ -1,6 +1,7 @@
 import { HandlerEvent, HandlerContext } from '@netlify/functions';
 import { db } from '../../db';
 import { mantenimientos } from '../../db/schema';
+import { isMissingTableError } from './dbUtils';
 
 export const handler = async (event: HandlerEvent, context: HandlerContext) => {
     try {
@@ -14,12 +15,23 @@ export const handler = async (event: HandlerEvent, context: HandlerContext) => {
 
         const fecha = new Date().toLocaleDateString('es-ES');
 
-        await db.insert(mantenimientos).values({
-            matricula,
-            descripcion,
-            horas: parseInt(horas),
-            fecha,
-        });
+        try {
+            await db.insert(mantenimientos).values({
+                matricula,
+                descripcion,
+                horas: parseInt(horas, 10),
+                fecha,
+            });
+        } catch (error) {
+            if (!isMissingTableError(error, 'mantenimientos')) {
+                throw error;
+            }
+
+            return {
+                statusCode: 500,
+                body: JSON.stringify({ error: 'Falta la tabla de mantenimientos en la base de datos.' }),
+            };
+        }
 
         return { statusCode: 200, body: JSON.stringify({ message: 'Mantenimiento registrado' }) };
     } catch (error) {
