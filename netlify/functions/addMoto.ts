@@ -1,37 +1,45 @@
-import { HandlerEvent, HandlerContext } from '@netlify/functions';
-import { db } from '../../db';
-import { motos, playingWithNeon } from '../../db/schema';
-import { isMissingTableError } from './dbUtils';
+import { Handler } from "@netlify/functions";
+import { neon } from "@netlify/neon";
 
-export const handler = async (event: HandlerEvent, context: HandlerContext) => {
+export const handler: Handler = async (event) => {
+
     try {
-        if (!event.body) return { statusCode: 400, body: JSON.stringify({ error: 'Falta body' }) };
 
-        const { matricula, marca, modelo, anio } = JSON.parse(event.body);
+        const sql = neon();
+
+        const body = JSON.parse(event.body || "{}");
+
+        const { matricula, marca, modelo, anio } = body;
 
         if (!matricula || !marca || !modelo || !anio) {
-            return { statusCode: 400, body: JSON.stringify({ error: 'Faltan datos' }) };
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ error: "Faltan datos" })
+            };
         }
 
-        // Insertar nueva moto
-        try {
-            await db.insert(motos).values({ matricula, marca, modelo, anio });
-        } catch (error) {
-            if (!isMissingTableError(error, 'motos')) {
-                throw error;
-            }
+        await sql`
+      INSERT INTO public.motos (matricula, marca, modelo, anio)
+      VALUES (${matricula}, ${marca}, ${modelo}, ${anio})
+    `;
 
-            await db.insert(playingWithNeon).values({
-                plate: matricula,
-                name: marca,
-                model: `${modelo} ${anio}`,
-                hours: 0,
-            });
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ message: "Moto añadida correctamente" })
+        };
+
+    } catch (error: any) {
+
+        if (error.message?.includes("duplicate")) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ error: "La moto ya existe" })
+            };
         }
 
-        return { statusCode: 200, body: JSON.stringify({ message: 'Moto registrada correctamente' }) };
-    } catch (error) {
-        console.error(error);
-        return { statusCode: 500, body: JSON.stringify({ error: 'Error al registrar moto' }) };
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: error.message })
+        };
     }
 };

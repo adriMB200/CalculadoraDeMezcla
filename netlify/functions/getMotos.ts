@@ -1,67 +1,46 @@
-import { HandlerEvent, HandlerContext } from '@netlify/functions';
-import { db } from '../../db';
-import { motos, mantenimientos, playingWithNeon } from '../../db/schema';
-import { eq } from 'drizzle-orm';
-import { extractYearFromModel, isMissingTableError } from './dbUtils';
+import { Handler } from "@netlify/functions";
+import { neon } from "@netlify/neon";
 
-export const handler = async (event: HandlerEvent, context: HandlerContext) => {
+export const handler: Handler = async () => {
+
     try {
-        // Obtener todas las motos
-        let allMotos: Array<{
-            matricula: string;
-            marca: string;
-            modelo: string;
-            anio: number | null;
-        }>;
 
-        try {
-            const motosRows = await db.select().from(motos);
-            allMotos = motosRows.map((moto) => ({
-                matricula: moto.matricula,
-                marca: moto.marca,
-                modelo: moto.modelo,
-                anio: moto.anio,
-            }));
-        } catch (error) {
-            if (!isMissingTableError(error, 'motos')) {
-                throw error;
-            }
+        const sql = neon();
 
-            const fallbackRows = await db.select().from(playingWithNeon);
-            allMotos = fallbackRows.map((moto) => ({
-                matricula: moto.plate,
-                marca: moto.name,
-                modelo: moto.model,
-                anio: extractYearFromModel(moto.model),
-            }));
-        }
+        const motos = await sql`
+      SELECT * FROM public.motos
+      ORDER BY marca
+    `;
 
-        // Para cada moto, obtener sus mantenimientos
-        const motosConMantenimientos = await Promise.all(
-            allMotos.map(async (moto) => {
-                let mant = [];
+        const mantenimientos = await sql`
+      SELECT * FROM public.mantenimientos
+      ORDER BY fecha DESC
+    `;
 
-                try {
-                    mant = await db.select().from(mantenimientos).where(eq(mantenimientos.matricula, moto.matricula));
-                } catch (error) {
-                    if (!isMissingTableError(error, 'mantenimientos')) {
-                        throw error;
-                    }
-                }
+        const resultado = motos.map((moto: any) => {
 
-                return {
-                    matricula: moto.matricula,
-                    marca: moto.marca,
-                    modelo: moto.modelo,
-                    anio: moto.anio,
-                    mantenimientos: mant
-                };
-            })
-        );
+            const mant = mantenimientos.filter(
+                (m: any) => m.matricula === moto.matricula
+            );
 
-        return { statusCode: 200, body: JSON.stringify(motosConMantenimientos) };
-    } catch (error) {
-        console.error(error);
-        return { statusCode: 500, body: 'Error al obtener motos' };
+            return {
+                ...moto,
+                mantenimientos: mant
+            };
+
+        });
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify(resultado)
+        };
+
+    } catch (error: any) {
+
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: error.message })
+        };
+
     }
 };

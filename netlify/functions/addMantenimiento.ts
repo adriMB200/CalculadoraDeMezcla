@@ -1,41 +1,39 @@
-import { HandlerEvent, HandlerContext } from '@netlify/functions';
-import { db } from '../../db';
-import { mantenimientos } from '../../db/schema';
-import { isMissingTableError } from './dbUtils';
+import { Handler } from "@netlify/functions";
+import { neon } from "@netlify/neon";
 
-export const handler = async (event: HandlerEvent, context: HandlerContext) => {
+export const handler: Handler = async (event) => {
+
     try {
-        if (!event.body) return { statusCode: 400, body: JSON.stringify({ error: 'Falta body' }) };
 
-        const { matricula, descripcion, horas } = JSON.parse(event.body);
+        const sql = neon();
+
+        const body = JSON.parse(event.body || "{}");
+
+        const { matricula, descripcion, horas } = body;
 
         if (!matricula || !descripcion || !horas) {
-            return { statusCode: 400, body: JSON.stringify({ error: 'Faltan datos' }) };
-        }
-
-        const fecha = new Date().toLocaleDateString('es-ES');
-
-        try {
-            await db.insert(mantenimientos).values({
-                matricula,
-                descripcion,
-                horas: parseInt(horas, 10),
-                fecha,
-            });
-        } catch (error) {
-            if (!isMissingTableError(error, 'mantenimientos')) {
-                throw error;
-            }
-
             return {
-                statusCode: 500,
-                body: JSON.stringify({ error: 'Falta la tabla de mantenimientos en la base de datos.' }),
+                statusCode: 400,
+                body: JSON.stringify({ error: "Faltan datos" })
             };
         }
 
-        return { statusCode: 200, body: JSON.stringify({ message: 'Mantenimiento registrado' }) };
-    } catch (error) {
-        console.error(error);
-        return { statusCode: 500, body: JSON.stringify({ error: 'Error al registrar mantenimiento' }) };
+        await sql`
+      INSERT INTO public.mantenimientos (matricula, descripcion, horas)
+      VALUES (${matricula}, ${descripcion}, ${horas})
+    `;
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ message: "Mantenimiento añadido" })
+        };
+
+    } catch (error: any) {
+
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: error.message })
+        };
+
     }
 };

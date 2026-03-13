@@ -8,11 +8,11 @@
     <title>Gestor de Motos y Mantenimientos</title>
     <link rel="stylesheet" href="estilo.css">
 
-    <!-- Bloquea el script RUM de Netlify para evitar errores -->
     <script>
         window.netlify = window.netlify || {};
         window.netlify.disableRUM = true;
     </script>
+
 </head>
 
 <body>
@@ -22,11 +22,11 @@
     </div>
 
     <div class="info-container">
+
         <h2>📘 Mis Motos y Mantenimientos</h2>
 
         <form id="motoForm" style="margin-bottom: 20px;">
 
-            <!-- Selector de marca -->
             <label for="marca"><strong>Marca:</strong></label>
             <select id="marca" required onchange="actualizarModelos()">
                 <option value="">Selecciona una marca</option>
@@ -34,157 +34,219 @@
                 <option value="GasGas">GasGas</option>
             </select>
 
-            <!-- Selector de modelo -->
             <label for="modelo"><strong>Modelo:</strong></label>
             <select id="modelo" required>
                 <option value="">Selecciona un modelo</option>
             </select>
 
-            <!-- Selector de año -->
             <label for="anio"><strong>Año:</strong></label>
             <select id="anio" required>
                 <option value="">Selecciona un año</option>
             </select>
 
             <button type="submit" class="operator">➕ Añadir Moto</button>
+
         </form>
 
         <div id="motoList"></div>
+
     </div>
 
     <script>
-        // ======= Datos predefinidos =======
+
         const modelosPorMarca = {
             "KTM": ["EXC 250", "EXC 300", "EXC-F 450"],
-            "GasGas": ["EC 200", "EC 250", "EC 300"],
+            "GasGas": ["EC 200", "EC 250", "EC 300"]
         };
 
         const selectAnio = document.getElementById("anio");
-        const anios = [];
-        for (let i = 2000; i <= 2025; i++) anios.push(i);
-        anios.reverse().forEach(a => {
-            const option = document.createElement("option");
-            option.value = a;
-            option.textContent = a;
-            selectAnio.appendChild(option);
-        });
 
-        function actualizarModelos() {
-            const marcaSeleccionada = document.getElementById("marca").value;
-            const selectModelo = document.getElementById("modelo");
-            selectModelo.innerHTML = "<option value=''>Selecciona un modelo</option>";
-            if (modelosPorMarca[marcaSeleccionada]) {
-                modelosPorMarca[marcaSeleccionada].forEach(modelo => {
-                    const option = document.createElement("option");
-                    option.value = modelo;
-                    option.textContent = modelo;
-                    selectModelo.appendChild(option);
-                });
-            }
+        for (let i = 2025; i >= 2000; i--) {
+            const option = document.createElement("option");
+            option.value = i;
+            option.textContent = i;
+            selectAnio.appendChild(option);
         }
 
-        // ======= Gestión de motos con Neon DB =======
+        function actualizarModelos() {
+
+            const marcaSeleccionada = document.getElementById("marca").value;
+            const selectModelo = document.getElementById("modelo");
+
+            selectModelo.innerHTML = "<option value=''>Selecciona un modelo</option>";
+
+            if (modelosPorMarca[marcaSeleccionada]) {
+
+                modelosPorMarca[marcaSeleccionada].forEach(modelo => {
+
+                    const option = document.createElement("option");
+
+                    option.value = modelo;
+                    option.textContent = modelo;
+
+                    selectModelo.appendChild(option);
+
+                });
+
+            }
+
+        }
+
         const motoForm = document.getElementById("motoForm");
         const motoList = document.getElementById("motoList");
 
-        // Renderizar motos desde la DB
         async function renderMotos() {
+
             motoList.innerHTML = "<p>Cargando motos...</p>";
 
             try {
-                const res = await fetch('/.netlify/functions/getMotos'); // función que devuelve todas las motos
-                if (!res.ok) throw new Error(await res.text());
+
+                const res = await fetch("/.netlify/functions/getMotos");
+
                 const motos = await res.json();
 
                 if (motos.length === 0) {
+
                     motoList.innerHTML = "<p>No hay motos registradas.</p>";
                     return;
+
                 }
 
-                motoList.innerHTML = '';
-                motos.forEach(moto => {
-                    const div = document.createElement("div");
-                    div.classList.add("moto-card");
-                    div.style.border = "1px solid #ccc";
-                    div.style.padding = "10px";
-                    div.style.marginBottom = "10px";
+                motoList.innerHTML = "";
 
-                    const mantenimientosHtml = (moto.mantenimientos || []).map(m =>
-                        `<li>📅 ${m.fecha} — 🕒 ${m.horas} h — ${m.descripcion}</li>`).join('');
+                motos.forEach(moto => {
+
+                    const div = document.createElement("div");
+
+                    div.classList.add("moto-card");
+
+                    const mantenimientosHtml = (moto.mantenimientos || [])
+                        .map(m => `<li>📅 ${m.fecha} — 🕒 ${m.horas} h — ${m.descripcion}</li>`)
+                        .join("");
 
                     div.innerHTML = `
-                    <h3>🏍️ ${moto.marca} ${moto.modelo} (${moto.anio}) — Mat: ${moto.matricula}</h3>
-                    <button onclick="agregarMantenimiento('${moto.matricula}')" class="operator">🛠️ Añadir mantenimiento</button>
-                    <ul>${mantenimientosHtml}</ul>
-                `;
+<h3>🏍️ ${moto.marca} ${moto.modelo} (${moto.anio}) — Mat: ${moto.matricula}</h3>
+
+<button onclick="agregarMantenimiento('${moto.matricula}')" class="operator">
+🛠️ Añadir mantenimiento
+</button>
+
+<ul>${mantenimientosHtml}</ul>
+`;
+
                     motoList.appendChild(div);
+
                 });
+
             } catch (err) {
-                motoList.innerHTML = `<p>Error cargando motos: ${err.message}</p>`;
+
+                motoList.innerHTML = "<p>Error cargando motos</p>";
+
             }
+
         }
 
-        // Añadir nueva moto
         motoForm.addEventListener("submit", async (e) => {
+
             e.preventDefault();
+
             const marca = document.getElementById("marca").value;
             const modelo = document.getElementById("modelo").value;
             const anio = parseInt(document.getElementById("anio").value);
 
             const matricula = prompt("Introduce la matrícula de la moto (ej: 1234ABC)");
+
             if (!matricula) return alert("Debes introducir una matrícula");
 
-            if (!marca || !modelo || !anio) return alert("Selecciona todos los campos");
-
             try {
-                const res = await fetch('/.netlify/functions/addMoto', {
-                    method: 'POST',
-                    body: JSON.stringify({ matricula, marca, modelo, anio })
+
+                const res = await fetch("/.netlify/functions/addMoto", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        matricula,
+                        marca,
+                        modelo,
+                        anio
+                    })
+
                 });
-                if (!res.ok) {
-                    const errorData = await res.json();
-                    throw new Error(errorData.error || 'Error desconocido');
-                }
+
                 const data = await res.json();
-                alert(data.message);
+
+                if (!res.ok) throw new Error(data.error || "Error");
+
+                alert(data.message || "Moto añadida");
+
                 renderMotos();
+
                 motoForm.reset();
+
             } catch (err) {
+
                 alert("Error al registrar moto: " + err.message);
+
             }
+
         });
 
-        // Añadir mantenimiento
         async function agregarMantenimiento(matricula) {
-            const descripcion = prompt("Descripción del mantenimiento (ej: cambio aceite, revisión pastillas...)");
+
+            const descripcion = prompt("Descripción del mantenimiento");
+
             if (!descripcion) return;
 
-            const horas = prompt("Introduce las horas del motor al realizar este mantenimiento (ej: 80)");
-            if (horas === null || horas.trim() === "" || isNaN(horas)) {
-                return alert("Debes introducir un número válido de horas");
+            const horas = prompt("Horas del motor");
+
+            if (!horas || isNaN(horas)) {
+
+                alert("Introduce horas válidas");
+                return;
+
             }
 
             try {
-                const res = await fetch('/.netlify/functions/addMantenimiento', {
-                    method: 'POST',
-                    body: JSON.stringify({ matricula, descripcion, horas: parseInt(horas) })
+
+                const res = await fetch("/.netlify/functions/addMantenimiento", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        matricula,
+                        descripcion,
+                        horas: Number(horas)
+                    })
+
                 });
-                if (!res.ok) {
-                    const errorData = await res.json();
-                    throw new Error(errorData.error || 'Error desconocido');
-                }
+
                 const data = await res.json();
-                alert(data.message);
+
+                if (!res.ok) throw new Error(data.error || "Error");
+
+                alert(data.message || "Mantenimiento añadido");
+
                 renderMotos();
+
             } catch (err) {
+
                 alert("Error al registrar mantenimiento: " + err.message);
+
             }
+
         }
 
-        // Inicializa todo al cargar
         renderMotos();
-    </script>
 
+    </script>
 
 </body>
 
