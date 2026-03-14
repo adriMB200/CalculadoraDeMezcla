@@ -1,104 +1,127 @@
-// chatbot.js
+
+// chat.js
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Insertamos el HTML del chatbot
     document.body.insertAdjacentHTML("beforeend", `
-<div id="chatbot-container" style="
-    display:none;
-    flex-direction:column;
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    width:300px;
-    max-height:400px;
-    background:#fff;
-    border:1px solid #ccc;
-    box-shadow:0 4px 10px rgba(0,0,0,0.2);
-    z-index:9999;
-">
-    <div id="chatbot-header" style="
-        background:#ff5722;
-        color:#fff;
-        padding:10px;
-        cursor:pointer;
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-    ">
+<div id="chatbot-container">
+
+    <div id="chatbot-header">
         🔧 Asistente Mecánico
-        <span id="close-chat" style="cursor:pointer;">✕</span>
+        <span id="chatbot-close">✕</span>
     </div>
 
-    <div id="chatbot-messages" style="
-        flex:1;
-        padding:10px;
-        overflow-y:auto;
-        border-top:1px solid #ddd;
-        border-bottom:1px solid #ddd;
-    "></div>
+    <div id="chatbot-messages"></div>
 
-    <input id="chatbot-input" placeholder="Pregunta algo..." style="
-        padding:10px;
-        border:none;
-        outline:none;
-        width:100%;
-        box-sizing:border-box;
-        margin-bottom:10px;
-    ">
+    <div id="chatbot-input-area">
+        <input id="chatbot-input" placeholder="Pregunta algo sobre tu moto..." />
+        <button id="chatbot-send">Enviar</button>
+    </div>
+
 </div>
 
-<!-- Botón fuera del contenedor para que siempre sea visible -->
-<button id="open-chat" style="
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    padding:10px;
-    width:50px;
-    height:50px;
-    border:none;
-    border-radius:8px;
-    background:#ff5722;
-    color:#fff;
-    font-size:20px;
-    cursor:pointer;
-    box-shadow:0 2px 6px rgba(0,0,0,0.2);
-    z-index:9999;
-">💬</button>
+<button id="chatbot-open">💬</button>
 `);
 
-    // Selección de elementos
-    const openBtn = document.getElementById("open-chat");
-    const closeBtn = document.getElementById("close-chat");
     const chat = document.getElementById("chatbot-container");
+    const openBtn = document.getElementById("chatbot-open");
+    const closeBtn = document.getElementById("chatbot-close");
     const input = document.getElementById("chatbot-input");
+    const sendBtn = document.getElementById("chatbot-send");
     const messages = document.getElementById("chatbot-messages");
 
-    // Abrir y cerrar chat
-    openBtn.onclick = () => chat.style.display = "flex";
-    closeBtn.onclick = () => chat.style.display = "none";
+    let iniciado = false;
 
-    // Función para enviar mensaje
-    input.addEventListener("keypress", async function (e) {
-        if (e.key === "Enter" && input.value.trim() !== "") {
-            const pregunta = input.value.trim();
-            messages.innerHTML += `<p><b>Tú:</b> ${pregunta}</p>`;
-            input.value = "";
+    function addUserMessage(text) {
+        const msg = document.createElement("div");
+        msg.className = "chat-user";
+        msg.textContent = "Tú: " + text;
+        messages.appendChild(msg);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    function addBotMessage(text) {
+        const msg = document.createElement("div");
+        msg.className = "chat-bot";
+        msg.textContent = "Mecánico: " + text;
+        messages.appendChild(msg);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    async function enviarMensaje(text) {
+
+        if (!text) return;
+
+        addUserMessage(text);
+        input.value = "";
+
+        const thinking = document.createElement("div");
+        thinking.className = "chat-bot";
+        thinking.textContent = "Mecánico: pensando...";
+        messages.appendChild(thinking);
+        messages.scrollTop = messages.scrollHeight;
+
+        try {
+
+            const res = await fetch("/.netlify/functions/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ mensaje: text })
+            });
+
+            const data = await res.json();
+
+            thinking.remove();
+            addBotMessage(data.respuesta);
+
+        } catch {
+
+            thinking.remove();
+            addBotMessage("Error al contactar con el asistente");
+
+        }
+
+    }
+
+    openBtn.onclick = async () => {
+
+        chat.style.display = "flex";
+
+        if (!iniciado) {
+
+            iniciado = true;
 
             try {
-                const respuesta = await fetch("/.netlify/functions/chat", {
+
+                const res = await fetch("/.netlify/functions/chat", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ mensaje: pregunta })
+                    body: JSON.stringify({ mensaje: "hola" })
                 });
 
-                const data = await respuesta.json();
-                messages.innerHTML += `<p style="color:#ff5722"><b>Mecánico:</b> ${data.respuesta}</p>`;
-            } catch (err) {
-                messages.innerHTML += `<p style="color:red"><b>Error:</b> No se pudo obtener respuesta</p>`;
+                const data = await res.json();
+                addBotMessage(data.respuesta);
+
+            } catch {
+
+                addBotMessage("¡Hola! ¿Necesitas ayuda con tu moto enduro?");
+
             }
 
-            // Scroll automático hacia abajo
-            messages.scrollTop = messages.scrollHeight;
+        }
+
+    };
+
+    closeBtn.onclick = () => {
+        chat.style.display = "none";
+    };
+
+    sendBtn.onclick = () => {
+        enviarMensaje(input.value.trim());
+    };
+
+    input.addEventListener("keypress", e => {
+        if (e.key === "Enter") {
+            enviarMensaje(input.value.trim());
         }
     });
 

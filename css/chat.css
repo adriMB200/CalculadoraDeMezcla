@@ -1,0 +1,126 @@
+/* =============================== */
+/* CHATBOT MECÁNICO CORREGIDO */
+/* =============================== */
+
+#chatbot-open {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 55px;
+    height: 55px;
+    background: #ff5722;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 10001;
+    /* por encima del fondo */
+}
+
+#chatbot-open:hover {
+    background: #ff784e;
+}
+
+#chatbot-container {
+    position: fixed;
+    bottom: 85px;
+    right: 20px;
+    width: 320px;
+    height: 420px;
+    background: rgba(255, 255, 255, 0.95);
+    /* semi-transparente para ver fondo */
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    z-index: 10000;
+    /* por encima del fondo */
+    backdrop-filter: blur(2px);
+    /* opcional: efecto blur */
+}
+
+#chatbot-header {
+    background: #ff5722;
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#chatbot-close {
+    cursor: pointer;
+    font-size: 18px;
+}
+
+#chatbot-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 0.9em;
+    background: rgba(249, 249, 249, 0.95);
+    text-align: left;
+}
+
+.chat-user {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.chat-bot {
+    margin-bottom: 10px;
+    color: #ff5722;
+}
+
+#chatbot-input-area {
+    display: flex;
+    gap: 6px;
+    border-top: 1px solid #ddd;
+    padding: 8px;
+}
+
+#chatbot-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+}
+
+#chatbot-send {
+    background: #ff5722;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#chatbot-send:hover {
+    background: #ff784e;
+}
+
+/* =============================== */
+/* MOBILE */
+/* =============================== */
+
+@media (max-width:600px) {
+
+    #chatbot-container {
+        width: 90%;
+        right: 5%;
+        height: 60vh;
+    }
+
+    #chatbot-open {
+        right: 20px;
+    }
+
+}
