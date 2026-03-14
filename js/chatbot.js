@@ -43,23 +43,27 @@ document.addEventListener("DOMContentLoaded", () => {
         outline:none;
         width:100%;
         box-sizing:border-box;
+        margin-bottom:10px;
     ">
 </div>
 
-<button id="open-chat" style=" 
+<!-- Botón fuera del contenedor para que siempre sea visible -->
+<button id="open-chat" style="
     position:fixed;
     bottom:20px;
     right:20px;
-    z-index:9999;
-    padding:10px 15px;
+    padding:10px;
+    width:50px;
+    height:50px;
     border:none;
-    border-radius:50%;
+    border-radius:8px;
     background:#ff5722;
     color:#fff;
     font-size:20px;
     cursor:pointer;
-    box-shadow:0 4px 10px rgba(0,0,0,0.2);
-">💬 Abrir chat</button>
+    box-shadow:0 2px 6px rgba(0,0,0,0.2);
+    z-index:9999;
+">💬</button>
 `);
 
     // Selección de elementos

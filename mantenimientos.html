@@ -56,12 +56,14 @@
 
         const modelosPorMarca = {
             "KTM": ["EXC 250", "EXC 300", "EXC-F 450"],
-            "GasGas": ["EC 200", "EC 250", "EC 300"]
+            "GasGas": ["EC 200", "EC 250", "EC 300"],
+            "Rieju": ["MR 300"],
+            "BMW": ["Funduro 650"]
         };
 
         const selectAnio = document.getElementById("anio");
 
-        for (let i = 2025; i >= 2000; i--) {
+        for (let i = 2025; i >= 1980; i--) {
             const option = document.createElement("option");
             option.value = i;
             option.textContent = i;
