@@ -286,3 +286,132 @@ th {
         font-size: 1.1rem;
     }
 }
+
+/* ====================================== */
+/* CHATBOT MECÁNICO */
+/* ====================================== */
+
+#chatbot-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ff5722;
+    color: #fff;
+    border: none;
+    padding: 16px;
+    font-size: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#chatbot-button:hover {
+    background-color: #ff784e;
+}
+
+#chatbot-container {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 320px;
+    height: 420px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+#chatbot-header {
+    background-color: #ff5722;
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#chatbot-close {
+    cursor: pointer;
+}
+
+#chatbot-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 0.9em;
+    text-align: left;
+    background: #f9f9f9;
+}
+
+.chatbot-msg {
+    margin-bottom: 8px;
+}
+
+.user {
+    color: #333;
+    font-weight: bold;
+}
+
+.bot {
+    color: #ff5722;
+}
+
+#chatbot-input {
+    border: none;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    font-size: 0.9em;
+}
+
+#open-chat {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ff5722;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#chatbot-container {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 320px;
+    height: 420px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    display: none;
+    flex-direction: column;
+}
+
+#chatbot-header {
+    background: #ff5722;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+#chatbot-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 0.9em;
+    text-align: left;
+}
+
+#chatbot-input {
+    border: none;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+}
