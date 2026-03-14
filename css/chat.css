@@ -124,3 +124,13 @@
     }
 
 }
+
+/* Solo para vista de PC */
+@media (min-width: 601px) {
+    #chatbot-container {
+        height: 520px;
+        /* más alto que antes */
+        width: 320px;
+        /* ancho igual que antes */
+    }
+}

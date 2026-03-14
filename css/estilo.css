@@ -19,6 +19,44 @@ body {
 }
 
 
+footer {
+    text-align: center;
+    /* Centra todo el contenido del footer */
+    margin-top: 50px;
+    /* Separación del resto de la página */
+}
+
+.footer-text {
+    display: inline-block;
+    /* Para que podamos poner fondo y padding al texto completo si queremos */
+    padding: 8px 16px;
+    /* Espacio dentro del rectángulo */
+    background-color: white;
+    /* Fondo blanco */
+    border-radius: 12px;
+    /* Esquinas redondeadas */
+    font-weight: bold;
+    /* Resalta un poco */
+    color: #000;
+    /* Texto negro sobre fondo blanco */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    /* Sombra opcional para destacar sobre la imagen de fondo */
+}
+
+.highlight-year {
+    background-color: white;
+    /* Recuadro blanco */
+    color: black;
+    /* Texto negro */
+    padding: 4px 10px;
+    /* Espacio dentro del recuadro */
+    border-radius: 8px;
+    /* Esquinas redondeadas */
+    font-weight: bold;
+    /* Destaca el año */
+    display: inline-block;
+    /* Se comporta como un rectángulo */
+}
 
 /* ====================================== */
 /* ESTILOS DE LA CALCULADORA (TU CÓDIGO ORIGINAL) */

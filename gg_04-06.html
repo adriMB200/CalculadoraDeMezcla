@@ -252,6 +252,14 @@
             <button class="operator" onclick="window.location.href='index.html'">⬅️ Volver al Inicio</button>
         </div>
     </div>
+
+    <footer>
+        <p>© <span id="year"></span> Enduronalon. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
 </body>
 
 </html>

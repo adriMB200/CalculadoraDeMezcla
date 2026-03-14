@@ -49,6 +49,23 @@
 
     <script src="/js/chatbot.js"></script>
 
+    <footer style="
+    text-align: center; 
+    padding: 20px; 
+    color: white; 
+    background-color: rgba(0, 0, 0, 0.7); /* negro opaco */
+">
+        <p>
+            © <span id="year"></span> Enduronalon. Todos los derechos reservados.
+        </p>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+
 </body>
+
+
 
 </html>
