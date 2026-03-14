@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ">
 </div>
 
-<button id="open-chat" style="
+<button id="open-chat" style=" 
     position:fixed;
     bottom:20px;
     right:20px;
