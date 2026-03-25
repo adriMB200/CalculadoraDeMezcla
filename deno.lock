@@ -13,8 +13,12 @@
       "dependencies": [
         "npm:@netlify/functions@^5.1.2",
         "npm:@netlify/neon@~0.1.2",
+        "npm:bcryptjs@^3.0.3",
         "npm:drizzle-kit@~0.31.8",
         "npm:drizzle-orm@~0.45.1",
+        "npm:jsonwebtoken@^9.0.3",
+        "npm:node-fetch@^3.3.2",
+        "npm:pdf-parse@^2.4.5",
         "npm:pg@^8.20.0"
       ]
     }
