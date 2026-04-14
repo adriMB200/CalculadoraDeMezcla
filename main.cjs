@@ -85,7 +85,7 @@ const templateMenu = [
                         type: 'info',
                         title: 'Acerca de la App',
                         message: 'Enduronalon v1.0.0',
-                        detail: 'Una herramienta integral para la gestión de mezclas, mantenimientos y control de horas para motos de Enduro.\n\nDesarrollado con ❤️ por adriMB200.',
+                        detail: 'Una herramienta integral para la gestión de mezclas, mantenimientos y control de horas para motos de Enduro.\n\nDesarrollado por adriMB200.',
                         buttons: ['Cerrar', 'Ver GitHub del Autor'],
                         icon: path.join(__dirname, "imagen/img.jpg")
                     });
