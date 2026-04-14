@@ -1,0 +1,455 @@
+/* ====================================== */
+/* ESTILOS GLOBALES Y CENTRADO */
+/* ====================================== */
+body {
+    font-family: Arial, sans-serif;
+    /* Quitamos display: flex del body para que los elementos se apilen verticalmente. */
+    /* Ahora centramos el contenido con margin: 0 auto; en los contenedores individuales. */
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 50px;
+    /* Espacio superior para el contenido */
+    padding-bottom: 50px;
+    background-image: url('../imagen/img.jpg');
+    background-size: contain;
+    background-attachment: fixed;
+    /* Mantiene la imagen fija al hacer scroll */
+    text-align: center;
+    /* Ayuda a centrar los contenedores con margin: auto */
+}
+
+
+footer {
+    text-align: center;
+    /* Centra todo el contenido del footer */
+    margin-top: 50px;
+    /* Separación del resto de la página */
+}
+
+.footer-text {
+    display: inline-block;
+    /* Para que podamos poner fondo y padding al texto completo si queremos */
+    padding: 8px 16px;
+    /* Espacio dentro del rectángulo */
+    background-color: white;
+    /* Fondo blanco */
+    border-radius: 12px;
+    /* Esquinas redondeadas */
+    font-weight: bold;
+    /* Resalta un poco */
+    color: #000;
+    /* Texto negro sobre fondo blanco */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    /* Sombra opcional para destacar sobre la imagen de fondo */
+}
+
+.highlight-year {
+    background-color: white;
+    /* Recuadro blanco */
+    color: black;
+    /* Texto negro */
+    padding: 4px 10px;
+    /* Espacio dentro del recuadro */
+    border-radius: 8px;
+    /* Esquinas redondeadas */
+    font-weight: bold;
+    /* Destaca el año */
+    display: inline-block;
+    /* Se comporta como un rectángulo */
+}
+
+/* ====================================== */
+/* ESTILOS DE LA CALCULADORA (TU CÓDIGO ORIGINAL) */
+/* ====================================== */
+.calculator {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    margin: 0 auto 30px auto;
+    /* Centra la calculadora y le da espacio abajo */
+    text-align: center;
+}
+
+#display {
+    background-color: #222;
+    color: #fff;
+    font-size: 1.8em;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: right;
+    height: 50px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+button {
+    padding: 15px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    transition: background-color 0.2s;
+}
+
+button:active {
+    background-color: #ccc;
+}
+
+.operator {
+    background-color: #3772ff;
+    color: white;
+}
+
+.operator:active {
+    background-color: #2f65e2;
+}
+
+.clear {
+    background-color: #d9534f;
+    color: white;
+    grid-column: span 3;
+}
+
+.clear:active {
+    background-color: #c9302c;
+}
+
+/* Contenedor para la salida */
+#result-container {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #e9ecef;
+    text-align: left;
+    /* Alineación a la izquierda dentro del contenedor */
+}
+
+#result-container p {
+    margin: 5px 0;
+    font-size: 1.1em;
+}
+
+#result-output {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* ====================================== */
+/* ESTILOS DE LA TABLA TÉCNICA (UNIFICADOS) */
+/* ====================================== */
+.info-container {
+    max-width: 800px;
+    margin: 30px auto;
+    /* Centra el contenedor y le da margen vertical */
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    /* Asegura que el contenido interno de la tabla se alinee a la izquierda */
+}
+
+.info-container h2 {
+    color: #ff5722;
+    border-bottom: 2px solid #ff5722;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    font-size: 0.9em;
+}
+
+th {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+}
+
+.nm-header {
+    background-color: #ff5722;
+    text-align: center;
+    color: white;
+}
+
+.ml-header {
+    background-color: #4CAF50;
+    text-align: center;
+    color: white;
+}
+
+.note {
+    font-size: 0.85em;
+    color: #555;
+    margin-top: 20px;
+    padding: 10px;
+    border-left: 3px solid #ff5722;
+    background-color: #fff3e0;
+    border-radius: 4px;
+}
+
+/* ====================================== */
+/* ESTILOS PORTADA / INDEX */
+/* ====================================== */
+
+.portada {
+    min-height: 100vh;
+    background-image: url('imagen/img.jpg');
+    /* imagen portada */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+}
+
+/* Capa oscura encima de la imagen */
+.portada::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+}
+
+/* Contenido centrado */
+.portada-contenido {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    color: #fff;
+}
+
+.portada h1 {
+    font-size: 3.5rem;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.portada h2 {
+    font-size: 1.4rem;
+    font-weight: normal;
+    color: #ddd;
+    margin-bottom: 40px;
+}
+
+/* Botones portada */
+.portada-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.portada-botones button {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    font-weight: bold;
+    background-color: #ff5722;
+    color: #fff;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.portada-botones button:hover {
+    background-color: #ff784e;
+    transform: scale(1.05);
+}
+
+/* Frase final */
+.portada-frase {
+    margin-top: 40px;
+    font-size: 0.95em;
+    color: #ccc;
+}
+
+.portada-frase span {
+    color: #ff5722;
+    font-weight: bold;
+}
+
+.link-enduro {
+    display: inline-block;
+    padding: 14px 28px;
+    background-color: #fff;
+    color: #000;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    border-radius: 30px;
+    border: 2px solid #000;
+    transition: all 0.25s ease;
+}
+
+.link-enduro:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+
+/* Responsive */
+@media (max-width: 600px) {
+    .portada h1 {
+        font-size: 2.5rem;
+    }
+
+    .portada h2 {
+        font-size: 1.1rem;
+    }
+}
+
+/* ====================================== */
+/* CHATBOT MECÁNICO */
+/* ====================================== */
+
+#chatbot-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ff5722;
+    color: #fff;
+    border: none;
+    padding: 16px;
+    font-size: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#chatbot-button:hover {
+    background-color: #ff784e;
+}
+
+#chatbot-container {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 320px;
+    height: 420px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+#chatbot-header {
+    background-color: #ff5722;
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#chatbot-close {
+    cursor: pointer;
+}
+
+#chatbot-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 0.9em;
+    text-align: left;
+    background: #f9f9f9;
+}
+
+.chatbot-msg {
+    margin-bottom: 8px;
+}
+
+.user {
+    color: #333;
+    font-weight: bold;
+}
+
+.bot {
+    color: #ff5722;
+}
+
+#chatbot-input {
+    border: none;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    font-size: 0.9em;
+}
+
+#open-chat {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ff5722;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#chatbot-container {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 320px;
+    height: 420px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    display: none;
+    flex-direction: column;
+}
+
+#chatbot-header {
+    background: #ff5722;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+#chatbot-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 0.9em;
+    text-align: left;
+}
+
+#chatbot-input {
+    border: none;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+}

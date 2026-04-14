@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Enduro Nalón</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="./imagen/img.jpg">
+
+    <!-- CSS principal -->
+    <link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="css/chat.css">
+
+    <!-- Seguimiento de visitas -->
+    <script defer src="https://cloud.umami.is/script.js"
+        data-website-id="d013b9b8-1eae-4caa-ae20-f5a590cee984"></script>
+</head>
+
+<body>
+
+    <div class="portada">
+        <div class="portada-contenido">
+
+            <h1>ENDURO NALÓN</h1>
+
+            <div class="portada-botones">
+                <button onclick="location.href='calculadora.html'">
+                    🧮 Calculadora de mezcla
+                </button>
+
+                <button onclick="location.href='tablas.html'">
+                    📋 Fichas técnicas & pares
+                </button>
+
+                <button onclick="location.href='mantenimientos.html'">
+                    🔧 Libro de mantenimientos
+                </button>
+            </div>
+
+            <div style="text-align:center; margin-top:50px; margin-bottom:30px;"></div>
+            <a href="https://linktr.ee/enduronalon?utm_source=ig&utm_medium=social&utm_content=link_in_bio"
+                class="link-enduro">
+                Más sobre nosotros
+            </a>
+
+        </div>
+    </div>
+
+
+
+    <script src="/js/chatbot.js"></script>
+
+    <footer style="
+    text-align: center; 
+    padding: 20px; 
+    color: white; 
+    background-color: rgba(0, 0, 0, 0.7); /* negro opaco */
+">
+        <p>
+            © <span id="year"></span> Enduronalon. Todos los derechos reservados.
+        </p>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+
+</body>
+
+
+
+</html>
