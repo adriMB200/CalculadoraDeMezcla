@@ -127,6 +127,7 @@
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || "Error");
                 localStorage.setItem("token", data.token);
+                localStorage.setItem("user", username);
                 alert(action === "login" ? "Login correcto" : "Usuario registrado");
                 renderMotos();
             } catch (err) {

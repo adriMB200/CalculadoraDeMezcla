@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Foro Enduro Nalón</title>
+
+    <link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="css/chat.css">
+</head>
+
+<body>
+
+    <div id="loginBox" style="display:none; text-align:center; padding:20px;">
+        <h2>🔐 Inicia sesión para entrar al foro</h2>
+
+        <input id="loginUser" placeholder="Usuario"><br><br>
+        <input id="loginPass" type="password" placeholder="Contraseña"><br><br>
+
+        <button onclick="loginForo()">Entrar</button>
+    </div>
+
+    <div class="container">
+
+        <!-- TEMAS -->
+        <div class="temas">
+
+            <h3>Temas</h3>
+
+            <div id="error"></div>
+
+            <input id="nuevoTemaTitulo" placeholder="Título del tema">
+            <textarea id="nuevoTemaDesc" placeholder="Descripción"></textarea>
+            <button onclick="crearTema()">Crear tema</button>
+
+            <hr>
+
+            <div id="listaTemas"></div>
+        </div>
+
+        <!-- CHAT -->
+        <div class="chat">
+
+            <h3 id="tituloTema">Selecciona un tema</h3>
+
+            <div class="mensajes" id="mensajes"></div>
+
+            <div class="input">
+                <input id="mensajeInput" placeholder="Escribe un mensaje..."
+                    onkeydown="if(event.key==='Enter') enviarMensaje()">
+                <button onclick="enviarMensaje()">Enviar</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const API = "/.netlify/functions";
+        let temaActual = null;
+        const token = localStorage.getItem("token");
+
+        function showError(msg) {
+            document.getElementById("error").innerText = msg;
+        }
+
+        function checkLogin() {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                document.querySelector(".container").style.display = "none";
+                document.getElementById("loginBox").style.display = "block";
+            }
+        }
+        async function loginForo() {
+            const username = document.getElementById("loginUser").value;
+            const password = document.getElementById("loginPass").value;
+
+            const res = await fetch("/.netlify/functions/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                alert(data.error || "Error login");
+                return;
+            }
+
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", username);
+
+            location.reload();
+        }
+
+        /* ===================== TEMAS ===================== */
+        async function cargarTemas() {
+            try {
+                const res = await fetch(`${API}/getTemas`, {
+                    headers: { Authorization: "Bearer " + token }
+                });
+
+                const data = await res.json();
+
+                if (!Array.isArray(data)) {
+                    showError(data.error || "Error cargando temas");
+                    return;
+                }
+
+                const cont = document.getElementById("listaTemas");
+                cont.innerHTML = "";
+
+                data.forEach(t => {
+                    const div = document.createElement("div");
+                    div.className = "tema";
+                    div.innerHTML = `<b>${t.titulo}</b><br>${t.descripcion || ""}`;
+                    div.onclick = () => seleccionarTema(t);
+                    cont.appendChild(div);
+                });
+
+            } catch (err) {
+                showError("Error de conexión con el servidor");
+            }
+        }
+
+        /* ===================== CREAR TEMA ===================== */
+        async function crearTema() {
+            const titulo = document.getElementById("nuevoTemaTitulo").value;
+            const descripcion = document.getElementById("nuevoTemaDesc").value;
+
+            const res = await fetch(`${API}/createTema`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token
+                },
+                body: JSON.stringify({ titulo, descripcion })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                showError(data.error || "Error creando tema");
+                return;
+            }
+
+            document.getElementById("nuevoTemaTitulo").value = "";
+            document.getElementById("nuevoTemaDesc").value = "";
+
+            cargarTemas();
+        }
+        function getUser() {
+            return localStorage.getItem("user");
+        }
+
+        function isLogged() {
+            return !!localStorage.getItem("token");
+        }
+
+        function logout() {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            location.reload();
+        }
+
+        /* ===================== SELECCIONAR TEMA ===================== */
+        function seleccionarTema(t) {
+            temaActual = t.id;
+            document.getElementById("tituloTema").innerText = t.titulo;
+            cargarMensajes();
+        }
+
+        /* ===================== MENSAJES ===================== */
+        async function cargarMensajes() {
+            if (!temaActual) return;
+
+            const res = await fetch(`${API}/getMensajes?tema_id=${temaActual}`, {
+                headers: { Authorization: "Bearer " + token }
+            });
+
+            const data = await res.json();
+
+            if (!Array.isArray(data)) {
+                showError(data.error || "Error cargando mensajes");
+                return;
+            }
+
+            const cont = document.getElementById("mensajes");
+            cont.innerHTML = "";
+
+            data.forEach(m => {
+                const div = document.createElement("div");
+                div.className = "mensaje";
+                const user = m.usuario || localStorage.getItem("user") || "Anónimo";
+                div.innerHTML = `<b>${user}</b><br>${m.contenido}`;
+                cont.appendChild(div);
+            });
+
+            // auto scroll abajo
+            cont.scrollTop = cont.scrollHeight;
+        }
+
+        /* ===================== ENVIAR MENSAJE ===================== */
+        async function enviarMensaje() {
+            if (!temaActual) return alert("Selecciona un tema primero");
+
+            const input = document.getElementById("mensajeInput");
+
+            if (!input.value.trim()) return;
+
+            const res = await fetch(`${API}/addMensaje`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token
+                },
+                body: JSON.stringify({
+                    contenido: input.value,
+                    tema_id: temaActual
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                showError(data.error || "Error enviando mensaje");
+                return;
+            }
+
+            input.value = "";
+            cargarMensajes();
+        }
+
+        /* INIT */
+        cargarTemas();
+        checkLogin();
+    </script>
+
+</body>
+
+</html>

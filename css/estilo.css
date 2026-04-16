@@ -453,3 +453,166 @@ th {
     border-top: 1px solid #ddd;
     padding: 10px;
 }
+
+/* ====================================== */
+/* 🔥 FORO STYLE (NUEVO SISTEMA) */
+/* ====================================== */
+
+/* Layout general del foro */
+.container {
+    display: flex;
+    height: 90vh;
+    gap: 8px;
+    padding: 8px;
+}
+
+/* Panel izquierdo (temas) */
+.temas {
+    width: 28%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 12px;
+    overflow-y: auto;
+}
+
+/* Título temas */
+.temas h3 {
+    margin-top: 0;
+    color: #ff5722;
+}
+
+/* Tema item */
+.tema {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tema:hover {
+    background: rgba(255, 87, 34, 0.2);
+    transform: scale(1.02);
+}
+
+/* Panel derecho chat */
+.chat {
+    width: 72%;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Mensajes */
+.mensajes {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Mensaje estilo burbuja */
+.mensaje {
+    max-width: 70%;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #111;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    word-wrap: break-word;
+    font-size: 0.9em;
+}
+
+/* Usuario */
+.mensaje b {
+    color: #ff5722;
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.85em;
+}
+
+/* INPUT BAR */
+.input {
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Input mensaje */
+#mensajeInput {
+    flex: 1;
+    padding: 12px 15px;
+    border-radius: 25px;
+    border: none;
+    outline: none;
+    background: #1e1e1e;
+    color: white;
+    transition: 0.2s;
+}
+
+#mensajeInput:focus {
+    background: #2a2a2a;
+    box-shadow: 0 0 10px rgba(255, 87, 34, 0.3);
+}
+
+/* Botón enviar */
+.input button {
+    background: #ff5722;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.input button:hover {
+    background: #ff784e;
+    transform: scale(1.05);
+}
+
+/* Input temas */
+.temas input,
+.temas textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    outline: none;
+}
+
+.temas input:focus,
+.temas textarea:focus {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* Botón crear tema */
+.temas button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: #ff5722;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.temas button:hover {
+    background: #ff784e;
+}
