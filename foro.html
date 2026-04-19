@@ -146,8 +146,32 @@
             data.forEach(m => {
                 const div = document.createElement("div");
                 div.className = "mensaje";
+
                 const user = m.usuario || getUser() || "Anónimo";
-                div.innerHTML = `<b>${user}</b><br>${m.contenido}`;
+
+                let fechaTexto = "";
+
+                if (m.fecha) {
+                    const fecha = new Date(m.fecha);
+
+                    const hora = fecha.toLocaleTimeString("es-ES", {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    });
+
+                    const dia = fecha.getDate();
+                    const mes = fecha.getMonth() + 1;
+                    const anio = fecha.getFullYear();
+
+                    fechaTexto = `${hora} ${dia}/${mes}/${anio}`;
+                }
+
+                div.innerHTML = `
+        <b>${user}</b><br>
+        ${m.contenido}
+        <div class="mensaje-fecha">${fechaTexto}</div>
+    `;
+
                 cont.appendChild(div);
             });
 
@@ -211,7 +235,8 @@
         window.PROD_URL = "https://enduronalon.netlify.app";
     </script>
     <script src="js/auth.js"></script>
-    <script src="js/auth.js"></script>
+    <script src="js/legal.js"></script>
+    <script src="js/cookies.js"></script>
 </body>
 
 </html>

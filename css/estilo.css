@@ -498,6 +498,14 @@ th {
     transform: scale(1.02);
 }
 
+.tema {
+    color: #ddd;
+}
+
+.tema b {
+    color: white;
+}
+
 /* Panel derecho chat */
 .chat {
     width: 72%;
@@ -616,6 +624,8 @@ th {
 .temas button:hover {
     background: #ff784e;
 }
+
+
 
 /* ====================================== */
 /* LOGIN / REGISTRO GLOBAL FLOTANTE */
@@ -935,4 +945,201 @@ th {
     margin: 0;
     font-size: 0.92em;
     color: #666;
+}
+
+.mensaje-fecha {
+    margin-top: 4px;
+    font-size: 0.7em;
+    color: rgba(0, 0, 0, 0.55);
+    text-align: right;
+}
+
+/* ====================================== */
+/* INFO LEGAL Y CRÉDITOS */
+/* ====================================== */
+
+.legal-trigger-wrap {
+    text-align: center;
+    margin: 30px 0 10px 0;
+}
+
+.legal-trigger {
+    display: inline-block;
+    background: transparent;
+    border: none;
+    color: white;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.95em;
+    padding: 8px 12px;
+}
+
+.legal-trigger:hover {
+    opacity: 0.85;
+}
+
+.legal-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 11000;
+}
+
+.legal-modal {
+    width: min(92%, 700px);
+    max-height: 85vh;
+    overflow-y: auto;
+    background: white;
+    color: #111;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+    text-align: left;
+}
+
+.legal-modal h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.legal-modal h3 {
+    margin-top: 20px;
+    margin-bottom: 8px;
+    color: #ff5722;
+}
+
+.legal-modal p {
+    line-height: 1.5;
+    margin: 8px 0;
+    color: #333;
+}
+
+.legal-close {
+    margin-top: 20px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #111;
+    color: white;
+}
+
+.legal-close:hover {
+    background: #333;
+}
+
+@media (max-width: 600px) {
+    .legal-modal {
+        padding: 18px;
+        width: calc(100% - 24px);
+    }
+}
+
+.legal-trigger {
+    display: inline-block;
+    background: rgba(44, 44, 44, 0.12);
+    border: 1px solid rgba(44, 44, 44, 0.12);
+    color: white;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 10px 16px;
+    text-decoration: none;
+}
+
+/* ====================================== */
+/* AVISO DE COOKIES */
+/* ====================================== */
+
+.cookie-banner {
+    position: fixed;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    z-index: 12000;
+    background: rgba(17, 17, 17, 0.96);
+    color: white;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    display: none;
+}
+
+.cookie-banner-content {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.cookie-banner-text {
+    flex: 1;
+    min-width: 240px;
+    text-align: left;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+.cookie-banner-text strong {
+    color: #ff5722;
+}
+
+.cookie-banner-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.cookie-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+.cookie-btn-accept {
+    background: #ff5722;
+    color: white;
+}
+
+.cookie-btn-accept:hover {
+    background: #ff784e;
+}
+
+.cookie-btn-more {
+    background: #f1f1f1;
+    color: #111;
+}
+
+.cookie-btn-more:hover {
+    background: #ddd;
+}
+
+@media (max-width: 600px) {
+    .cookie-banner {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        padding: 14px;
+    }
+
+    .cookie-banner-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cookie-banner-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
 }
