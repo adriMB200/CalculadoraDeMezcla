@@ -9,6 +9,9 @@
 </head>
 
 <body>
+    <div style="text-align:center; margin-bottom:20px;">
+        <button class="operator" onclick="location.href='index.html'">🏠 Home</button>
+    </div>
 
     <div class="container">
 
@@ -206,19 +209,8 @@
 
     <script>
         window.PROD_URL = "https://enduronalon.netlify.app";
-
-        window.getEndpoint = function (path) {
-            if (!path.startsWith("/")) {
-                path = "/" + path;
-            }
-
-            if (window.location.protocol === "http:" || window.location.protocol === "https:") {
-                return path;
-            }
-
-            return window.PROD_URL.replace(/\/$/, "") + path;
-        };
     </script>
+    <script src="js/auth.js"></script>
     <script src="js/auth.js"></script>
 </body>
 

@@ -46,19 +46,10 @@ function bindAuthEvents() {
     const registerBtn = document.getElementById("authRegisterBtn");
     const closeBtn = document.getElementById("authCloseBtn");
     const passwordInput = document.getElementById("authPassword");
-    const usernameInput = document.getElementById("authUsername");
 
-    if (loginBtn) {
-        loginBtn.addEventListener("click", () => handleAuth("login"));
-    }
-
-    if (registerBtn) {
-        registerBtn.addEventListener("click", () => handleAuth("register"));
-    }
-
-    if (closeBtn) {
-        closeBtn.addEventListener("click", closeAuthModal);
-    }
+    if (loginBtn) loginBtn.addEventListener("click", () => handleAuth("login"));
+    if (registerBtn) registerBtn.addEventListener("click", () => handleAuth("register"));
+    if (closeBtn) closeBtn.addEventListener("click", closeAuthModal);
 
     if (modal) {
         modal.addEventListener("click", function (e) {
@@ -68,17 +59,7 @@ function bindAuthEvents() {
 
     if (passwordInput) {
         passwordInput.addEventListener("keydown", function (e) {
-            if (e.key === "Enter") {
-                handleAuth("login");
-            }
-        });
-    }
-
-    if (usernameInput) {
-        usernameInput.addEventListener("keydown", function (e) {
-            if (e.key === "Enter") {
-                document.getElementById("authPassword").focus();
-            }
+            if (e.key === "Enter") handleAuth("login");
         });
     }
 }
@@ -98,14 +79,9 @@ function isLogged() {
 function openAuthModal() {
     const modal = document.getElementById("authModal");
     const errorBox = document.getElementById("authError");
-    const usernameInput = document.getElementById("authUsername");
 
     if (modal) modal.style.display = "flex";
     if (errorBox) errorBox.textContent = "";
-
-    setTimeout(() => {
-        if (usernameInput) usernameInput.focus();
-    }, 50);
 }
 
 function closeAuthModal() {
@@ -130,7 +106,7 @@ function renderAuthButton() {
     if (isLogged()) {
         topbar.innerHTML = `
             <div class="user-menu">
-                <button class="auth-btn" id="authUserBtn">${escapeHtml(getUser() || "Usuario")}</button>
+                <button class="auth-btn" id="authUserBtn">${getUser() || "Usuario"}</button>
                 <button class="logout-btn" id="authLogoutBtn">Salir</button>
             </div>
         `;
@@ -165,6 +141,7 @@ async function handleAuth(action) {
         : "/.netlify/functions/singUp";
 
     const endpoint = resolveAuthEndpoint(path);
+    console.log("Endpoint auth:", endpoint);
 
     try {
         const res = await fetch(endpoint, {
@@ -198,10 +175,8 @@ async function handleAuth(action) {
             window.onLoginSuccess(data, username);
         }
     } catch (err) {
-        if (errorBox) {
-            errorBox.textContent = "No se pudo conectar con el servidor";
-        }
         console.error("Error auth:", err);
+        if (errorBox) errorBox.textContent = "No se pudo conectar con el servidor";
     }
 }
 
@@ -210,18 +185,14 @@ function resolveAuthEndpoint(path) {
         path = "/" + path;
     }
 
-    if (typeof window.getEndpoint === "function") {
-        return window.getEndpoint(path);
-    }
-
     const protocol = window.location.protocol;
 
     if (protocol === "http:" || protocol === "https:") {
         return path;
     }
 
-    const fallbackBase = getFallbackBaseUrl();
-    return fallbackBase + path;
+    const base = getFallbackBaseUrl();
+    return `${base}${path}`;
 }
 
 function getFallbackBaseUrl() {
@@ -238,13 +209,4 @@ async function safeJson(res) {
     } catch {
         return {};
     }
-}
-
-function escapeHtml(text) {
-    return String(text)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
 }

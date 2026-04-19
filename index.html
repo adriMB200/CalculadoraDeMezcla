@@ -59,18 +59,6 @@
 
     <script>
         window.PROD_URL = "https://enduronalon.netlify.app";
-
-        window.getEndpoint = function (path) {
-            if (!path.startsWith("/")) {
-                path = "/" + path;
-            }
-
-            if (window.location.protocol === "http:" || window.location.protocol === "https:") {
-                return path;
-            }
-
-            return window.PROD_URL.replace(/\/$/, "") + path;
-        };
     </script>
     <script src="js/auth.js"></script>
 
