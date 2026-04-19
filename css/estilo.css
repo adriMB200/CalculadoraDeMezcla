@@ -616,3 +616,323 @@ th {
 .temas button:hover {
     background: #ff784e;
 }
+
+/* ====================================== */
+/* LOGIN / REGISTRO GLOBAL FLOTANTE */
+/* ====================================== */
+
+.auth-topbar {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 9999;
+}
+
+.auth-btn {
+    background: #111;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.auth-btn:hover {
+    opacity: 0.9;
+}
+
+.auth-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.auth-modal {
+    width: 90%;
+    max-width: 380px;
+    background: white;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+    color: #111;
+    text-align: left;
+}
+
+.auth-modal h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    text-align: center;
+    color: #111;
+}
+
+.auth-modal input {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    background: white;
+    color: #111;
+}
+
+.auth-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.auth-actions button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+.btn-login {
+    background: #111;
+    color: white;
+}
+
+.btn-login:hover {
+    background: #333;
+}
+
+.btn-register {
+    background: #e5e5e5;
+    color: #111;
+}
+
+.btn-register:hover {
+    background: #d5d5d5;
+}
+
+.auth-close {
+    margin-top: 12px;
+    width: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.auth-close:hover {
+    color: #000;
+}
+
+.user-menu {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.logout-btn {
+    background: #d9534f;
+    color: white;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.logout-btn:hover {
+    background: #c9302c;
+}
+
+.auth-error {
+    color: #b00020;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
+    min-height: 18px;
+}
+
+/* Ajuste para móvil */
+@media (max-width: 600px) {
+    .auth-topbar {
+        top: 10px;
+        right: 10px;
+    }
+
+    .auth-btn,
+    .logout-btn {
+        padding: 9px 12px;
+        font-size: 0.9em;
+    }
+
+    .auth-modal {
+        width: calc(100% - 30px);
+        padding: 18px;
+    }
+
+    .auth-actions {
+        flex-direction: column;
+    }
+}
+
+/* ====================================== */
+/* CALCULADORA DE MEZCLA MEJORADA */
+/* ====================================== */
+
+.mix-calculator {
+    width: min(92%, 520px);
+    padding: 28px;
+    border-radius: 16px;
+}
+
+.mix-calculator h1 {
+    margin-bottom: 10px;
+}
+
+.mix-subtitle {
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 24px;
+    line-height: 1.4;
+}
+
+.mix-form {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.mix-field {
+    text-align: left;
+}
+
+.mix-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.mix-field input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 12px;
+    font-size: 1.05em;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    outline: none;
+}
+
+.mix-field input:focus {
+    border-color: #3772ff;
+    box-shadow: 0 0 0 3px rgba(55, 114, 255, 0.15);
+}
+
+.quick-percentages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.quick-percentages span {
+    width: 100%;
+    font-size: 0.95em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.quick-percentages button {
+    padding: 10px 14px;
+    font-size: 0.95em;
+    background: #f1f1f1;
+    border-radius: 999px;
+}
+
+.quick-percentages button:hover {
+    background: #ddd;
+}
+
+.mix-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.mix-actions .clear {
+    grid-column: auto;
+}
+
+.mix-result {
+    text-align: left;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.mix-result p {
+    margin: 8px 0;
+    font-size: 1.05em;
+}
+
+.mix-help {
+    margin-top: 20px;
+    text-align: left;
+    background: #fff3e0;
+    border-left: 4px solid #ff5722;
+    padding: 14px;
+    border-radius: 8px;
+}
+
+.mix-help h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #ff5722;
+}
+
+.mix-help ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.mix-help li {
+    margin-bottom: 6px;
+}
+
+@media (max-width: 600px) {
+    .mix-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+.custom-percentage-box {
+    margin-bottom: 18px;
+    padding: 12px;
+    background: #f8f8f8;
+    border: 1px dashed #ccc;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.custom-percentage-box label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.custom-percentage-box p {
+    margin: 0;
+    font-size: 0.92em;
+    color: #666;
+}

@@ -11,100 +11,140 @@
 
 <body>
 
-    <!-- BOTÓN HOME -->
     <div style="text-align:center; margin-bottom:20px;">
         <button class="operator" onclick="location.href='index.html'">🏠 Home</button>
     </div>
 
-    <!-- CALCULADORA SIEMPRE VISIBLE -->
-    <div id="calculatorContainer" class="calculator">
+    <div id="calculatorContainer" class="calculator mix-calculator">
         <h1>Calculadora de Mezcla</h1>
-        <h2>Enduro Nalón</h2>
+        <p class="mix-subtitle">
+            Calcula cuántos ml de aceite necesitas según los litros de gasolina y el porcentaje de mezcla.
+        </p>
 
-        <div id="display">0</div>
+        <div class="mix-form">
+            <div class="mix-field">
+                <label for="volumeInput">Volumen de gasolina (L)</label>
+                <input type="number" id="volumeInput" min="0" step="0.1" placeholder="Ej: 5">
+            </div>
 
-        <div class="keypad">
-            <button onclick="appendDisplay('7')">7</button>
-            <button onclick="appendDisplay('8')">8</button>
-            <button onclick="appendDisplay('9')">9</button>
-
-            <button onclick="appendDisplay('4')">4</button>
-            <button onclick="appendDisplay('5')">5</button>
-            <button onclick="appendDisplay('6')">6</button>
-
-            <button onclick="appendDisplay('1')">1</button>
-            <button onclick="appendDisplay('2')">2</button>
-            <button onclick="appendDisplay('3')">3</button>
-
-            <button onclick="appendDisplay('0')">0</button>
-            <button onclick="appendDisplay(',')">,</button>
-
-            <button class="operator" onclick="setVolume()">Volumen (L)</button>
-            <button class="operator" onclick="setPercentage()">% Deseado</button>
-            <button class="clear" onclick="clearCalculator()">C (Borrar)</button>
+            <div class="mix-field">
+                <label for="percentageInput">Porcentaje exacto de mezcla (%)</label>
+                <input type="number" id="percentageInput" min="0" step="0.1" placeholder="Ej: 2 o 1.8">
+            </div>
         </div>
 
-        <div id="result-container">
-            <p><strong>Volumen Total:</strong> <span id="volume-output">0</span> L</p>
-            <p><strong>Porcentaje Deseado:</strong> <span id="percentage-output">0</span> %</p>
-            <p><strong>Resultado:</strong> <span id="result-output">0</span></p>
+        <div class="quick-percentages">
+            <span>Porcentajes típicos:</span>
+            <button type="button" onclick="setQuickPercentage(1)">1%</button>
+            <button type="button" onclick="setQuickPercentage(1.5)">1,5%</button>
+            <button type="button" onclick="setQuickPercentage(2)">2%</button>
+            <button type="button" onclick="setQuickPercentage(2.5)">2,5%</button>
+            <button type="button" onclick="setQuickPercentage(3)">3%</button>
+            <button type="button" onclick="setQuickPercentage(4)">4%</button>
+        </div>
+
+        <div class="custom-percentage-box">
+            <label for="percentageInput">O escribe tu porcentaje exacto</label>
+            <p>Ejemplos: 1,7% · 2,2% · 2,8%</p>
+        </div>
+
+        <div class="mix-actions">
+            <button class="operator" onclick="calculateMix()">Calcular mezcla</button>
+            <button class="clear" onclick="clearCalculator()">Borrar</button>
+        </div>
+
+        <div id="result-container" class="mix-result">
+            <p><strong>Gasolina:</strong> <span id="volume-output">0</span> L</p>
+            <p><strong>Porcentaje:</strong> <span id="percentage-output">0</span> %</p>
+            <p><strong>Aceite necesario:</strong> <span id="result-output">0</span> ml</p>
+            <p><strong>Equivalencia:</strong> <span id="ratio-output">-</span></p>
+        </div>
+
+        <div class="mix-help">
+            <h3>Ejemplos rápidos</h3>
+            <ul>
+                <li>5 L al 2% → 100 ml</li>
+                <li>10 L al 2% → 200 ml</li>
+                <li>5 L al 1,5% → 75 ml</li>
+                <li>5 L al 1,8% → 90 ml</li>
+            </ul>
         </div>
     </div>
 
     <script>
-        let currentVolume = 0;
-        let currentPercentage = 0;
-        let display = document.getElementById('display');
-        const volumeOutput = document.getElementById('volume-output');
-        const percentageOutput = document.getElementById('percentage-output');
-        const resultOutput = document.getElementById('result-output');
+        window.PROD_URL = "https://enduronalon.netlify.app";
 
-        clearDisplay();
+        window.getEndpoint = function (path) {
+            if (!path.startsWith("/")) {
+                path = "/" + path;
+            }
 
-        function clearDisplay() {
-            display.textContent = '0';
+            if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+                return path;
+            }
+
+            return window.PROD_URL.replace(/\/$/, "") + path;
+        };
+    </script>
+    <script src="js/auth.js"></script>
+
+    <script>
+        const volumeInput = document.getElementById("volumeInput");
+        const percentageInput = document.getElementById("percentageInput");
+        const volumeOutput = document.getElementById("volume-output");
+        const percentageOutput = document.getElementById("percentage-output");
+        const resultOutput = document.getElementById("result-output");
+        const ratioOutput = document.getElementById("ratio-output");
+
+        function formatNumber(value) {
+            return Number(value).toLocaleString("es-ES", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function getNumericValue(input) {
+            return parseFloat(String(input.value).replace(",", "."));
+        }
+
+        function setQuickPercentage(value) {
+            percentageInput.value = value;
+            calculateMix();
+        }
+
+        function calculateMix() {
+            const volume = getNumericValue(volumeInput);
+            const percentage = getNumericValue(percentageInput);
+
+            if (isNaN(volume) || volume <= 0 || isNaN(percentage) || percentage <= 0) {
+                volumeOutput.textContent = "0";
+                percentageOutput.textContent = "0";
+                resultOutput.textContent = "0";
+                ratioOutput.textContent = "-";
+                return;
+            }
+
+            const oilMl = volume * percentage * 10;
+            const ratio = 100 / percentage;
+
+            volumeOutput.textContent = formatNumber(volume);
+            percentageOutput.textContent = formatNumber(percentage);
+            resultOutput.textContent = formatNumber(oilMl);
+            ratioOutput.textContent = `1:${formatNumber(ratio)}`;
         }
 
         function clearCalculator() {
-            currentVolume = 0;
-            currentPercentage = 0;
-            updateOutputs();
+            volumeInput.value = "";
+            percentageInput.value = "";
+            volumeOutput.textContent = "0";
+            percentageOutput.textContent = "0";
+            resultOutput.textContent = "0";
+            ratioOutput.textContent = "-";
+            volumeInput.focus();
         }
 
-        function appendDisplay(value) {
-            if (display.textContent === '0') {
-                display.textContent = value;
-            } else {
-                if (value === ',' && display.textContent.includes(',')) return;
-                display.textContent += value;
-            }
-        }
-
-        function updateOutputs() {
-            volumeOutput.textContent = currentVolume;
-            percentageOutput.textContent = currentPercentage;
-            calculateResult();
-            clearDisplay();
-        }
-
-        function calculateResult() {
-            if (currentVolume > 0 && currentPercentage > 0) {
-                resultOutput.textContent =
-                    Math.round(currentVolume * currentPercentage * 10) + ' ml';
-            } else {
-                resultOutput.textContent = '0';
-            }
-        }
-
-        function setVolume() {
-            currentVolume = parseFloat(display.textContent.replace(',', '.')) || 0;
-            updateOutputs();
-        }
-
-        function setPercentage() {
-            currentPercentage = parseFloat(display.textContent.replace(',', '.')) || 0;
-            updateOutputs();
-        }
+        volumeInput.addEventListener("input", calculateMix);
+        percentageInput.addEventListener("input", calculateMix);
     </script>
 
 </body>

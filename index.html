@@ -4,22 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Enduro Nalón</title>
 
-    <!-- Favicon -->
     <link rel="icon" href="./imagen/img.jpg">
-
-    <!-- CSS principal -->
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="css/chat.css">
 
-    <!-- Seguimiento de visitas -->
     <script defer src="https://cloud.umami.is/script.js"
         data-website-id="d013b9b8-1eae-4caa-ae20-f5a590cee984"></script>
 </head>
 
 <body>
+
+    <div class="auth-topbar" id="authTopbar"></div>
+
+    <div class="auth-modal-overlay" id="authModal">
+        <div class="auth-modal">
+            <h2>🔐 Acceso</h2>
+            <div class="auth-error" id="authError"></div>
+
+            <input type="text" id="authUsername" placeholder="Usuario">
+            <input type="password" id="authPassword" placeholder="Contraseña">
+
+            <div class="auth-actions">
+                <button class="btn-login" onclick="handleAuth('login')">Iniciar sesión</button>
+                <button class="btn-register" onclick="handleAuth('register')">Registrarse</button>
+            </div>
+
+            <button class="auth-close" onclick="closeAuthModal()">Cerrar</button>
+        </div>
+    </div>
 
     <div class="portada">
         <div class="portada-contenido">
@@ -27,24 +41,14 @@
             <h1>ENDURO NALÓN</h1>
 
             <div class="portada-botones">
-                <button onclick="location.href='calculadora.html'">
-                    🧮 Calculadora de mezcla
-                </button>
-
-                <button onclick="location.href='tablas.html'">
-                    📋 Fichas técnicas & pares
-                </button>
-
-                <button onclick="location.href='mantenimientos.html'">
-                    🔧 Libro de mantenimientos
-                </button>
-
-                <button onclick="location.href='foro.html'">
-                    💬 Foro Enduro
-                </button>
+                <button onclick="location.href='calculadora.html'">🧮 Calculadora de mezcla</button>
+                <button onclick="location.href='tablas.html'">📋 Fichas técnicas & pares</button>
+                <button onclick="location.href='mantenimientos.html'">🔧 Libro de mantenimientos</button>
+                <button onclick="location.href='foro.html'">💬 Foro Enduro</button>
             </div>
 
             <div style="text-align:center; margin-top:50px; margin-bottom:30px;"></div>
+
             <a href="https://linktr.ee/enduronalon?utm_source=ig&utm_medium=social&utm_content=link_in_bio"
                 class="link-enduro">
                 Más sobre nosotros
@@ -53,27 +57,114 @@
         </div>
     </div>
 
+    <script>
+        window.PROD_URL = "https://enduronalon.netlify.app";
 
+        window.getEndpoint = function (path) {
+            if (!path.startsWith("/")) {
+                path = "/" + path;
+            }
 
-    <script src="/js/chatbot.js"></script>
+            if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+                return path;
+            }
 
-    <footer style="
-    text-align: center; 
-    padding: 20px; 
-    color: white; 
-    background-color: rgba(0, 0, 0, 0.7); /* negro opaco */
-">
-        <p>
-            © <span id="year"></span> Enduronalon. Todos los derechos reservados.
-        </p>
+            return window.PROD_URL.replace(/\/$/, "") + path;
+        };
+    </script>
+    <script src="js/auth.js"></script>
+
+    <footer style="text-align:center; padding:20px; color:white; background-color:rgba(0,0,0,0.7);">
+        <p>© <span id="year"></span> Enduronalon. Todos los derechos reservados.</p>
     </footer>
 
     <script>
         document.getElementById("year").textContent = new Date().getFullYear();
+
+        function getUser() {
+            return localStorage.getItem("user");
+        }
+
+        function isLogged() {
+            return !!localStorage.getItem("token");
+        }
+
+        function openAuthModal() {
+            document.getElementById("authModal").style.display = "flex";
+            document.getElementById("authError").textContent = "";
+        }
+
+        function closeAuthModal() {
+            document.getElementById("authModal").style.display = "none";
+        }
+
+        function logout() {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            renderAuthButton();
+            location.reload();
+        }
+
+        function renderAuthButton() {
+            const topbar = document.getElementById("authTopbar");
+
+            if (isLogged()) {
+                topbar.innerHTML = `
+                    <div class="user-menu">
+                        <button class="auth-btn" onclick="openAuthModal()">${getUser()}</button>
+                        <button class="logout-btn" onclick="logout()">Salir</button>
+                    </div>
+                `;
+            } else {
+                topbar.innerHTML = `<button class="auth-btn" onclick="openAuthModal()">Iniciar sesión</button>`;
+            }
+        }
+
+        async function handleAuth(action) {
+            const username = document.getElementById("authUsername").value.trim();
+            const password = document.getElementById("authPassword").value.trim();
+            const errorBox = document.getElementById("authError");
+
+            if (!username || !password) {
+                errorBox.textContent = "Introduce usuario y contraseña";
+                return;
+            }
+
+            const endpoint = action === "login"
+                ? "/.netlify/functions/login"
+                : "/.netlify/functions/singUp";
+
+            try {
+                const res = await fetch(endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    errorBox.textContent = data.error || "Error de autenticación";
+                    return;
+                }
+
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("user", username);
+
+                closeAuthModal();
+                renderAuthButton();
+            } catch (err) {
+                errorBox.textContent = "Error de conexión con el servidor";
+            }
+        }
+
+        document.getElementById("authModal").addEventListener("click", function (e) {
+            if (e.target === this) closeAuthModal();
+        });
+
+        renderAuthButton();
     </script>
 
 </body>
-
-
 
 </html>

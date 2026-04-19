@@ -16,19 +16,8 @@
     </div>
 
     <div class="info-container">
-        <h2>🔑 Iniciar sesión / Registrarse</h2>
-        <form id="authForm">
-            <label>Usuario:</label>
-            <input type="text" id="username" required>
-            <label>Contraseña:</label>
-            <input type="password" id="password" required>
-            <button type="submit" data-action="login">Iniciar sesión</button>
-            <button type="submit" data-action="register">Registrar usuario</button>
-        </form>
-
-        <hr>
-
         <h2>📘 Mis Motos y Mantenimientos</h2>
+
         <form id="motoForm">
             <label>Marca:</label>
             <select id="marca" required onchange="actualizarModelos()">
@@ -56,19 +45,15 @@
     </div>
 
     <script>
-        // 1. CONFIGURACIÓN DE URL DINÁMICA (PARA QUE FUNCIONE EN TODO LUGAR)
-        const PROD_URL = "https://enduronalon.netlify.app"; // Tu URL de Netlify sin la barra final
+        const PROD_URL = "https://enduronalon.netlify.app";
 
         function getEndpoint(path) {
-            // Si estamos en un navegador normal (web desplegada o localhost/netlify dev)
             if (window.location.protocol.startsWith('http')) {
-                return path; // Retorna ruta relativa: "/.netlify/functions/..."
+                return path;
             }
-            // Si estamos en Electron (protocolo file:)
             return `${PROD_URL}${path}`;
         }
 
-        // ------------------ Configuración modelos y años ------------------
         const modelosPorMarca = {
             "KTM": ["EXC 250", "EXC 300", "EXC-F 450"],
             "GasGas": ["EC 200", "EC 250", "EC 300"],
@@ -88,6 +73,7 @@
             const marcaSeleccionada = document.getElementById("marca").value;
             const selectModelo = document.getElementById("modelo");
             selectModelo.innerHTML = "<option value=''>Selecciona un modelo</option>";
+
             if (modelosPorMarca[marcaSeleccionada]) {
                 for (let i = 0; i < modelosPorMarca[marcaSeleccionada].length; i++) {
                     const modelo = modelosPorMarca[marcaSeleccionada][i];
@@ -99,43 +85,6 @@
             }
         }
 
-        // ------------------ Manejo del token ------------------
-        function getToken() {
-            const token = localStorage.getItem("token");
-            if (!token) throw new Error("Debes iniciar sesión primero.");
-            return token;
-        }
-
-        // ------------------ Login / Registro ------------------
-        const authForm = document.getElementById("authForm");
-        authForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const action = e.submitter.dataset.action;
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-
-            // Usamos getEndpoint para que sea dinámico
-            const path = action === "login" ? "/.netlify/functions/login" : "/.netlify/functions/singUp";
-            const endpoint = getEndpoint(path);
-
-            try {
-                const res = await fetch(endpoint, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ username, password })
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || "Error");
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("user", username);
-                alert(action === "login" ? "Login correcto" : "Usuario registrado");
-                renderMotos();
-            } catch (err) {
-                alert(err.message);
-            }
-        });
-
-        // ------------------ Función eliminar mantenimiento ------------------
         async function eliminarMantenimiento(id) {
             if (!confirm("¿Seguro que quieres eliminar este mantenimiento?")) return;
 
@@ -159,16 +108,23 @@
             }
         }
 
-        // ------------------ Render motos ------------------
         const motoList = document.getElementById("motoList");
 
         async function renderMotos() {
+            if (!isLogged()) {
+                motoList.innerHTML = "<p>Debes iniciar sesión para ver tus motos.</p>";
+                return;
+            }
+
             motoList.innerHTML = "<p>Cargando motos...</p>";
+
             try {
                 const res = await fetch(getEndpoint("/.netlify/functions/getMotos"), {
                     headers: { Authorization: `Bearer ${getToken()}` }
                 });
+
                 if (!res.ok) throw new Error("Error cargando motos");
+
                 const motos = await res.json();
 
                 if (motos.length === 0) {
@@ -177,27 +133,34 @@
                 }
 
                 motoList.innerHTML = "";
+
                 for (let i = 0; i < motos.length; i++) {
                     const moto = motos[i];
                     const div = document.createElement("div");
                     div.classList.add("moto-card");
 
                     let mantenimientosHtml = "";
+
                     if (moto.mantenimientos && moto.mantenimientos.length > 0) {
                         for (let j = 0; j < moto.mantenimientos.length; j++) {
                             const m = moto.mantenimientos[j];
                             let fechaStr = "";
+
                             if (m.fecha) {
                                 const fecha = new Date(m.fecha);
                                 fechaStr = fecha.toLocaleDateString("es-ES", {
-                                    day: "2-digit", month: "2-digit", year: "numeric"
+                                    day: "2-digit",
+                                    month: "2-digit",
+                                    year: "numeric"
                                 });
                             }
+
                             mantenimientosHtml += `
                                 <li>
                                     📅 ${fechaStr} — 🕒 ${m.horas} h — ${m.descripcion}
                                     <button onclick="eliminarMantenimiento(${m.id})" style="margin-left:10px;">❌</button>
-                                </li>`;
+                                </li>
+                            `;
                         }
                     }
 
@@ -206,22 +169,30 @@
                         <button onclick="agregarMantenimiento('${moto.matricula}')">🛠️ Añadir mantenimiento</button>
                         <ul>${mantenimientosHtml}</ul>
                     `;
+
                     motoList.appendChild(div);
                 }
+
             } catch (err) {
                 motoList.innerHTML = "<p>Error cargando motos</p>";
                 console.error(err);
             }
         }
 
-        // ------------------ Añadir moto ------------------
         const motoForm = document.getElementById("motoForm");
         motoForm.addEventListener("submit", async (e) => {
             e.preventDefault();
+
+            if (!isLogged()) {
+                openAuthModal();
+                return;
+            }
+
             const marca = document.getElementById("marca").value;
             const modelo = document.getElementById("modelo").value;
             const anio = parseInt(document.getElementById("anio").value);
             const matricula = prompt("Introduce la matrícula de la moto (ej: 1234ABC)");
+
             if (!matricula) return alert("Debes introducir una matrícula");
 
             try {
@@ -233,8 +204,11 @@
                     },
                     body: JSON.stringify({ matricula, marca, modelo, anio })
                 });
+
                 const data = await res.json();
+
                 if (!res.ok) throw new Error(data.error || "Error");
+
                 alert(data.message || "Moto añadida");
                 renderMotos();
                 motoForm.reset();
@@ -243,10 +217,15 @@
             }
         });
 
-        // ------------------ Añadir mantenimiento ------------------
         async function agregarMantenimiento(matricula) {
+            if (!isLogged()) {
+                openAuthModal();
+                return;
+            }
+
             const descripcion = prompt("Descripción del mantenimiento");
             if (!descripcion) return;
+
             const horas = prompt("Horas del motor");
             if (!horas || isNaN(horas)) return alert("Introduce horas válidas");
 
@@ -259,17 +238,64 @@
                     },
                     body: JSON.stringify({ matricula, descripcion, horas: Number(horas) })
                 });
+
                 const data = await res.json();
+
                 if (!res.ok) throw new Error(data.error || "Error");
+
                 alert(data.message || "Mantenimiento añadido");
                 renderMotos();
             } catch (err) {
                 alert(err.message);
             }
         }
+
+        window.onAuthReady = function () {
+            renderMotos();
+        };
+
+        window.onLoginSuccess = function () {
+            renderMotos();
+        };
+
+        window.onLogout = function () {
+            renderMotos();
+        };
     </script>
 
     <script src="/js/chatbot.js"></script>
+    <script>
+        window.PROD_URL = "https://enduronalon.netlify.app";
+
+        window.getEndpoint = function (path) {
+            if (!path.startsWith("/")) {
+                path = "/" + path;
+            }
+
+            if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+                return path;
+            }
+
+            return window.PROD_URL.replace(/\/$/, "") + path;
+        };
+    </script>
+    <script>
+        window.PROD_URL = "https://enduronalon.netlify.app";
+
+        window.getEndpoint = function (path) {
+            if (!path.startsWith("/")) {
+                path = "/" + path;
+            }
+
+            if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+                return path;
+            }
+
+            return window.PROD_URL.replace(/\/$/, "") + path;
+        };
+    </script>
+    <script src="js/auth.js"></script>
+
     <footer>
         <p>© <span id="year"></span> Enduronalon. Todos los derechos reservados.</p>
     </footer>

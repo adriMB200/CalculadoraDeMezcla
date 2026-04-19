@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="imagen/img.jpg">
-
     <title>Fichas Técnicas | Enduro Nalón</title>
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="css/chat.css">
@@ -13,7 +12,6 @@
 
 <body>
 
-    <!-- BOTONES SUPERIORES -->
     <div style="display:flex; justify-content:center; gap:15px; margin-bottom:20px;">
         <button class="operator" onclick="location.href='index.html'">🏠 Home</button>
         <button class="operator" onclick="location.href='calculadora.html'">🧮 Calculadora</button>
@@ -130,27 +128,21 @@
                     <td>GASGAS EC 2004-2006</td>
                     <td colspan="2">
                         <a href="https://www.motocrosscenter.com/pdf_manual_gasgas/2005_ec2t_manual_es.pdf"
-                            target="_blank">
-                            Descargar
-                        </a>
+                            target="_blank">Descargar</a>
                     </td>
                 </tr>
                 <tr>
                     <td>GASGAS EC 2018</td>
                     <td colspan="2">
                         <a href="https://www.motocrosscenter.com/pdf_manual_gasgas/18-11-08-mu-gasgas-2t-ec-18v3---esp.pdf"
-                            target="_blank">
-                            Descargar
-                        </a>
+                            target="_blank">Descargar</a>
                     </td>
                 </tr>
                 <tr>
                     <td>RIEJU MR PRO 300i</td>
                     <td colspan="2">
                         <a href="https://cdn.rieju.com/uploads/_models/119/ES%20-%20Manual%20propietario%20MR300i%20-%202026.pdf"
-                            target="_blank">
-                            Descargar
-                        </a>
+                            target="_blank">Descargar</a>
                     </td>
                 </tr>
                 <tr>
@@ -174,7 +166,6 @@
             </tbody>
         </table>
 
-        <!-- BOTONES -->
         <div style="display:flex; gap:15px; margin:20px 0;">
             <button class="operator" onclick="location.href='ktm450_2003.html'">🔩 KTM 450 2003</button>
             <button class="operator" onclick="location.href='ktm300_2017.html'">🔩 KTM 300 2017</button>
@@ -182,19 +173,32 @@
         </div>
 
         <div style="display:flex; gap:15px; margin-bottom:15px;">
-            <button class="operator" onclick="location.href='mantenimientos.html'">
-                🔧 Libro de mantenimientos
-            </button>
+            <button class="operator" onclick="location.href='mantenimientos.html'">🔧 Libro de mantenimientos</button>
         </div>
 
         <div class="note">
             ⚙️ <strong>Consejo:</strong> Usa siempre llave dinamométrica.
             Un par incorrecto puede dañar cárteres de aluminio.
         </div>
-
     </div>
 
     <script src="/js/chatbot.js"></script>
+    ript>
+    window.PROD_URL = "https://enduronalon.netlify.app";
+
+    window.getEndpoint = function (path) {
+    if (!path.startsWith("/")) {
+    path = "/" + path;
+    }
+
+    if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+    return path;
+    }
+
+    return window.PROD_URL.replace(/\/$/, "") + path;
+    };
+    </script>
+    <script src="js/auth.js"></script>
 
     <footer>
         <p>© <span id="year"></span> Enduronalon. Todos los derechos reservados.</p>
