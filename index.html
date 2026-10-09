@@ -4,11 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enduro Nalón</title>
+    <meta name="theme-color" content="#111714">
+    <meta name="description"
+        content="Enduro Nalón: enduro, rutas y compañerismo en Asturias. Calculadora de mezcla, pares de apriete, fichas técnicas, manuales, mantenimientos y foro.">
+    <title>Enduro Nalón | Enduro y comunidad en Asturias</title>
 
+    <!-- Se mantienen el favicon y todos los estilos existentes. -->
     <link rel="icon" href="./imagen/img.jpg">
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="css/chat.css">
+
+    <!-- Hoja independiente de la nueva portada (Fase 1). -->
+    <link rel="stylesheet" href="css/enduro-portada.css">
 
     <script defer src="https://cloud.umami.is/script.js"
         data-website-id="d013b9b8-1eae-4caa-ae20-f5a590cee984"></script>
@@ -16,58 +23,166 @@
 
 <body>
 
-    <div class="auth-topbar" id="authTopbar"></div>
+    <!-- CABECERA: navegación nueva + el acceso de usuarios original. -->
+    <header class="en-header">
+        <a class="en-brand" href="index.html" aria-label="Enduro Nalón, ir al inicio">
+            <span class="en-brand__icon" aria-hidden="true">EN</span>
+            <span class="en-brand__name">ENDURO <strong>NALÓN</strong></span>
+        </a>
 
+        <button class="en-menu-toggle" id="enMenuToggle" type="button" aria-label="Abrir menú" aria-controls="enMainNav"
+            aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+
+        <nav class="en-nav" id="enMainNav" aria-label="Menú principal">
+            <a href="#inicio" aria-current="page">Inicio</a>
+            <a href="#taller">Taller</a>
+            <a href="foro.html">Foro</a>
+            <a href="https://linktr.ee/enduronalon?utm_source=ig&amp;utm_medium=social&amp;utm_content=link_in_bio"
+                target="_blank" rel="noopener noreferrer">El club</a>
+        </nav>
+
+        <!-- NO cambiar este id: lo utiliza la autenticación existente. -->
+        <div class="auth-topbar" id="authTopbar"></div>
+    </header>
+
+    <!-- MODAL ORIGINAL DE AUTENTICACIÓN: se mantienen todos sus IDs y funciones. -->
     <div class="auth-modal-overlay" id="authModal">
-        <div class="auth-modal">
-            <h2>🔐 Acceso</h2>
-            <div class="auth-error" id="authError"></div>
+        <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+            <h2 id="authModalTitle">🔐 Acceso</h2>
+            <div class="auth-error" id="authError" role="alert"></div>
 
-            <input type="text" id="authUsername" placeholder="Usuario">
-            <input type="password" id="authPassword" placeholder="Contraseña">
+            <label class="en-sr-only" for="authUsername">Usuario</label>
+            <input type="text" id="authUsername" placeholder="Usuario" autocomplete="username">
+            <label class="en-sr-only" for="authPassword">Contraseña</label>
+            <input type="password" id="authPassword" placeholder="Contraseña" autocomplete="current-password">
 
             <div class="auth-actions">
-                <button class="btn-login" onclick="handleAuth('login')">Iniciar sesión</button>
-                <button class="btn-register" onclick="handleAuth('register')">Registrarse</button>
+                <button class="btn-login" type="button" onclick="handleAuth('login')">Iniciar sesión</button>
+                <button class="btn-register" type="button" onclick="handleAuth('register')">Registrarse</button>
             </div>
 
-            <button class="auth-close" onclick="closeAuthModal()">Cerrar</button>
+            <button class="auth-close" type="button" onclick="closeAuthModal()">Cerrar</button>
         </div>
     </div>
 
-    <div class="portada">
-        <div class="portada-contenido">
+    <main id="inicio">
+        <!-- FASE 1: portada visual nueva. -->
+        <section class="en-hero" aria-labelledby="enHeroTitle">
+            <div class="en-hero__content">
+                <p class="en-hero__eyebrow">ASTURIAS · ENDURO · COMUNIDAD</p>
+                <h1 id="enHeroTitle">ENDURO <span>NALÓN</span></h1>
+                <p class="en-hero__subtitle">Enduro, rutas y compañerismo en Asturias.</p>
+                <p class="en-hero__intro">Una comunidad para compartir salidas, experiencias y todo lo que rodea al
+                    mundo del enduro.</p>
 
-            <h1>ENDURO NALÓN</h1>
-
-            <div class="portada-botones">
-                <button onclick="location.href='calculadora.html'">🧮 Calculadora de mezcla</button>
-                <button onclick="location.href='tablas.html'">📋 Fichas técnicas & pares</button>
-                <button onclick="location.href='mantenimientos.html'">🔧 Libro de mantenimientos</button>
-                <button onclick="location.href='foro.html'">💬 Foro Enduro</button>
+                <div class="en-hero__actions">
+                    <a class="en-btn en-btn--primary" href="#taller">Explorar el taller</a>
+                    <a class="en-btn en-btn--outline"
+                        href="https://linktr.ee/enduronalon?utm_source=ig&amp;utm_medium=social&amp;utm_content=link_in_bio"
+                        target="_blank" rel="noopener noreferrer">Conoce el club</a>
+                </div>
             </div>
 
-            <div style="text-align:center; margin-top:50px; margin-bottom:30px;"></div>
+            <a class="en-hero__scroll" href="#taller" aria-label="Ir a las herramientas">↓ <span>DESCUBRE MÁS</span></a>
+        </section>
 
-            <a href="https://linktr.ee/enduronalon?utm_source=ig&utm_medium=social&utm_content=link_in_bio"
-                class="link-enduro">
-                Más sobre nosotros
-            </a>
+        <!-- TODAS LAS HERRAMIENTAS EXISTENTES SIGUEN SIENDO ACCESIBLES. -->
+        <section class="en-section en-tools" id="taller" aria-labelledby="enToolsTitle">
+            <div class="en-section__heading">
+                <p class="en-kicker">HERRAMIENTAS PARA ENDUREROS</p>
+                <h2 id="enToolsTitle">Taller Enduro</h2>
+                <p>Todo lo útil para tu moto, agrupado en un mismo sitio. Las herramientas siguen en sus páginas
+                    habituales.</p>
+            </div>
 
+            <div class="en-tools__grid">
+                <a class="en-tool-card" href="calculadora.html" id="en-mezcla">
+                    <span class="en-tool-card__symbol" aria-hidden="true">%</span>
+                    <span class="en-tool-card__body">
+                        <strong>Calculadora de mezcla</strong>
+                        <span>Calcula la proporción de aceite y gasolina.</span>
+                    </span>
+                    <span class="en-tool-card__arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a class="en-tool-card" href="tablas.html" id="en-pares">
+                    <span class="en-tool-card__symbol" aria-hidden="true">Nm</span>
+                    <span class="en-tool-card__body">
+                        <strong>Pares de apriete</strong>
+                        <span>Consulta los datos técnicos que ya tienes disponibles.</span>
+                    </span>
+                    <span class="en-tool-card__arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a class="en-tool-card" href="tablas.html" id="en-manuales">
+                    <span class="en-tool-card__symbol" aria-hidden="true">≡</span>
+                    <span class="en-tool-card__body">
+                        <strong>Fichas y manuales</strong>
+                        <span>Accede a la sección actual de documentación técnica.</span>
+                    </span>
+                    <span class="en-tool-card__arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a class="en-tool-card" href="mantenimientos.html" id="en-mantenimiento">
+                    <span class="en-tool-card__symbol" aria-hidden="true">✓</span>
+                    <span class="en-tool-card__body">
+                        <strong>Libro de mantenimientos</strong>
+                        <span>Sigue registrando y consultando el mantenimiento de tu moto.</span>
+                    </span>
+                    <span class="en-tool-card__arrow" aria-hidden="true">↗</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- EL FORO CONSERVA LA URL ACTUAL. -->
+        <section class="en-section en-community" id="comunidad" aria-labelledby="enCommunityTitle">
+            <div class="en-community__copy">
+                <p class="en-kicker">COMUNIDAD</p>
+                <h2 id="enCommunityTitle">El foro también es parte del club.</h2>
+                <p>Comparte dudas de mecánica, habla de equipación y participa en las conversaciones con otros
+                    aficionados al enduro.</p>
+                <a class="en-btn en-btn--primary" href="foro.html">Entrar al foro <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="en-community__motif" aria-hidden="true">EN<span>DURO</span></div>
+        </section>
+
+        <!-- ACCESO / REGISTRO: usa el mismo modal y backend. -->
+        <section class="en-join" aria-labelledby="enJoinTitle">
+            <p class="en-kicker">FORMA PARTE DE ENDURO NALÓN</p>
+            <h2 id="enJoinTitle">¿Todavía no tienes cuenta?</h2>
+            <p>Regístrate para acceder a las funciones de usuario que ya ofrece la web.</p>
+            <button class="en-btn en-btn--primary" type="button" onclick="openAuthModal()">Acceder o
+                registrarme</button>
+        </section>
+    </main>
+
+    <footer class="en-footer">
+        <div class="en-footer__inner">
+            <div>
+                <strong>ENDURO NALÓN</strong>
+                <p>Enduro y compañerismo en Asturias.</p>
+            </div>
+            <div class="en-footer__links">
+                <a href="calculadora.html">Calculadora</a>
+                <a href="tablas.html">Fichas y pares</a>
+                <a href="mantenimientos.html">Mantenimientos</a>
+                <a href="foro.html">Foro</a>
+                <a href="https://linktr.ee/enduronalon?utm_source=ig&amp;utm_medium=social&amp;utm_content=link_in_bio"
+                    target="_blank" rel="noopener noreferrer">Redes sociales ↗</a>
+            </div>
         </div>
-    </div>
+        <div class="en-footer__bottom">© <span id="year"></span> Enduro Nalón. Todos los derechos reservados.</div>
+    </footer>
 
+    <!-- Se conservan URL, scripts de autenticación, legal y cookies. -->
     <script>
         window.PROD_URL = "https://enduronalon.netlify.app";
     </script>
     <script src="js/auth.js"></script>
     <script src="js/legal.js"></script>
     <script src="js/cookies.js"></script>
-
-    <footer style="text-align:center; padding:20px; color:white; background-color:rgba(0,0,0,0.7);">
-        <p>© <span id="year"></span> Enduronalon. Todos los derechos reservados.</p>
-    </footer>
-
 
     <script>
         document.getElementById("year").textContent = new Date().getFullYear();
@@ -83,6 +198,7 @@
         function openAuthModal() {
             document.getElementById("authModal").style.display = "flex";
             document.getElementById("authError").textContent = "";
+            document.getElementById("authUsername").focus();
         }
 
         function closeAuthModal() {
@@ -98,16 +214,34 @@
 
         function renderAuthButton() {
             const topbar = document.getElementById("authTopbar");
+            topbar.replaceChildren();
 
             if (isLogged()) {
-                topbar.innerHTML = `
-                    <div class="user-menu">
-                        <button class="auth-btn" onclick="openAuthModal()">${getUser()}</button>
-                        <button class="logout-btn" onclick="logout()">Salir</button>
-                    </div>
-                `;
+                const menu = document.createElement("div");
+                menu.className = "user-menu";
+
+                const profileBtn = document.createElement("button");
+                profileBtn.className = "auth-btn";
+                profileBtn.type = "button";
+                // textContent evita interpretar el nombre del usuario como HTML.
+                profileBtn.textContent = getUser() || "Mi cuenta";
+                profileBtn.addEventListener("click", openAuthModal);
+
+                const logoutBtn = document.createElement("button");
+                logoutBtn.className = "logout-btn";
+                logoutBtn.type = "button";
+                logoutBtn.textContent = "Salir";
+                logoutBtn.addEventListener("click", logout);
+
+                menu.append(profileBtn, logoutBtn);
+                topbar.appendChild(menu);
             } else {
-                topbar.innerHTML = `<button class="auth-btn" onclick="openAuthModal()">Iniciar sesión</button>`;
+                const loginBtn = document.createElement("button");
+                loginBtn.className = "auth-btn";
+                loginBtn.type = "button";
+                loginBtn.textContent = "Iniciar sesión";
+                loginBtn.addEventListener("click", openAuthModal);
+                topbar.appendChild(loginBtn);
             }
         }
 
@@ -121,6 +255,7 @@
                 return;
             }
 
+            // IMPORTANTE: se mantienen los dos endpoints ORIGINALES.
             const endpoint = action === "login"
                 ? "/.netlify/functions/login"
                 : "/.netlify/functions/singUp";
@@ -153,9 +288,31 @@
             if (e.target === this) closeAuthModal();
         });
 
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") closeAuthModal();
+        });
+
+        // Única lógica nueva: abrir y cerrar el menú en móviles.
+        const enMenuToggle = document.getElementById("enMenuToggle");
+        const enMainNav = document.getElementById("enMainNav");
+
+        function closeMobileMenu() {
+            enMainNav.classList.remove("en-nav--open");
+            enMenuToggle.setAttribute("aria-expanded", "false");
+            enMenuToggle.setAttribute("aria-label", "Abrir menú");
+        }
+
+        enMenuToggle.addEventListener("click", function () {
+            const isOpen = enMainNav.classList.toggle("en-nav--open");
+            enMenuToggle.setAttribute("aria-expanded", String(isOpen));
+            enMenuToggle.setAttribute("aria-label", isOpen ? "Cerrar menú" : "Abrir menú");
+        });
+        enMainNav.querySelectorAll("a").forEach(function (link) {
+            link.addEventListener("click", closeMobileMenu);
+        });
+
         renderAuthButton();
     </script>
-
 </body>
 
 </html>

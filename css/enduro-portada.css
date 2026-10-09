@@ -1,0 +1,395 @@
+/* ===========================================================
+   ENDURO NALÓN — REDISEÑO DE PORTADA / FASE 1
+   Independiente del CSS original: estilo.css y chat.css siguen.
+   Para añadir foto del club, coloca en el repositorio:
+   imagen/img.jpg
+   =========================================================== */
+
+:root {
+  --en-bg: #111714;
+  --en-surface: #1c2420;
+  --en-surface-2: #232e27;
+  --en-text: #f5f7f2;
+  --en-muted: #bac5b9;
+  --en-accent: #dfff45;
+  --en-border: rgba(233, 241, 228, .14);
+}
+
+html { scroll-behavior: smooth; }
+body { margin: 0; }
+.en-sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+.en-header, .en-header *, .en-hero, .en-hero *,
+.en-section, .en-section *, .en-join, .en-join *,
+.en-footer, .en-footer * { box-sizing: border-box; }
+.en-header a, .en-hero a, .en-section a, .en-footer a { text-decoration: none; }
+.en-header button, .en-join button { cursor: pointer; }
+
+/* Cabecera */
+.en-header {
+  position: relative;
+  z-index: 50;
+  min-height: 76px;
+  padding: 12px clamp(18px, 5vw, 72px);
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  background: #111714;
+  border-bottom: 1px solid var(--en-border);
+  color: var(--en-text);
+}
+.en-brand {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 12px;
+  color: var(--en-text);
+}
+.en-brand__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--en-accent);
+  color: #182019;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: -.5px;
+}
+.en-brand__name { font-weight: 850; font-size: 17px; letter-spacing: .5px; white-space: nowrap; }
+.en-brand__name strong { color: var(--en-accent); }
+.en-nav { display: flex; align-items: center; justify-content: center; flex: 1; gap: clamp(12px, 2.5vw, 34px); }
+.en-nav a { color: #dfe8dc; font-size: 14px; font-weight: 600; }
+.en-nav a:hover, .en-nav a:focus-visible { color: var(--en-accent); }
+
+/* El contenedor de auth deja de ocupar una barra propia: ahora va en el header.
+   Los botones .auth-btn y .logout-btn mantienen sus clases originales. */
+.en-header #authTopbar {
+  position: static;
+  inset: auto;
+  transform: none;
+  width: auto;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.en-header #authTopbar .user-menu { display: flex; align-items: center; gap: 8px; }
+.en-header #authTopbar .auth-btn,
+.en-header #authTopbar .logout-btn {
+  max-width: 180px;
+  padding: 9px 12px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 6px;
+  border: 1px solid var(--en-border);
+  background: #26332a;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.en-header #authTopbar .auth-btn:hover { background: #354837; }
+.en-header #authTopbar .logout-btn { color: var(--en-accent); background: transparent; }
+.en-header #authTopbar .logout-btn:hover { background: #2c342e; }
+/* El diálogo existente debe quedar por encima de la cabecera. No se cambia su display. */
+#authModal { z-index: 1000; }
+.en-menu-toggle { display: none; }
+
+/* Hero: degradado negro TRANSLÚCIDO para que destaque la imagen real del club.
+   En escritorio: 52% a la izquierda, 8% a la derecha.
+   En móvil: 58% a 25% para conservar la legibilidad del texto. */
+.en-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: clamp(560px, 76vh, 850px);
+  overflow: hidden;
+  padding: 90px clamp(22px, 8vw, 128px) 110px;
+  background-color: #1d2c21;
+  background-image:
+    linear-gradient(90deg, rgba(0, 0, 0, .52) 0%, rgba(0, 0, 0, .26) 50%, rgba(0, 0, 0, .08) 100%),
+    url('../imagen/img.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+.en-hero__content { position: relative; z-index: 1; max-width: 810px; text-shadow: 0 2px 14px rgba(0, 0, 0, .35); }
+.en-hero__eyebrow, .en-kicker {
+  margin: 0 0 21px;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: 2.1px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--en-accent);
+}
+.en-hero h1 {
+  margin: 0;
+  font-size: clamp(55px, 8vw, 112px);
+  font-weight: 900;
+  line-height: .97;
+  letter-spacing: -.055em;
+  color: var(--en-text);
+  text-transform: uppercase;
+}
+.en-hero h1 span { color: var(--en-accent); }
+.en-hero__subtitle {
+  margin: 25px 0 10px;
+  color: #fff;
+  font-weight: 650;
+  font-size: clamp(19px, 2vw, 25px);
+  line-height: 1.4;
+}
+.en-hero__intro { max-width: 540px; margin: 0 0 34px; color: #c9d4c9; font-size: 16px; line-height: 1.7; }
+.en-hero__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.en-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 49px;
+  padding: 13px 24px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: .1px;
+  cursor: pointer;
+  text-align: center;
+  transition: transform .18s, background-color .18s, color .18s;
+}
+.en-btn:hover { transform: translateY(-2px); }
+.en-btn--primary { color: #111714; background: var(--en-accent); }
+.en-btn--primary:hover { background: #ecff83; color: #111714; }
+.en-btn--outline { color: #fff; background: rgba(0, 0, 0, .12); border-color: #d0d9cf; }
+.en-btn--outline:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+.en-hero__scroll {
+  position: absolute;
+  bottom: 32px;
+  left: clamp(22px, 8vw, 128px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #d6ded4;
+  font-size: 20px;
+  font-weight: 700;
+}
+.en-hero__scroll span { font-size: 11px; letter-spacing: 1.7px; }
+
+/* Taller */
+.en-section { padding: 92px clamp(20px, 6vw, 100px); background: var(--en-bg); color: var(--en-text); }
+.en-section__heading { max-width: 660px; margin-bottom: 34px; }
+.en-section h2, .en-join h2 { margin: 0 0 14px; font-size: clamp(30px, 4vw, 46px); line-height: 1.15; font-weight: 850; letter-spacing: -.035em; color: #fff; }
+.en-section__heading > p:last-child, .en-community__copy > p:not(.en-kicker) { color: var(--en-muted); line-height: 1.7; font-size: 16px; }
+.en-tools__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.en-tool-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 19px;
+  min-height: 160px;
+  padding: 26px;
+  border: 1px solid var(--en-border);
+  border-radius: 12px;
+  background: var(--en-surface);
+  color: #fff;
+  transition: border-color .2s, background-color .2s, transform .2s;
+}
+.en-tool-card:hover, .en-tool-card:focus-visible { border-color: var(--en-accent); background: var(--en-surface-2); transform: translateY(-3px); }
+.en-tool-card__symbol {
+  display: grid;
+  place-items: center;
+  flex: 0 0 47px;
+  height: 47px;
+  border-radius: 9px;
+  background: rgba(223, 255, 69, .13);
+  color: var(--en-accent);
+  font-weight: 900;
+  font-size: 20px;
+}
+.en-tool-card__body { display: flex; flex: 1; flex-direction: column; gap: 10px; min-width: 0; }
+.en-tool-card__body strong { color: #fff; font-weight: 800; font-size: 18px; }
+.en-tool-card__body > span { color: var(--en-muted); font-size: 14px; line-height: 1.6; }
+.en-tool-card__arrow { color: var(--en-accent); font-size: 22px; line-height: 1; }
+
+/* Foro */
+.en-community {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 38px;
+  background: #1b2520;
+  border-top: 1px solid var(--en-border);
+  border-bottom: 1px solid var(--en-border);
+}
+.en-community__copy { max-width: 640px; }
+.en-community__copy > p:not(.en-kicker) { margin: 0 0 25px; }
+.en-community__motif { color: rgba(223, 255, 69, .16); font-size: clamp(60px, 12vw, 160px); line-height: .85; font-weight: 900; letter-spacing: -.09em; user-select: none; }
+.en-community__motif span { display: block; }
+
+/* Registro y footer */
+.en-join { padding: 90px 24px; text-align: center; background: #111714; color: white; }
+.en-join p:not(.en-kicker) { max-width: 550px; margin: 0 auto 28px; line-height: 1.6; color: var(--en-muted); }
+.en-footer { color: #cbd5ca; background: #0b100d; border-top: 1px solid var(--en-border); }
+.en-footer__inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 45px clamp(20px, 6vw, 100px) 30px;
+}
+.en-footer__inner strong { color: #fff; font-size: 18px; font-weight: 900; }
+.en-footer__inner p { color: var(--en-muted); font-size: 14px; }
+.en-footer__links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 13px 20px; max-width: 610px; }
+.en-footer__links a { color: #d9e4d7; font-size: 14px; }
+.en-footer__links a:hover { color: var(--en-accent); }
+.en-footer__bottom { margin: 0 clamp(20px, 6vw, 100px); padding: 22px 0; border-top: 1px solid var(--en-border); font-size: 13px; color: #9dac9a; }
+
+@media (max-width: 1050px) {
+  .en-header { gap: 14px; }
+  .en-nav { gap: 14px; }
+  .en-community__motif { display: none; }
+}
+@media (max-width: 800px) {
+  .en-header { min-height: 66px; gap: 12px; padding: 10px 16px; }
+  .en-brand__name { font-size: 14px; }
+  .en-brand__icon { height: 37px; width: 37px; }
+  .en-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    margin-left: auto;
+    padding: 9px;
+    width: 41px;
+    height: 41px;
+    border: 1px solid var(--en-border);
+    border-radius: 6px;
+    background: transparent;
+  }
+  .en-menu-toggle span { width: 100%; height: 2px; border-radius: 1px; background: #fff; }
+  .en-nav {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    padding: 18px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: #17211a;
+    border-bottom: 1px solid var(--en-border);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, .22);
+  }
+  .en-nav--open { display: flex; }
+  .en-nav a { padding: 13px 10px; }
+  .en-header #authTopbar { margin-left: 0; }
+  .en-header #authTopbar .auth-btn, .en-header #authTopbar .logout-btn { max-width: 115px; padding: 9px 8px; font-size: 12px; }
+  .en-hero { min-height: 590px; padding: 70px 24px 100px; background-position: 62% center; }
+  .en-hero__scroll { left: 24px; }
+  .en-tools__grid { grid-template-columns: 1fr; }
+  .en-community { padding-top: 70px; padding-bottom: 70px; }
+  .en-footer__inner { flex-direction: column; }
+  .en-footer__links { justify-content: flex-start; }
+}
+@media (max-width: 460px) {
+  .en-header { gap: 7px; padding: 10px 12px; }
+  .en-brand { gap: 7px; }
+  .en-brand__name { font-size: 12px; letter-spacing: -.2px; }
+  .en-brand__icon { width: 31px; height: 34px; font-size: 13px; }
+  .en-menu-toggle { width: 36px; height: 36px; padding: 8px; }
+  .en-header #authTopbar .auth-btn, .en-header #authTopbar .logout-btn { max-width: 87px; padding: 8px 5px; font-size: 11px; }
+  .en-header #authTopbar .user-menu { gap: 3px; }
+  .en-hero { padding: 70px 19px 100px; background-image: linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.25)), url('../imagen/img.jpg'); }
+  .en-hero h1 { font-size: clamp(44px, 12.4vw, 59px); }
+  .en-hero__actions { flex-direction: column; }
+  .en-hero__actions .en-btn { width: 100%; }
+  .en-hero__scroll { left: 19px; }
+  .en-tool-card { min-height: 136px; padding: 21px 15px; gap: 11px; }
+  .en-tool-card__symbol { flex-basis: 40px; height: 40px; font-size: 17px; }
+  .en-tool-card__body strong { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .en-btn, .en-tool-card { transition: none; }
+}
+
+
+/* ============================================================
+   ENDURO NALÓN — FONDO REAL A PANTALLA COMPLETA (FASE 1.1)
+   Corregido para el proyecto existente y la imagen adjunta.
+   La imagen se dibuja UNA vez y queda centrada, sin repetirse.
+   ============================================================ */
+
+/* El estilo antiguo del body mostraba una franja con la foto
+   repetida encima del menú. Sustituimos ese fondo anterior. */
+html { background-color: #0d100f; }
+body {
+  margin: 0 !important;
+  padding-top: 0 !important;
+  min-height: 100vh;
+  background-color: #0d100f !important;
+  background-image: url('../imagen/img.jpg') !important;
+  background-position: center center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* El fondo general permanece visible bajo todas las secciones. */
+main#inicio { background: transparent !important; }
+
+/* La portada ya NO dibuja otra imagen ni un panel sólido.
+   Solo una capa casi transparente para legibilidad del texto. */
+.en-hero {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, .32) 0%,
+    rgba(0, 0, 0, .18) 42%,
+    rgba(0, 0, 0, .03) 100%
+  ) !important;
+  background-color: transparent !important;
+}
+
+/* Cabecera y paneles 'cristal' oscuros, no opacos. */
+.en-header {
+  background: rgba(8, 14, 11, .58);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+}
+.en-section { background: rgba(7, 13, 10, .60); }
+.en-community { background: rgba(10, 18, 13, .62); }
+.en-join { background: rgba(6, 11, 8, .58); }
+.en-footer { background: rgba(6, 10, 8, .72); }
+.en-tool-card {
+  background: rgba(22, 31, 24, .69);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.en-tool-card:hover,
+.en-tool-card:focus-visible { background: rgba(34, 48, 35, .84); }
+
+/* Ajustes para móviles; sin fondo repetido ni imagen duplicada. */
+@media (max-width: 800px) {
+  .en-hero {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, .48),
+      rgba(0, 0, 0, .18)
+    ) !important;
+  }
+  .en-nav { background: rgba(14, 22, 16, .94); }
+}
