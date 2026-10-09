@@ -1,7 +1,7 @@
 /* ===========================================================
    ENDURO NALÓN — REDISEÑO DE PORTADA / FASE 1
    Independiente del CSS original: estilo.css y chat.css siguen.
-   Imagen de fondo utilizada en el proyecto:
+   Para añadir foto del club, coloca en el repositorio:
    imagen/img.jpg
    =========================================================== */
 
@@ -105,7 +105,9 @@ body { margin: 0; }
 #authModal { z-index: 1000; }
 .en-menu-toggle { display: none; }
 
-/* Hero original. Las reglas finales adaptan la imagen a PC y móvil. */
+/* Hero: degradado negro TRANSLÚCIDO para que destaque la imagen real del club.
+   En escritorio: 52% a la izquierda, 8% a la derecha.
+   En móvil: 58% a 25% para conservar la legibilidad del texto. */
 .en-hero {
   position: relative;
   isolation: isolate;
@@ -116,7 +118,7 @@ body { margin: 0; }
   padding: 90px clamp(22px, 8vw, 128px) 110px;
   background-color: #1d2c21;
   background-image:
-    linear-gradient(90deg, rgba(0, 0, 0, .40), rgba(0, 0, 0, .08)),
+    linear-gradient(90deg, rgba(0, 0, 0, .52) 0%, rgba(0, 0, 0, .26) 50%, rgba(0, 0, 0, .08) 100%),
     url('../imagen/img.jpg');
   background-size: cover;
   background-position: center;
@@ -311,7 +313,7 @@ body { margin: 0; }
   .en-menu-toggle { width: 36px; height: 36px; padding: 8px; }
   .en-header #authTopbar .auth-btn, .en-header #authTopbar .logout-btn { max-width: 87px; padding: 8px 5px; font-size: 11px; }
   .en-header #authTopbar .user-menu { gap: 3px; }
-  .en-hero { padding: 70px 19px 100px; }
+  .en-hero { padding: 70px 19px 100px; background-image: linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.25)), url('../imagen/img.jpg'); }
   .en-hero h1 { font-size: clamp(44px, 12.4vw, 59px); }
   .en-hero__actions { flex-direction: column; }
   .en-hero__actions .en-btn { width: 100%; }
@@ -326,232 +328,68 @@ body { margin: 0; }
 }
 
 
-
 /* ============================================================
-   FASE 1.2 — FONDO LEGIBLE, LOGO VISIBLE EN MÓVIL
-   Un único archivo CSS para añadir junto a estilo.css/chat.css.
-   Imagen existente: imagen/img.jpg (sin cambiar la ruta).
+   ENDURO NALÓN — FONDO REAL A PANTALLA COMPLETA (FASE 1.1)
+   Corregido para el proyecto existente y la imagen adjunta.
+   La imagen se dibuja UNA vez y queda centrada, sin repetirse.
    ============================================================ */
 
-/* El CSS original puede conservar el fondo antiguo con repeat.
-   Forzamos una sola imagen de fondo y quitamos la franja superior. */
-html {
-  background: #101411;
-}
+/* El estilo antiguo del body mostraba una franja con la foto
+   repetida encima del menú. Sustituimos ese fondo anterior. */
+html { background-color: #0d100f; }
 body {
   margin: 0 !important;
   padding-top: 0 !important;
-  min-width: 0;
   min-height: 100vh;
-  background-color: #101411 !important;
+  background-color: #0d100f !important;
   background-image: url('../imagen/img.jpg') !important;
   background-position: center center !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;
   background-attachment: fixed !important;
 }
+
+/* El fondo general permanece visible bajo todas las secciones. */
 main#inicio { background: transparent !important; }
 
-/* Una imagen, no una imagen sobre otra. La foto está en el body;
-   el hero solo oscurece localmente la zona donde hay texto. */
+/* La portada ya NO dibuja otra imagen ni un panel sólido.
+   Solo una capa casi transparente para legibilidad del texto. */
 .en-hero {
-  background: linear-gradient(90deg,
-    rgba(6, 10, 8, .22) 0%,
-    rgba(6, 10, 8, .12) 55%,
-    rgba(6, 10, 8, .02) 100%) !important;
-}
-.en-hero__content {
-  max-width: 490px;
-  padding: clamp(18px, 2.4vw, 28px);
-  background: rgba(5, 9, 7, .43);
-  border: 1px solid rgba(255, 255, 255, .11);
-  border-radius: 15px;
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
-  text-shadow: 0 2px 7px rgba(0, 0, 0, .8);
-}
-@media (min-width: 801px) {
-  /* No cubrir el centro del emblema en PC con un titular enorme. */
-  .en-hero h1 { font-size: clamp(54px, 5.25vw, 77px); }
-  .en-hero { padding-left: clamp(22px, 4.5vw, 90px); }
-}
-.en-hero__intro { color: #f0f4ee; }
-.en-hero__subtitle { color: #fff; }
-
-/* Texto siempre encima del fondo con contraste comprobable.
-   No oscurecemos toda la fotografía para ello. */
-.en-header, .en-section, .en-community, .en-join, .en-footer,
-.en-tool-card { -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px); }
-.en-header { background: rgba(8, 14, 11, .82); }
-.en-section { background: rgba(7, 13, 10, .72); }
-.en-community { background: rgba(9, 16, 12, .77); }
-.en-join { background: rgba(7, 12, 9, .79); }
-.en-footer { background: rgba(6, 10, 8, .88); }
-.en-tool-card { background: rgba(17, 25, 19, .80); }
-.en-tool-card:hover, .en-tool-card:focus-visible { background: rgba(32, 48, 34, .92); }
-.en-section__heading > p:last-child,
-.en-community__copy > p:not(.en-kicker),
-.en-join p:not(.en-kicker),
-.en-tool-card__body > span,
-.en-footer__inner p,
-.en-footer__bottom { color: #e1e9dd; }
-.en-nav a, .en-footer__links a { color: #f1f6ee; }
-.en-btn--outline { background: rgba(4, 8, 6, .62); border-color: #f0f5ee; }
-
-.en-btn:focus-visible, .en-tool-card:focus-visible,
-.en-nav a:focus-visible, .en-menu-toggle:focus-visible,
-.en-header button:focus-visible {
-  outline: 3px solid #dfff45;
-  outline-offset: 3px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, .32) 0%,
+    rgba(0, 0, 0, .18) 42%,
+    rgba(0, 0, 0, .03) 100%
+  ) !important;
+  background-color: transparent !important;
 }
 
-/* Móviles y tabletas verticales: el banner muestra el logo completo,
-   el texto se coloca DEBAJO y no tapa la ilustración del club. */
+/* Cabecera y paneles 'cristal' oscuros, no opacos. */
+.en-header {
+  background: rgba(8, 14, 11, .58);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+}
+.en-section { background: rgba(7, 13, 10, .60); }
+.en-community { background: rgba(10, 18, 13, .62); }
+.en-join { background: rgba(6, 11, 8, .58); }
+.en-footer { background: rgba(6, 10, 8, .72); }
+.en-tool-card {
+  background: rgba(22, 31, 24, .69);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.en-tool-card:hover,
+.en-tool-card:focus-visible { background: rgba(34, 48, 35, .84); }
+
+/* Ajustes para móviles; sin fondo repetido ni imagen duplicada. */
 @media (max-width: 800px) {
-  body {
-    /* background-attachment:fixed no se comporta igual en todos
-       los navegadores móviles. Evitamos el recorte y el 'salto'. */
-    background-image: linear-gradient(170deg, #111713 0%, #161a15 58%, #0c110e 100%) !important;
-    background-position: center top !important;
-    background-size: cover !important;
-    background-attachment: scroll !important;
-  }
-  .en-header {
-    background: rgba(8, 14, 11, .96);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-  .en-nav { background: rgba(10, 19, 13, .98); }
-  .en-nav a { min-height: 44px; display: flex; align-items: center; font-size: 16px; }
   .en-hero {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    min-height: 0;
-    overflow: visible;
-    padding: 0 0 28px;
-    background: linear-gradient(180deg, #101411, #19201a) !important;
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, .48),
+      rgba(0, 0, 0, .18)
+    ) !important;
   }
-  .en-hero::before {
-    content: '';
-    display: block;
-    flex-shrink: 0;
-    width: 100%;
-    height: clamp(240px, 74vw, 385px);
-    background-color: #17100f;
-    background-image: url('../imagen/img.jpg');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: auto 100%;
-  }
-  .en-hero__content {
-    box-sizing: border-box;
-    width: calc(100% - 32px);
-    max-width: 650px;
-    margin: -8px auto 0;
-    padding: 25px clamp(16px, 4vw, 29px);
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,.16);
-    background: rgba(8, 13, 10, .91);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    text-shadow: none;
-  }
-  .en-hero__eyebrow, .en-kicker {
-    font-size: 12px;
-    line-height: 1.55;
-    letter-spacing: 1.15px;
-  }
-  .en-hero__eyebrow { margin-bottom: 13px; }
-  .en-hero h1 {
-    font-size: clamp(38px, 8.6vw, 64px);
-    line-height: 1.07;
-    letter-spacing: -.035em;
-    overflow-wrap: break-word;
-  }
-  .en-hero__subtitle {
-    margin: 16px 0 10px;
-    font-size: clamp(18px, 4vw, 21px);
-    line-height: 1.45;
-  }
-  .en-hero__intro {
-    margin-bottom: 23px;
-    font-size: 15.5px;
-    line-height: 1.6;
-    color: #eef5ea;
-  }
-  .en-hero__scroll {
-    position: static;
-    display: inline-flex;
-    align-self: center;
-    margin: 22px 0 0;
-    font-size: 19px;
-    color: #f2f5f0;
-  }
-  .en-section { padding: 58px 18px; background: rgba(7, 13, 10, .92); }
-  .en-community { padding-top: 58px; padding-bottom: 58px; background: rgba(11, 22, 14, .94); }
-  .en-join { padding: 60px 18px; background: rgba(7, 12, 9, .94); }
-  .en-footer { background: rgba(6, 10, 8, .97); }
-  .en-footer__inner { padding: 35px 20px 26px; }
-  .en-tool-card {
-    background: rgba(25, 35, 27, .96);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-  .en-tool-card__body > span { color: #e2ebe1; }
-  .en-tool-card__body strong { line-height: 1.35; }
-  .en-section h2, .en-join h2 { line-height: 1.2; }
-}
-
-@media (max-width: 460px) {
-  /* Cabecera en dos filas: login y salir son legibles en móviles
-     y nunca quedan estrujados entre el logo y el menú. */
-  .en-header {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: "marca menu" "acceso acceso";
-    min-height: 0;
-    gap: 8px 12px;
-    padding: 10px 14px;
-  }
-  .en-brand { grid-area: marca; min-width: 0; }
-  .en-brand__name { display: inline; font-size: 14px; }
-  .en-menu-toggle {
-    grid-area: menu;
-    display: flex;
-    width: 44px;
-    height: 44px;
-    margin-left: 0;
-  }
-  .en-header #authTopbar {
-    grid-area: acceso;
-    width: 100%;
-    justify-content: flex-end;
-    min-height: 44px;
-  }
-  .en-header #authTopbar .auth-btn,
-  .en-header #authTopbar .logout-btn {
-    min-height: 44px;
-    max-width: min(42vw, 160px);
-    padding: 10px 13px;
-    font-size: 14px;
-  }
-  .en-header #authTopbar .user-menu { gap: 9px; }
-  .en-hero__actions { flex-direction: column; }
-  .en-hero__actions .en-btn { width: 100%; min-height: 48px; }
-  .en-tools__grid { gap: 13px; }
-  .en-tool-card { padding: 18px 14px; gap: 12px; }
-  .en-tool-card__body strong { font-size: 16px; }
-  .en-footer__links { gap: 12px 17px; }
-}
-
-@media (max-width: 380px) {
-  .en-brand__name { font-size: 13px; }
-  .en-hero h1 { font-size: clamp(36px, 11vw, 42px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .en-btn, .en-tool-card { transition: none; }
+  .en-nav { background: rgba(14, 22, 16, .94); }
 }
