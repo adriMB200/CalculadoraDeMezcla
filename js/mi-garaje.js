@@ -2,6 +2,7 @@
    Usa exclusivamente las funciones autenticadas existentes de Netlify/Neon.
    No guarda matrículas ni mantenimientos en localStorage o sessionStorage. */
 import { CATALOGO_MOTOS, recursosParaAnio } from './catalogo-motos.js';
+import { MARCAS_MODELOS_GARAJE } from './catalogo-enduro-ampliado.js'; // FASE_2_3_MODELOS
 
 const $ = id => document.getElementById(id);
 const lista = $('garage-list');
@@ -12,12 +13,7 @@ const campos = {
   marca: $('garage-brand'), modelo: $('garage-model'), anio: $('garage-year'),
   ref: $('garage-ref'), descripcion: $('garage-description'), horas: $('garage-hours')
 };
-const MODELOS = {
-  'KTM': ['EXC 250', 'EXC 300', 'EXC-F 450'],
-  'GasGas': ['EC 200', 'EC 250', 'EC 300'],
-  'Rieju': ['MR 300'],
-  'BMW': ['Funduro 650']
-};
+const MODELOS = MARCAS_MODELOS_GARAJE;
 let matriculaServicio = null;
 let versionCarga = 0;
 
@@ -185,6 +181,9 @@ function actualizarModelos() {
 function prepararFormulario() {
   for (let anio = new Date().getFullYear()+1; anio >= 1980; anio--) campos.anio.add(new Option(String(anio), String(anio)));
   campos.anio.value = '';
+  // Completar el selector desde la lista ampliada, sin eliminar motos ya guardadas.
+  campos.marca.replaceChildren(new Option('Selecciona marca', ''));
+  for (const marca of Object.keys(MODELOS).sort((a,b)=>a.localeCompare(b,'es'))) campos.marca.add(new Option(marca,marca));
   campos.marca.addEventListener('change', actualizarModelos);
   $('garage-show-form').addEventListener('click', () => {
     $('garage-form-message').textContent = '';

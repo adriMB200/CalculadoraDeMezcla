@@ -60,7 +60,7 @@ export const handler: Handler = async (event) => {
 
     const body: Registro = readBody(event);
     const action = body.action;
-    if (!['guardarLectura','guardarRegla','eliminarRegla','marcarRealizado'].includes(String(action))) {
+    if (!['guardarLectura','guardarRegla','eliminarRegla','marcarRealizado','registrarYAnotar'].includes(String(action))) {
       throw new ApiError(400, 'Acción no válida');
     }
     const matricula = referencia(body.matricula);
@@ -159,6 +159,75 @@ export const handler: Handler = async (event) => {
       `;
       if (!borrados.length) throw new ApiError(404, 'Recordatorio no encontrado');
       return json(200, { message: 'Recordatorio eliminado' });
+    }
+
+    if (action === 'registrarYAnotar') {
+      // Operación atómica: registra la actuación en el libro y actualiza el aviso.
+      // El libro existente almacena HORAS (no kilómetros). Si una regla está en km,
+      // se requiere asimismo una lectura real de horas, y se anotan los km en el texto.
+      const operacion = body.operacion;
+      if (typeof operacion !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(operacion)) {
+        throw new ApiError(400, 'Identificador de operación no válido');
+      }
+      const nota = body.nota;
+      if (typeof nota !== 'string' || nota.length > 500) {
+        throw new ApiError(400, 'Nota no válida (máximo 500 caracteres)');
+      }
+      const etiquetas: Record<string, string> = {
+        aceite_motor: 'Aceite motor', aceite_caja: 'Aceite de caja', filtro_aire: 'Filtro de aire',
+        piston: 'Pistón', transmision: 'Transmisión', refrigerante: 'Refrigerante',
+        bujia: 'Bujía', frenos: 'Frenos', otros: 'Otros'
+      };
+      const descripcion = `Mantenimiento ${etiquetas[cat]} registrado desde Mis avisos${nota.trim() ? ': ' + nota.trim() : ''}`;
+      // Una única sentencia SQL, con protección contra reintentos duplicados.
+      // Las filas se bloquean y el INSERT solo se realiza si el UPDATE prospera.
+      const guardado = await sql`
+        WITH autorizada AS MATERIALIZED (
+          SELECT r.matricula, r.categoria, r.unidad, l.horas_actuales,
+                 l.kilometros_actuales,
+                 CASE WHEN r.unidad = 'h' THEN l.horas_actuales ELSE l.kilometros_actuales END AS lectura_regla
+          FROM public.garage_recordatorios r
+          JOIN public.motos m ON m.matricula = r.matricula
+          JOIN public.garage_lecturas l ON l.matricula = r.matricula
+          WHERE r.matricula = ${matricula}
+            AND r.usuario_id = ${userId} AND m.usuario_id = ${userId}
+            AND l.usuario_id = ${userId}
+            AND r.categoria = ${cat} AND r.unidad = ${un}
+            AND l.horas_actuales IS NOT NULL
+            AND (CASE WHEN r.unidad = 'h' THEN l.horas_actuales ELSE l.kilometros_actuales END) IS NOT NULL
+          FOR UPDATE OF r
+        ),
+        deduplicado AS (
+          INSERT INTO public.garage_operaciones (usuario_id, operacion_id, matricula)
+          SELECT ${userId}, ${operacion}::uuid, a.matricula FROM autorizada a
+          ON CONFLICT (usuario_id, operacion_id) DO NOTHING
+          RETURNING matricula
+        ),
+        actualizado AS (
+          UPDATE public.garage_recordatorios r
+          SET ultima_lectura = a.lectura_regla, actualizado_en = NOW()
+          FROM autorizada a JOIN deduplicado d ON d.matricula = a.matricula
+          WHERE r.matricula = a.matricula AND r.usuario_id = ${userId}
+            AND r.categoria = ${cat} AND r.unidad = ${un}
+          RETURNING r.matricula, r.ultima_lectura
+        ),
+        anotado AS (
+          INSERT INTO public.mantenimientos (matricula, descripcion, horas)
+          SELECT a.matricula,
+                 CASE WHEN ${un} = 'km'
+                   THEN (${descripcion} || ' · Lectura: ' || a.ultima_lectura || ' km')
+                   ELSE ${descripcion} END,
+                 l.horas_actuales
+          FROM actualizado a
+          JOIN public.garage_lecturas l ON l.matricula = a.matricula AND l.usuario_id = ${userId}
+          RETURNING matricula
+        )
+        SELECT matricula FROM anotado
+      `;
+      if (!guardado.length) {
+        throw new ApiError(409, 'La operación ya se registró o falta una lectura actual de horas/kilómetros. No se ha duplicado el historial.');
+      }
+      return json(200, { message: 'Mantenimiento registrado y aviso actualizado' });
     }
 
     // "Marcar realizado" usa la lectura actual guardada en Neon;

@@ -1,3 +1,4 @@
+import { integrarCatalogoExistente } from './catalogo-enduro-ampliado.js'; // FASE_2_3_CATALOGO
 /**
  * ENDURO NALÓN — catálogo de documentación existente (Fase 1).
  * Las rutas proceden de la versión del repositorio aportada por el usuario.
@@ -71,6 +72,8 @@ export const CATALOGO_MOTOS = [
     ]
   }
 ];
+
+integrarCatalogoExistente(CATALOGO_MOTOS);
 
 export function buscarMoto(marca, modeloId, anio) {
   const year = Number(anio);

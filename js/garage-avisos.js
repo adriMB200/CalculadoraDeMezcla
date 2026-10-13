@@ -120,7 +120,17 @@ function pintarReglas(ref) {
     const borrar = el('button','garage-btn garage-btn--ghost','Eliminar');
     borrar.type = 'button';
     borrar.addEventListener('click', () => accionRegla('eliminarRegla',regla));
-    acciones.append(realizado,editar,borrar);
+    // El historial antiguo solo tiene campo de HORAS, por eso es obligatorio
+    // tener horas actuales para registrar la intervención.
+    const registrar = el('button','garage-btn garage-btn--accent','Registrar en el libro');
+    registrar.type = 'button';
+    registrar.disabled = lecturaActual(ref,'h') === null || actual === null || evalua.tipo === 'revisar';
+    registrar.title = registrar.disabled
+      ? 'Guarda horas actuales en Mis avisos para usar el libro de mantenimientos.'
+      : 'Guarda el mantenimiento y actualiza el aviso en una operación';
+    registrar.addEventListener('click', () => registrarHistorial(regla));
+        acciones.append(realizado,registrar,editar,borrar);
+
     tarjeta.append(acciones);
     destino.append(tarjeta);
   }
@@ -193,6 +203,34 @@ async function accionRegla(action,regla) {
     else $('avisos-regla-mensaje').textContent = error.message;
   } finally { enProceso = false; }
 }
+async function registrarHistorial(regla) {
+  if (enProceso || !seleccionada()) return;
+  const etiqueta = CATEGORIAS[regla.categoria] || 'Mantenimiento';
+  const nota = window.prompt(
+    `¿Qué has realizado en «${etiqueta}»? Añade una nota opcional (máx. 500 caracteres).\nPara cancelar, pulsa «Cancelar».`, ''
+  );
+  if (nota === null) return;
+  if (nota.length > 500) {
+    $('avisos-regla-mensaje').textContent = 'La nota no puede superar 500 caracteres.';
+    return;
+  }
+  if (!window.confirm('¿Confirmas que el trabajo SE HA REALIZADO? Se añadirá al libro con la lectura actual de horas y se actualizará el aviso.')) return;
+  enProceso = true;
+  $('avisos-regla-mensaje').textContent = '';
+  try {
+    await api('garageAvisos', { method:'POST', body:JSON.stringify({
+      action:'registrarYAnotar', matricula:seleccionada(),
+      categoria:regla.categoria, unidad:regla.unidad,
+      nota, operacion:crypto.randomUUID()
+    }) });
+    await cargar();
+    $('avisos-regla-mensaje').textContent = 'Guardado en el libro y aviso actualizado.';
+  } catch(error) {
+    if (error.auth) manejarCaducidad();
+    else $('avisos-regla-mensaje').textContent = error.message;
+  } finally { enProceso = false; }
+}
+
 $('avisos-moto').addEventListener('change',mostrarMoto);
 $('avisos-lecturas-form').addEventListener('submit',async event => {
   event.preventDefault();

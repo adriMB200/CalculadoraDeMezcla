@@ -92,13 +92,26 @@ function mostrarResultados(evento) {
   const resumen = document.createElement('p');
   resumen.className = 'bm-resultado-info';
   resumen.textContent = moto.aclaracion;
+  // FASE_2_3_FICHA: datos generales del fabricante, NO pares de apriete.
+  let fichaInfo = null;
+  const ficha = moto.fichasPorAnio?.[Number(anio.value)];
+  if (ficha) {
+    resumen.textContent = ficha.nota;
+    const caracteristicas = document.createElement('p');
+    caracteristicas.className = 'bm-resultado-info';
+    caracteristicas.textContent = [moto.marca, moto.modelo, anio.value,
+      ficha.motor ? 'Motor ' + ficha.motor : null, ficha.cilindradaClase].filter(Boolean).join(' · ');
+    fichaInfo = caracteristicas;
+  }
   const listado = document.createElement('div');
   listado.className = 'bm-resultados-grid';
   const recursos = recursosParaAnio(moto, anio.value);
   recursos.forEach(recurso => listado.appendChild(crearEnlace(recurso)));
-  resultados.append(titulo, resumen, listado);
+  resultados.append(titulo, resumen);
+  if (fichaInfo) resultados.append(fichaInfo);
+  resultados.append(listado);
   resultados.hidden = false;
-  ponerEstado(`${recursos.length} recurso${recursos.length === 1 ? '' : 's'} encontrado${recursos.length === 1 ? '' : 's'}.`);
+  ponerEstado(`${recursos.length} enlace${recursos.length === 1 ? '' : 's'} disponible${recursos.length === 1 ? '' : 's'}. Revisa si es un manual exacto o la página general del fabricante.`);
   titulo.focus({ preventScroll: true });
   resultados.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
