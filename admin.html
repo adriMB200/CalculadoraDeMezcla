@@ -1,0 +1,16 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><title>Administración | Enduro Nalón</title>
+<link rel="icon" href="imagen/img.jpg"><link rel="stylesheet" href="css/cuentas-seguras.css"><script src="js/admin-usuarios.js" defer></script></head>
+<body><header class="account-head"><a href="index.html">← ENDURO NALÓN</a><nav><a href="mi-cuenta.html">Mi cuenta</a><a href="mercadillo.html">Mercadillo</a></nav></header>
+<main class="account-layout"><p class="eyebrow">ACCESO RESTRINGIDO</p><h1>Administración del club</h1>
+<p id="mensaje" role="status" aria-live="polite">Comprobando permisos…</p>
+<div id="panelAdmin" hidden><section class="panel"><h2>Usuarios registrados</h2>
+<p>Los correos se muestran parcialmente ocultos. Ninguna contraseña es visible. Las acciones sensibles requieren tu contraseña.</p>
+<label>Buscar por alias <input id="buscarUsuario" type="search" placeholder="Buscar usuario" maxlength="50"></label>
+<div class="table-wrap"><table><thead><tr><th>Usuario</th><th>Correo</th><th>Estado</th><th>Gestión</th></tr></thead><tbody id="listaUsuarios"></tbody></table></div>
+</section><section class="panel"><h2>Historial de operaciones</h2><button id="recargarHistorial" class="secondary" type="button">Actualizar historial</button>
+<div id="historial" class="audit-list"></div></section></div></main>
+<dialog id="confirmacion"><form method="dialog"><h2 id="accionTitulo">Confirmar acción</h2><p id="accionTexto"></p>
+<label>Tu contraseña de administrador<input id="adminClave" type="password" autocomplete="current-password" required></label>
+<div class="dialog-buttons"><button value="cancelar" class="secondary">Cancelar</button><button id="ejecutarAccion" value="confirmar">Confirmar</button></div></form></dialog>
+</body></html>

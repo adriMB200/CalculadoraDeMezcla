@@ -1,11 +1,12 @@
 import type { Handler } from "@netlify/functions";
 import { neon } from "@netlify/neon";
-import { requireUser, requireMethod, json, handleError } from "../shared/security";
+import { requireMethod, json, handleError } from '../shared/security';
+import { requireActiveUser } from '../shared/accountSecurity';
 
 export const handler: Handler = async (event) => {
     try {
         requireMethod(event, "GET");
-        requireUser(event);
+        await requireActiveUser(event);
         const sql = neon();
         const temas = await sql`
             SELECT t.id, t.titulo, t.descripcion, t.fecha, u.username AS creador

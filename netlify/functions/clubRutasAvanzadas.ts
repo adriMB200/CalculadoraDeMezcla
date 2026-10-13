@@ -1,6 +1,7 @@
 import type { Handler } from '@netlify/functions';
 import { neon } from '@netlify/neon';
-import { ApiError, requireUser, requireMethod, readBody, positiveId, stringField, json, handleError } from '../shared/security';
+import { ApiError, requireMethod, readBody, positiveId, stringField, json, handleError } from '../shared/security';
+import { requireActiveUser } from '../shared/accountSecurity';
 const esAdmin=(id:number)=>(process.env.ENDURO_ADMIN_IDS||'').split(',').map(x=>x.trim()).some(x=>/^\d+$/.test(x)&&Number(x)===id);
 function entero(v:unknown, nombre:string,min:number,max:number){
   if(typeof v!=='number'||!Number.isSafeInteger(v)||v<min||v>max)throw new ApiError(400,nombre+' fuera de rango'); return v;
@@ -8,7 +9,7 @@ function entero(v:unknown, nombre:string,min:number,max:number){
 export const handler:Handler=async event=>{
  try{
   requireMethod(event,'POST');
-  const uid=requireUser(event);
+  const uid=await requireActiveUser(event);
   if(!esAdmin(uid))throw new ApiError(403,'Solo administradores');
   const body=readBody(event); const id=positiveId(body.rutaId,'Ruta');
   if(body.action!=='editar')throw new ApiError(400,'Acción no válida');

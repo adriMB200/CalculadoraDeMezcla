@@ -1,0 +1,4 @@
+/* Estilos mínimos para el enlace de recuperación dentro del modal existente. */
+.en-forgot-link {display:inline-block;margin:14px 0 10px;color:#dfff45;font-weight:650;font-size:.92rem;text-decoration:underline;text-underline-offset:3px}
+.en-forgot-link:hover {color:#f1ffbc}
+.en-forgot-link:focus-visible {outline:3px solid #dfff45;outline-offset:3px}

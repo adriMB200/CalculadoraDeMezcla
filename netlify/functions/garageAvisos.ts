@@ -1,6 +1,7 @@
 import type { Handler } from '@netlify/functions';
 import { neon } from '@netlify/neon';
-import { ApiError, requireUser, readBody, json, handleError } from '../shared/security';
+import { ApiError, readBody, json, handleError } from '../shared/security';
+import { requireActiveUser } from '../shared/accountSecurity';
 
 // Todas las consultas se filtran con usuario_id extraído del JWT VERIFICADO.
 // No se confía nunca en un ID de usuario enviado por el navegador.
@@ -37,7 +38,7 @@ export const handler: Handler = async (event) => {
     if (event.httpMethod !== 'GET' && event.httpMethod !== 'POST') {
       throw new ApiError(405, 'Método no permitido');
     }
-    const userId = requireUser(event);
+    const userId = await requireActiveUser(event);
     const sql = neon();
 
     if (event.httpMethod === 'GET') {

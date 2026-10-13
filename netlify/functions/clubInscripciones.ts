@@ -1,10 +1,11 @@
 import type { Handler } from '@netlify/functions';
 import { neon } from '@netlify/neon';
-import { ApiError, requireUser, requireMethod, readBody, positiveId, json, handleError } from '../shared/security';
+import { ApiError, requireMethod, readBody, positiveId, json, handleError } from '../shared/security';
+import { requireActiveUser } from '../shared/accountSecurity';
 export const handler: Handler = async event => {
   try {
     requireMethod(event, 'POST');
-    const userId = requireUser(event);
+    const userId = await requireActiveUser(event);
     const body = readBody(event);
     const rutaId = positiveId(body.rutaId, 'Ruta');
     const sql = neon();

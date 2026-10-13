@@ -1,11 +1,12 @@
 import type { Handler } from "@netlify/functions";
 import { neon } from "@netlify/neon";
-import { requireUser, requireMethod, readBody, positiveId, json, handleError } from "../shared/security";
+import { requireMethod, readBody, positiveId, json, handleError } from '../shared/security';
+import { requireActiveUser } from '../shared/accountSecurity';
 
 export const handler: Handler = async (event) => {
     try {
         requireMethod(event, "POST"); // Mantener compatibilidad con mantenimientos.html.
-        const userId = requireUser(event);
+        const userId = await requireActiveUser(event);
         const id = positiveId(readBody(event).id, "ID de mantenimiento");
         const sql = neon();
         // El borrado solo ocurre si la moto del mantenimiento pertenece al usuario autenticado.

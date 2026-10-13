@@ -1,11 +1,12 @@
 import type { Handler } from '@netlify/functions';
 import { neon } from '@netlify/neon';
-import { ApiError, requireUser, readBody, positiveId, stringField, json, handleError } from '../shared/security';
+import { ApiError, readBody, positiveId, stringField, json, handleError } from '../shared/security';
+import { requireActiveUser } from '../shared/accountSecurity';
 
 const esAdmin = (id: number) => (process.env.ENDURO_ADMIN_IDS || '').split(',').some(x => /^\d+$/.test(x.trim()) && Number(x.trim()) === id);
-function userOptional(event: Parameters<typeof requireUser>[0]): number | null {
+async function userOptional(event: Parameters<typeof requireActiveUser>[0]): Promise<number | null> {
   if (!(event.headers?.authorization || event.headers?.Authorization)) return null;
-  return requireUser(event);
+  return await requireActiveUser(event);
 }
 function textoSeguro(v: unknown, nombre: string, min: number, max: number): string {
   const valor = stringField(v, nombre, max, min);
@@ -43,7 +44,7 @@ export const handler: Handler = async event => {
       ORDER BY creado_en DESC,id DESC LIMIT 60`;
     return json(200,{anuncios:rows});
    }
-   const uid = requireUser(event);
+   const uid = await requireActiveUser(event);
    if (scope === 'mios') {
     const rows = await sql`SELECT id,titulo,descripcion,categoria,condicion,precio_centimos,zona,estado,motivo_revision,creado_en
       FROM public.merc_anuncios WHERE vendedor_id=${uid} ORDER BY creado_en DESC LIMIT 100`;
@@ -85,7 +86,7 @@ export const handler: Handler = async event => {
   const body = readBody(event);
   const action = String(body.action || '');
   if (action === 'denunciar') {
-   const uid = userOptional(event);
+   const uid = await userOptional(event);
    const anuncioId = positiveId(body.anuncioId,'Anuncio');
    const motivo = textoSeguro(body.motivo,'Motivo',15,500);
    // Acotamos el volumen de reportes anónimos; añadir rate limiting perimetral antes de producción.
@@ -99,7 +100,7 @@ export const handler: Handler = async event => {
    return json(201,{mensaje:'Aviso recibido para revisión. Gracias.'});
   }
 
-  const uid = requireUser(event);
+  const uid = await requireActiveUser(event);
   if (action === 'crear') {
    const titulo = textoSeguro(body.titulo,'Título',8,100);
    const descripcion = textoSeguro(body.descripcion,'Descripción',20,1000);

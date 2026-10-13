@@ -36,8 +36,8 @@ export function assertJwtConfigured(): void {
     jwtSecret();
 }
 
-export function signToken(id: number, username: string): string {
-    return jwt.sign({ id, username }, jwtSecret(), { algorithm: "HS256", expiresIn: "1h" });
+export function signToken(id: number, username: string, version = 0): string {
+    return jwt.sign({ id, username, ver: version }, jwtSecret(), { algorithm: "HS256", expiresIn: "1h" });
 }
 
 export function requireUser(event: HandlerEvent): number {

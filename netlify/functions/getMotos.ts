@@ -1,13 +1,14 @@
 import { Handler, HandlerEvent } from "@netlify/functions";
 const { neon } = require("@netlify/neon");
-import { requireUser, requireMethod, json, handleError } from "../shared/security";
+import { requireMethod, json, handleError } from '../shared/security';
+import { requireActiveUser } from '../shared/accountSecurity';
 
 
 
 export const handler: Handler = async (event: HandlerEvent) => {
     try {
         requireMethod(event, "GET");
-        const userId = requireUser(event);
+        const userId = await requireActiveUser(event);
 
         const sql = neon();
 

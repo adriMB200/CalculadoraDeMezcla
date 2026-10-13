@@ -1,6 +1,7 @@
 import type { Handler } from '@netlify/functions';
 import { neon } from '@netlify/neon';
-import { ApiError, requireUser, requireMethod, readBody, stringField, positiveId, json, handleError } from '../shared/security';
+import { ApiError, requireMethod, readBody, stringField, positiveId, json, handleError } from '../shared/security';
+import { requireActiveUser } from '../shared/accountSecurity';
 const esAdmin = (id:number) => (process.env.ENDURO_ADMIN_IDS || '').split(',').map(x=>x.trim()).some(x=>/^\d+$/.test(x)&&Number(x)===id);
 function entero(v:unknown,n:string,min:number,max:number) {
   if(typeof v!=='number' || !Number.isSafeInteger(v) || v<min || v>max) throw new ApiError(400,n+' fuera de rango');
@@ -12,7 +13,7 @@ export const handler:Handler=async event=>{
     const sql=neon();
     if(event.httpMethod==='GET') {
       let userId=0;
-      if(event.headers?.authorization||event.headers?.Authorization) userId=requireUser(event);
+      if(event.headers?.authorization||event.headers?.Authorization) userId=await requireActiveUser(event);
       const rows=await sql`
       SELECT r.id,r.titulo,r.fecha_salida,r.zona,r.dificultad,r.kilometros,r.terreno,r.plazas,
         (SELECT COUNT(*)::int FROM public.club_inscripciones i WHERE i.ruta_id=r.id) AS inscritos,
@@ -27,7 +28,7 @@ export const handler:Handler=async event=>{
       return json(200,{rutas:rows,administrador:esAdmin(userId)});
     }
     requireMethod(event,'POST');
-    const userId=requireUser(event);
+    const userId=await requireActiveUser(event);
     if(!esAdmin(userId)) throw new ApiError(403,'Solo administradores');
     const body=readBody(event);
     if(body.action==='cancelar') {

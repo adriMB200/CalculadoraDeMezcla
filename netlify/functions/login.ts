@@ -14,13 +14,14 @@ export const handler: Handler = async (event) => {
         }
         const sql = neon();
         const [user] = await sql`
-            SELECT id, username, password_hash FROM public.usuarios WHERE username = ${username}
+            SELECT id, username, password_hash, estado_cuenta, auth_version FROM public.usuarios WHERE username = ${username}
         `;
         // Mensaje uniforme para evitar enumeración de cuentas.
         if (!user || !(await bcrypt.compare(password, user.password_hash))) {
             return json(401, { error: "Usuario o contraseña incorrectos" });
         }
-        const token = signToken(user.id, user.username);
+        if (user.estado_cuenta !== 'activo') return json(403, { error: 'Cuenta no disponible. Contacta con el administrador.' });
+        const token = signToken(user.id, user.username, Number(user.auth_version));
         return json(200, { token });
     } catch (error) { return handleError(error); }
 };

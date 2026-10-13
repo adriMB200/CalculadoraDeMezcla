@@ -1,11 +1,12 @@
 import type { Handler } from "@netlify/functions";
 import { neon } from "@netlify/neon";
-import { requireUser, requireMethod, positiveId, json, handleError } from "../shared/security";
+import { requireMethod, positiveId, json, handleError } from '../shared/security';
+import { requireActiveUser } from '../shared/accountSecurity';
 
 export const handler: Handler = async (event) => {
     try {
         requireMethod(event, "GET");
-        requireUser(event);
+        await requireActiveUser(event);
         const temaId = positiveId(event.queryStringParameters?.tema_id, "Tema");
         const sql = neon();
         const mensajes = await sql`

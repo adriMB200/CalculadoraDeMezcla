@@ -1,6 +1,7 @@
 import type { Handler } from '@netlify/functions';
 import { neon } from '@netlify/neon';
-import { ApiError, requireUser, readBody, positiveId, stringField, json, handleError } from '../shared/security';
+import { ApiError, readBody, positiveId, stringField, json, handleError } from '../shared/security';
+import { requireActiveUser } from '../shared/accountSecurity';
 const esAdmin=(id:number)=>(process.env.ENDURO_ADMIN_IDS||'').split(',').map(x=>x.trim()).some(x=>/^\d+$/.test(x)&&Number(x)===id);
 export const handler:Handler=async event=>{
  try {
@@ -14,7 +15,7 @@ export const handler:Handler=async event=>{
        WHERE mostrar=true AND aprobado=true ORDER BY actualizado_en DESC LIMIT 80`;
      return json(200,{miembros:rows});
    }
-   const uid=requireUser(event);
+   const uid=await requireActiveUser(event);
    if(scope==='mio') {
      const rows=await sql`SELECT alias,moto,descripcion,mostrar,aprobado FROM public.club_perfiles WHERE usuario_id=${uid}`;
      return json(200,{perfil:rows[0]||null});
@@ -27,7 +28,7 @@ export const handler:Handler=async event=>{
    }
    throw new ApiError(400,'Consulta no válida');
   }
-  const uid=requireUser(event),body=readBody(event);
+  const uid=await requireActiveUser(event),body=readBody(event);
   if(body.action==='retirar') {
     // Borra físicamente el perfil; no afecta a la cuenta ni al garaje.
     await sql`DELETE FROM public.club_perfiles WHERE usuario_id=${uid}`;

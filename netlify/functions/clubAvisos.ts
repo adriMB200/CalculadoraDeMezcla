@@ -1,10 +1,11 @@
 import type { Handler } from '@netlify/functions';
 import { neon } from '@netlify/neon';
-import { ApiError, requireUser, readBody, positiveId, json, handleError } from '../shared/security';
+import { ApiError, readBody, positiveId, json, handleError } from '../shared/security';
+import { requireActiveUser } from '../shared/accountSecurity';
 export const handler:Handler=async event=>{
  try{
    if(!['GET','POST'].includes(event.httpMethod))throw new ApiError(405,'Método no permitido');
-   const uid=requireUser(event),sql=neon();
+   const uid=await requireActiveUser(event),sql=neon();
    if(event.httpMethod==='GET') {
       const rows=await sql`SELECT id,mensaje,creado_en,leido_en FROM public.club_avisos WHERE usuario_id=${uid} ORDER BY creado_en DESC LIMIT 50`;
       return json(200,{avisos:rows});

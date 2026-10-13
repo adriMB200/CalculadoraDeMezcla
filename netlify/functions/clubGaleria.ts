@@ -1,6 +1,7 @@
 import type { Handler } from '@netlify/functions';
 import { neon } from '@netlify/neon';
-import { ApiError, requireUser, readBody, positiveId, stringField, json, handleError } from '../shared/security';
+import { ApiError, readBody, positiveId, stringField, json, handleError } from '../shared/security';
+import { requireActiveUser } from '../shared/accountSecurity';
 const esAdmin=(id:number)=>(process.env.ENDURO_ADMIN_IDS||'').split(',').map(x=>x.trim()).some(x=>/^\d+$/.test(x)&&Number(x)===id);
 export const handler:Handler=async event=>{
  try{
@@ -10,7 +11,7 @@ export const handler:Handler=async event=>{
     const rows=await sql`SELECT id,titulo,fecha,descripcion,imagen FROM public.club_albumes ORDER BY fecha DESC,id DESC LIMIT 60`;
     return json(200,{albumes:rows});
   }
-  const uid=requireUser(event);
+  const uid=await requireActiveUser(event);
   if(!esAdmin(uid))throw new ApiError(403,'Solo administradores');
   const body=readBody(event);
   if(body.action==='eliminar') {

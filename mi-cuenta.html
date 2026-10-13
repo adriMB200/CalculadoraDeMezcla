@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+<title>Mi cuenta | Enduro Nalón</title><link rel="icon" href="imagen/img.jpg"><link rel="stylesheet" href="css/cuentas-seguras.css">
+<script src="js/cuenta-segura.js" defer></script></head>
+<body><header class="account-head"><a href="index.html">← ENDURO NALÓN</a><nav><a href="mi-garaje.html">Mi garaje</a><a href="rutas.html">Rutas</a></nav></header>
+<main class="account-layout"><p class="eyebrow">ZONA PRIVADA</p><h1>Mi cuenta</h1><p>Verifica tu correo para recuperar tu contraseña de forma segura. Tu correo no se mostrará públicamente.</p>
+<p id="mensaje" role="status" aria-live="polite"></p><section class="panel"><h2>Datos de la cuenta</h2><p id="datosCuenta">Comprobando sesión…</p></section>
+<section class="panel"><h2>Verificar mi correo</h2><p>Confirma tu contraseña actual y recibirás un enlace de verificación válido durante 30 minutos.</p>
+<form id="formEmail"><label>Correo electrónico<input name="email" type="email" maxlength="254" autocomplete="email" required></label>
+<label>Contraseña actual<input name="password" type="password" autocomplete="current-password" required></label>
+<button type="submit">Enviar verificación</button></form></section>
+<section class="panel"><h2>Cambiar contraseña</h2><p>La nueva contraseña debe tener al menos 12 caracteres. El cambio cerrará las sesiones anteriores.</p>
+<form id="formPassword"><label>Contraseña actual<input name="actual" type="password" autocomplete="current-password" required></label>
+<label>Contraseña nueva<input name="password" type="password" minlength="12" maxlength="128" autocomplete="new-password" required></label>
+<label>Repetir contraseña<input name="confirmar" type="password" minlength="12" autocomplete="new-password" required></label>
+<button type="submit">Cambiar contraseña</button></form></section>
+<section class="panel"><h2>¿No recuerdas tu contraseña?</h2><a href="recuperar-clave.html">Solicitar recuperación por correo</a></section>
+</main></body></html>

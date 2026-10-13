@@ -1,11 +1,12 @@
 import type { Handler } from "@netlify/functions";
 import { neon } from "@netlify/neon";
-import { requireUser, requireMethod, readBody, stringField, json, handleError } from "../shared/security";
+import { requireMethod, readBody, stringField, json, handleError } from '../shared/security';
+import { requireActiveUser } from '../shared/accountSecurity';
 
 export const handler: Handler = async (event) => {
     try {
         requireMethod(event, "POST");
-        const userId = requireUser(event);
+        const userId = await requireActiveUser(event);
         const body = readBody(event);
         const matricula = stringField(body.matricula, "Matrícula", 20).toUpperCase();
         const descripcion = stringField(body.descripcion, "Descripción", 2000);
