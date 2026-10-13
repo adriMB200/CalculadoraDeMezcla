@@ -1,59 +1,20 @@
-import { Handler, HandlerEvent } from "@netlify/functions";
-const { neon } = require("@netlify/neon");
-const jwt = require("jsonwebtoken");
+import type { Handler } from "@netlify/functions";
+import { neon } from "@netlify/neon";
+import { requireUser, requireMethod, positiveId, json, handleError } from "../shared/security";
 
-const SECRET = process.env.JWT_SECRET || "supersecret";
-
-const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    "Access-Control-Allow-Methods": "GET, OPTIONS"
-};
-
-export const handler: Handler = async (event: HandlerEvent) => {
+export const handler: Handler = async (event) => {
     try {
-        if (event.httpMethod === "OPTIONS") {
-            return { statusCode: 200, headers, body: "" };
-        }
-
-        // 🔐 Auth
-        const tokenHeader = event.headers.authorization;
-        if (!tokenHeader) throw new Error("No autorizado");
-
-        const token = tokenHeader.replace("Bearer ", "");
-        jwt.verify(token, SECRET);
-
+        requireMethod(event, "GET");
+        requireUser(event);
+        const temaId = positiveId(event.queryStringParameters?.tema_id, "Tema");
         const sql = neon();
-
-        const tema_id = event.queryStringParameters?.tema_id;
-
-        if (!tema_id) {
-            return {
-                statusCode: 400,
-                headers,
-                body: JSON.stringify({ error: "Falta tema_id" })
-            };
-        }
-
         const mensajes = await sql`
-      SELECT m.id, m.contenido, m.fecha, u.username as usuario
-      FROM public.mensajes m
-      JOIN public.usuarios u ON m.usuario_id = u.id
-      WHERE m.tema_id = ${tema_id}
-      ORDER BY m.fecha ASC
-    `;
-
-        return {
-            statusCode: 200,
-            headers,
-            body: JSON.stringify(mensajes)
-        };
-
-    } catch (error: any) {
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: error.message })
-        };
-    }
+            SELECT m.id, m.contenido, m.fecha, u.username AS usuario
+            FROM public.mensajes m
+            JOIN public.usuarios u ON m.usuario_id = u.id
+            WHERE m.tema_id = ${temaId}
+            ORDER BY m.fecha ASC
+        `;
+        return json(200, mensajes);
+    } catch (error) { return handleError(error); }
 };

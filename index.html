@@ -183,6 +183,7 @@
     <script src="js/auth.js"></script>
     <script src="js/legal.js"></script>
     <script src="js/cookies.js"></script>
+    <script src="js/session.js"></script>
 
     <script>
         document.getElementById("year").textContent = new Date().getFullYear();
@@ -192,7 +193,9 @@
         }
 
         function isLogged() {
-            return !!localStorage.getItem("token");
+            return window.EnduroSession
+                ? window.EnduroSession.isLogged()
+                : !!localStorage.getItem("token");
         }
 
         function openAuthModal() {
@@ -279,6 +282,11 @@
 
                 closeAuthModal();
                 renderAuthButton();
+                // Si llegó al login desde el foro/mantenimientos por caducidad,
+                // regresará a la misma página después de iniciar sesión.
+                if (window.EnduroSession) {
+                    window.EnduroSession.resumeAfterLogin();
+                }
             } catch (err) {
                 errorBox.textContent = "Error de conexión con el servidor";
             }

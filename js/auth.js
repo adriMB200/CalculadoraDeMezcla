@@ -68,12 +68,29 @@ function getUser() {
     return localStorage.getItem("user");
 }
 
+function tokenNotExpired(token) {
+    try {
+        const parts = token.split(".");
+        if (parts.length !== 3) return false;
+        const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+        const payload = JSON.parse(atob(base64));
+        return Number.isFinite(payload.exp) && payload.exp * 1000 > Date.now();
+    } catch { return false; }
+}
+
 function getToken() {
-    return localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    if (!tokenNotExpired(token)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        return null;
+    }
+    return token;
 }
 
 function isLogged() {
-    return !!localStorage.getItem("token");
+    return Boolean(getToken());
 }
 
 function openAuthModal() {
@@ -106,10 +123,11 @@ function renderAuthButton() {
     if (isLogged()) {
         topbar.innerHTML = `
             <div class="user-menu">
-                <button class="auth-btn" id="authUserBtn">${getUser() || "Usuario"}</button>
+                <button class="auth-btn" id="authUserBtn"></button>
                 <button class="logout-btn" id="authLogoutBtn">Salir</button>
             </div>
         `;
+        document.getElementById("authUserBtn").textContent = getUser() || "Usuario";
 
         const authUserBtn = document.getElementById("authUserBtn");
         const authLogoutBtn = document.getElementById("authLogoutBtn");
@@ -210,3 +228,13 @@ async function safeJson(res) {
         return {};
     }
 }
+// Revalidar el estado visual al volver tras horas o días con la pestaña abierta.
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+        const wasLogged = Boolean(localStorage.getItem("token"));
+        renderAuthButton();
+        if (wasLogged && !isLogged() && typeof window.onLogout === "function") {
+            window.onLogout();
+        }
+    }
+});

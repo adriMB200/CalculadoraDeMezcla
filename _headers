@@ -1,0 +1,8 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+# Netlify NO aplica este archivo a las respuestas de sus Functions.
+# No establecer CSP estricta hasta extraer JS inline y comprobar dependencias.

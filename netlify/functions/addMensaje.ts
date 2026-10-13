@@ -1,58 +1,19 @@
-import { Handler, HandlerEvent } from "@netlify/functions";
-const { neon } = require("@netlify/neon");
-const jwt = require("jsonwebtoken");
+import type { Handler } from "@netlify/functions";
+import { neon } from "@netlify/neon";
+import { requireUser, requireMethod, readBody, stringField, positiveId, json, handleError } from "../shared/security";
 
-const SECRET = process.env.JWT_SECRET || "supersecret";
-
-const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    "Access-Control-Allow-Methods": "POST, OPTIONS"
-};
-
-export const handler: Handler = async (event: HandlerEvent) => {
+export const handler: Handler = async (event) => {
     try {
-        if (event.httpMethod === "OPTIONS") {
-            return { statusCode: 200, headers, body: "" };
-        }
-
-        // 🔐 Auth
-        const tokenHeader = event.headers.authorization;
-        if (!tokenHeader) throw new Error("No autorizado");
-
-        const token = tokenHeader.replace("Bearer ", "");
-        const payload: any = jwt.verify(token, SECRET);
-        const userId = payload.id;
-
+        requireMethod(event, "POST");
+        const userId = requireUser(event);
+        const body = readBody(event);
+        const contenido = stringField(body.contenido, "Mensaje", 4000);
+        const temaId = positiveId(body.tema_id, "Tema");
         const sql = neon();
-        const body = JSON.parse(event.body || "{}");
-
-        const { contenido, tema_id } = body;
-
-        if (!contenido || !tema_id) {
-            return {
-                statusCode: 400,
-                headers,
-                body: JSON.stringify({ error: "Faltan datos" })
-            };
-        }
-
         await sql`
-      INSERT INTO public.mensajes (contenido, usuario_id, tema_id, fecha)
-      VALUES (${contenido}, ${userId}, ${tema_id}, NOW())
-    `;
-
-        return {
-            statusCode: 200,
-            headers,
-            body: JSON.stringify({ message: "Mensaje enviado correctamente" })
-        };
-
-    } catch (error: any) {
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: error.message })
-        };
-    }
+            INSERT INTO public.mensajes (contenido, usuario_id, tema_id, fecha)
+            VALUES (${contenido}, ${userId}, ${temaId}, NOW())
+        `;
+        return json(200, { message: "Mensaje enviado correctamente" });
+    } catch (error) { return handleError(error); }
 };

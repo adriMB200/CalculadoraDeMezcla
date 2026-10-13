@@ -1,51 +1,33 @@
-// netlify/functions/signUp.ts
-import { Handler } from "@netlify/functions";
+import type { Handler } from "@netlify/functions";
 import { neon } from "@netlify/neon";
+import { ApiError, requireMethod, readBody, stringField, json, handleError, signToken, assertJwtConfigured } from "../shared/security";
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
-const SECRET = process.env.JWT_SECRET || "supersecret";
-
-const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS"
-};
 
 export const handler: Handler = async (event) => {
     try {
-
-        if (event.httpMethod === "OPTIONS") {
-            return { statusCode: 200, headers, body: "" };
+        requireMethod(event, "POST");
+        assertJwtConfigured();
+        const body = readBody(event);
+        const username = stringField(body.username, "Usuario", 40, 3);
+        const password = body.password;
+        if (typeof password !== "string" || password.length < 12 || password.length > 256) {
+            return json(400, { error: "La contraseña debe tener entre 12 y 256 caracteres" });
         }
-        const { username, password } = JSON.parse(event.body || "{}");
-        if (!username || !password) throw new Error("Faltan datos");
-
+        if (!/^[A-Za-z0-9_.-]+$/.test(username)) {
+            throw new ApiError(400, "El usuario solo puede contener letras, números, guion, punto y guion bajo");
+        }
         const sql = neon();
-
-        // Verificar si ya existe usuario
-        const existing = await sql`SELECT * FROM public.usuarios WHERE username = ${username}`;
-        if (existing.length > 0) throw new Error("Usuario ya existe");
-
-        const hash = await bcrypt.hash(password, 10);
-
-        // Insertar usuario
+        const exists = await sql`SELECT id FROM public.usuarios WHERE username = ${username}`;
+        if (exists.length) return json(409, { error: "Ese usuario ya está registrado" });
+        const passwordHash = await bcrypt.hash(password, 12);
         const [user] = await sql`
-      INSERT INTO public.usuarios (username, password_hash)
-      VALUES (${username}, ${hash})
-      RETURNING id, username
-    `;
-
-        // Generar token JWT
-        const token = jwt.sign({ id: user.id, username: user.username }, SECRET, { expiresIn: "1h" });
-
-        return {
-            statusCode: 200,
-            headers,
-            body: JSON.stringify({ token, username: user.username })
-        };
-
+            INSERT INTO public.usuarios (username, password_hash)
+            VALUES (${username}, ${passwordHash})
+            RETURNING id, username
+        `;
+        return json(201, { token: signToken(user.id, user.username), username: user.username });
     } catch (error: any) {
-        return { statusCode: 400, headers, body: JSON.stringify({ error: error.message }) };
+        if (error?.code === "23505") return json(409, { error: "Ese usuario ya está registrado" });
+        return handleError(error);
     }
 };

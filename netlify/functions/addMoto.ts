@@ -1,44 +1,27 @@
-import { Handler, HandlerEvent } from "@netlify/functions";
-const { neon } = require("@netlify/neon");
-const jwt = require("jsonwebtoken");
+import type { Handler } from "@netlify/functions";
+import { neon } from "@netlify/neon";
+import { requireUser, requireMethod, readBody, stringField, json, handleError } from "../shared/security";
 
-const SECRET = process.env.JWT_SECRET || "supersecret";
-
-const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS"
-};
-
-export const handler: Handler = async (event: HandlerEvent) => {
+export const handler: Handler = async (event) => {
     try {
-        if (event.httpMethod === "OPTIONS") {
-            return { statusCode: 200, headers, body: "" };
+        requireMethod(event, "POST");
+        const userId = requireUser(event);
+        const body = readBody(event);
+        const matricula = stringField(body.matricula, "Matrícula", 20).toUpperCase();
+        const marca = stringField(body.marca, "Marca", 50);
+        const modelo = stringField(body.modelo, "Modelo", 50);
+        const anio = Number(body.anio);
+        if (!Number.isInteger(anio) || anio < 1950 || anio > new Date().getFullYear() + 1) {
+            return json(400, { error: "Año no válido" });
         }
-        const tokenHeader = event.headers && event.headers.authorization;
-        if (!tokenHeader) throw new Error("No autorizado");
-        const token = tokenHeader.replace("Bearer ", "");
-        const payload: any = jwt.verify(token, SECRET);
-        const userId = payload.id;
-
         const sql = neon();
-        const body = JSON.parse(event.body || "{}");
-        let { matricula, marca, modelo, anio } = body;
-
-        if (!matricula || !marca || !modelo || !anio)
-            return { statusCode: 400, body: JSON.stringify({ error: "Faltan datos" }) };
-
-        matricula = matricula.toUpperCase();
-
         await sql`
-      INSERT INTO public.motos (matricula, marca, modelo, anio, usuario_id)
-      VALUES (${matricula}, ${marca}, ${modelo}, ${anio}, ${userId})
-    `;
-
-        return { statusCode: 200, headers, body: JSON.stringify({ message: "Moto añadida correctamente" }) };
+            INSERT INTO public.motos (matricula, marca, modelo, anio, usuario_id)
+            VALUES (${matricula}, ${marca}, ${modelo}, ${anio}, ${userId})
+        `;
+        return json(200, { message: "Moto añadida correctamente" });
     } catch (error: any) {
-        if (error.message?.includes("duplicate"))
-            return { statusCode: 400, headers, body: JSON.stringify({ error: "La moto ya existe" }) };
-        return { statusCode: 500, headers, body: JSON.stringify({ error: error.message }) };
+        if (error?.code === "23505") return json(409, { error: "La moto ya existe" });
+        return handleError(error);
     }
 };

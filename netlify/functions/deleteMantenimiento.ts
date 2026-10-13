@@ -1,28 +1,24 @@
-import { Handler } from "@netlify/functions";
+import type { Handler } from "@netlify/functions";
 import { neon } from "@netlify/neon";
-
-const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS"
-};
+import { requireUser, requireMethod, readBody, positiveId, json, handleError } from "../shared/security";
 
 export const handler: Handler = async (event) => {
     try {
-        if (event.httpMethod === "OPTIONS") {
-            return { statusCode: 200, headers, body: "" };
-        }
+        requireMethod(event, "POST"); // Mantener compatibilidad con mantenimientos.html.
+        const userId = requireUser(event);
+        const id = positiveId(readBody(event).id, "ID de mantenimiento");
         const sql = neon();
-        const { id } = JSON.parse(event.body || "{}");
-
-        if (!id) {
-            return { statusCode: 400, body: JSON.stringify({ error: "Falta el ID del mantenimiento" }) };
-        }
-
-        await sql`DELETE FROM public.mantenimientos WHERE id = ${id}`;
-
-        return { statusCode: 200, headers, body: JSON.stringify({ message: "Mantenimiento eliminado" }) };
-    } catch (err: any) {
-        return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
-    }
+        // El borrado solo ocurre si la moto del mantenimiento pertenece al usuario autenticado.
+        const deleted = await sql`
+            DELETE FROM public.mantenimientos AS m
+            WHERE m.id = ${id}
+              AND EXISTS (
+                SELECT 1 FROM public.motos AS mo
+                WHERE mo.matricula = m.matricula AND mo.usuario_id = ${userId}
+              )
+            RETURNING id
+        `;
+        if (deleted.length === 0) return json(404, { error: "Mantenimiento no encontrado" });
+        return json(200, { message: "Mantenimiento eliminado" });
+    } catch (error) { return handleError(error); }
 };

@@ -1,34 +1,20 @@
 import { Handler, HandlerEvent } from "@netlify/functions";
 const { neon } = require("@netlify/neon");
-const jwt = require("jsonwebtoken");
+import { requireUser, requireMethod, json, handleError } from "../shared/security";
 
-const SECRET = process.env.JWT_SECRET || "supersecret";
 
-const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS"
-};
 
 export const handler: Handler = async (event: HandlerEvent) => {
     try {
-        if (event.httpMethod === "OPTIONS") {
-            return { statusCode: 200, headers, body: "" };
-        }
-        // 1️⃣ Obtener token
-        const tokenHeader = event.headers?.authorization;
-        if (!tokenHeader) throw new Error("No autorizado");
-        const token = tokenHeader.replace("Bearer ", "");
-
-        const payload: any = jwt.verify(token, SECRET);
-        const userId = payload.id;
+        requireMethod(event, "GET");
+        const userId = requireUser(event);
 
         const sql = neon();
 
         // 2️⃣ Traer motos del usuario
         const motos = await sql`SELECT * FROM public.motos WHERE usuario_id = ${userId} ORDER BY marca`;
 
-        if (motos.length === 0) return { statusCode: 200, body: JSON.stringify([]) };
+        if (motos.length === 0) return json(200, []);
 
         // 3️⃣ Traer mantenimientos solo de las motos del usuario
         const matriculas: string[] = [];
@@ -36,7 +22,7 @@ export const handler: Handler = async (event: HandlerEvent) => {
             matriculas.push(motos[i].matricula);
         }
 
-        if (matriculas.length === 0) return { statusCode: 200, body: JSON.stringify(motos) };
+        if (matriculas.length === 0) return json(200, motos);
 
         const mantenimientos = await sql`
             SELECT * FROM public.mantenimientos
@@ -70,8 +56,8 @@ export const handler: Handler = async (event: HandlerEvent) => {
             resultado.push({ ...moto, mantenimientos: motoMant });
         }
 
-        return { statusCode: 200, headers, body: JSON.stringify(resultado) };
+        return json(200, resultado);
     } catch (err: any) {
-        return { statusCode: 401, headers, body: JSON.stringify({ error: err.message }) };
+        return handleError(err);
     }
 };

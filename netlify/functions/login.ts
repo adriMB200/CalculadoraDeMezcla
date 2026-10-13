@@ -1,36 +1,26 @@
-import { Handler } from "@netlify/functions";
+import type { Handler } from "@netlify/functions";
 import { neon } from "@netlify/neon";
+import { requireMethod, readBody, stringField, json, handleError, signToken } from "../shared/security";
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
-const SECRET = process.env.JWT_SECRET || "supersecret";
-
-const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS"
-};
 
 export const handler: Handler = async (event) => {
     try {
-
-        if (event.httpMethod === "OPTIONS") {
-            return { statusCode: 200, headers, body: "" };
+        requireMethod(event, "POST");
+        const body = readBody(event);
+        const username = stringField(body.username, "Usuario", 50);
+        const password = body.password;
+        if (typeof password !== "string" || password.length < 1 || password.length > 256) {
+            return json(400, { error: "Contraseña no válida" });
         }
-
-        const { username, password } = JSON.parse(event.body || "{}");
         const sql = neon();
-
-        const [user] = await sql`SELECT * FROM public.usuarios WHERE username = ${username}`;
-        if (!user) return { statusCode: 401, body: JSON.stringify({ error: "Usuario no encontrado" }) };
-
-        const valid = await bcrypt.compare(password, user.password_hash);
-        if (!valid) return { statusCode: 401, body: JSON.stringify({ error: "Contraseña incorrecta" }) };
-
-        const token = jwt.sign({ id: user.id, username: user.username }, SECRET, { expiresIn: "1h" });
-
-        return { statusCode: 200, headers, body: JSON.stringify({ token }) };
-    } catch (error: any) {
-        return { statusCode: 500, headers, body: JSON.stringify({ error: error.message }) };
-    }
+        const [user] = await sql`
+            SELECT id, username, password_hash FROM public.usuarios WHERE username = ${username}
+        `;
+        // Mensaje uniforme para evitar enumeración de cuentas.
+        if (!user || !(await bcrypt.compare(password, user.password_hash))) {
+            return json(401, { error: "Usuario o contraseña incorrectos" });
+        }
+        const token = signToken(user.id, user.username);
+        return json(200, { token });
+    } catch (error) { return handleError(error); }
 };

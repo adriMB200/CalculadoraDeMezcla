@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foro Enduro Nalón</title>
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="css/chat.css">
@@ -79,8 +80,12 @@
                 data.forEach(t => {
                     const div = document.createElement("div");
                     div.className = "tema";
-                    div.innerHTML = `<b>${t.titulo}</b><br>${t.descripcion || ""}`;
-                    div.onclick = () => seleccionarTema(t);
+                    const title = document.createElement("b");
+                    title.textContent = t.titulo;
+                    const desc = document.createElement("p");
+                    desc.textContent = t.descripcion || "";
+                    div.append(title, desc);
+                    div.addEventListener("click", () => seleccionarTema(t));
                     cont.appendChild(div);
                 });
 
@@ -166,11 +171,15 @@
                     fechaTexto = `${hora} ${dia}/${mes}/${anio}`;
                 }
 
-                div.innerHTML = `
-        <b>${user}</b><br>
-        ${m.contenido}
-        <div class="mensaje-fecha">${fechaTexto}</div>
-    `;
+                const author = document.createElement("b");
+                author.textContent = user;
+                const content = document.createElement("p");
+                content.textContent = m.contenido;
+                content.style.whiteSpace = "pre-wrap";
+                const date = document.createElement("div");
+                date.className = "mensaje-fecha";
+                date.textContent = fechaTexto;
+                div.append(author, content, date);
 
                 cont.appendChild(div);
             });

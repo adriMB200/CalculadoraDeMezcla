@@ -139,36 +139,35 @@
                     const div = document.createElement("div");
                     div.classList.add("moto-card");
 
-                    let mantenimientosHtml = "";
+                    const title = document.createElement("h3");
+                    title.textContent = `🏍️ ${moto.marca} ${moto.modelo} (${moto.anio}) — Mat: ${moto.matricula}`;
+                    const addBtn = document.createElement("button");
+                    addBtn.textContent = "🛠️ Añadir mantenimiento";
+                    addBtn.addEventListener("click", () => agregarMantenimiento(moto.matricula));
+                    const list = document.createElement("ul");
 
-                    if (moto.mantenimientos && moto.mantenimientos.length > 0) {
-                        for (let j = 0; j < moto.mantenimientos.length; j++) {
-                            const m = moto.mantenimientos[j];
-                            let fechaStr = "";
-
-                            if (m.fecha) {
-                                const fecha = new Date(m.fecha);
+                    for (const m of moto.mantenimientos || []) {
+                        const li = document.createElement("li");
+                        let fechaStr = "";
+                        if (m.fecha) {
+                            const fecha = new Date(m.fecha);
+                            if (!Number.isNaN(fecha.getTime())) {
                                 fechaStr = fecha.toLocaleDateString("es-ES", {
-                                    day: "2-digit",
-                                    month: "2-digit",
-                                    year: "numeric"
+                                    day: "2-digit", month: "2-digit", year: "numeric"
                                 });
                             }
-
-                            mantenimientosHtml += `
-                                <li>
-                                    📅 ${fechaStr} — 🕒 ${m.horas} h — ${m.descripcion}
-                                    <button onclick="eliminarMantenimiento(${m.id})" style="margin-left:10px;">❌</button>
-                                </li>
-                            `;
                         }
+                        li.appendChild(document.createTextNode(
+                            `📅 ${fechaStr} — 🕒 ${m.horas} h — ${m.descripcion} `
+                        ));
+                        const removeBtn = document.createElement("button");
+                        removeBtn.textContent = "❌";
+                        removeBtn.setAttribute("aria-label", "Eliminar mantenimiento");
+                        removeBtn.addEventListener("click", () => eliminarMantenimiento(m.id));
+                        li.appendChild(removeBtn);
+                        list.appendChild(li);
                     }
-
-                    div.innerHTML = `
-                        <h3>🏍️ ${moto.marca} ${moto.modelo} (${moto.anio}) — Mat: ${moto.matricula}</h3>
-                        <button onclick="agregarMantenimiento('${moto.matricula}')">🛠️ Añadir mantenimiento</button>
-                        <ul>${mantenimientosHtml}</ul>
-                    `;
+                    div.append(title, addBtn, list);
 
                     motoList.appendChild(div);
                 }
