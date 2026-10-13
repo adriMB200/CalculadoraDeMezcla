@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111714">
+  <meta name="description" content="Próximas salidas y quedadas de Enduro Nalón. Consulta fechas y apúntate desde tu cuenta.">
+  <title>Rutas y quedadas · Enduro Nalón</title>
+  <link rel="icon" href="imagen/img.jpg">
+  <link rel="stylesheet" href="css/estilo.css">
+  <link rel="stylesheet" href="css/rutas.css">
+  <link rel="stylesheet" href="css/privacidad.css">
+  <script defer src="js/auth.js"></script>
+  <script defer src="js/rutas.js"></script>
+  <script defer src="js/legal.js"></script>
+  <script defer src="js/cookies.js"></script>
+</head>
+<body class="rutas-body">
+  <a class="rutas-skip" href="#contenido">Saltar al contenido</a>
+  <header class="rutas-header">
+    <a class="rutas-logo" href="index.html" aria-label="Enduro Nalón, inicio"><span>EN</span> ENDURO <strong>NALÓN</strong></a>
+    <nav class="rutas-nav" aria-label="Navegación principal">
+      <a href="index.html">Inicio</a>
+      <a href="rutas.html" aria-current="page">Rutas</a>
+      <a href="mi-garaje.html">Mi garaje</a>
+      <a href="foro.html">Foro</a>
+    </nav>
+    <div id="authTopbar" class="auth-topbar"></div>
+  </header>
+  <main id="contenido" class="rutas-main">
+    <section class="rutas-hero" aria-labelledby="rutas-titulo">
+      <p class="rutas-eyebrow">ENDURO NALÓN · COMUNIDAD</p>
+      <h1 id="rutas-titulo">Próximas <span>salidas</span></h1>
+      <p>Organizamos quedadas para disfrutar del enduro. Consulta la zona aproximada, el nivel y las plazas. El lugar de encuentro solo se muestra después de apuntarte.</p>
+    </section>
+    <section class="rutas-panel" aria-labelledby="proximas-titulo">
+      <div class="rutas-section-header">
+        <div><p class="rutas-eyebrow">CALENDARIO DEL CLUB</p><h2 id="proximas-titulo">Próximas quedadas</h2></div>
+        <button type="button" class="rutas-btn rutas-btn--ghost" id="rutas-recargar">Actualizar</button>
+      </div>
+      <p id="rutas-estado" role="status" aria-live="polite">Cargando rutas…</p>
+      <div id="rutas-lista" class="rutas-grid" aria-live="polite"></div>
+    </section>
+    <section class="rutas-panel" id="rutas-admin" hidden aria-labelledby="rutas-admin-titulo">
+      <div class="rutas-section-header"><div><p class="rutas-eyebrow">SOLO ADMINISTRADORES</p><h2 id="rutas-admin-titulo">Crear una salida</h2></div></div>
+      <form id="rutas-form" class="rutas-form">
+        <div><label for="ruta-titulo">Nombre de la salida</label><input id="ruta-titulo" maxlength="100" minlength="4" required placeholder="Ej.: Salida de otoño"></div>
+        <div><label for="ruta-fecha">Fecha y hora (Asturias)</label><input id="ruta-fecha" type="datetime-local" required></div>
+        <div><label for="ruta-zona">Zona aproximada (pública)</label><input id="ruta-zona" maxlength="100" minlength="3" required placeholder="Ej.: Cuenca del Nalón"></div>
+        <div><label for="ruta-nivel">Dificultad</label><select id="ruta-nivel" required><option value="facil">Fácil</option><option value="media">Media</option><option value="alta">Alta</option></select></div>
+        <div><label for="ruta-km">Kilómetros aproximados (opcional)</label><input id="ruta-km" type="number" min="1" max="1000" step="1" inputmode="numeric"></div>
+        <div><label for="ruta-plazas">Plazas</label><input id="ruta-plazas" type="number" min="1" max="100" value="10" required></div>
+        <div class="rutas-wide"><label for="ruta-terreno">Tipo de terreno</label><input id="ruta-terreno" maxlength="140" minlength="3" required placeholder="Pistas autorizadas y tramos permitidos"></div>
+        <div class="rutas-wide"><label for="ruta-encuentro">Punto de encuentro (solo inscritos)</label><textarea id="ruta-encuentro" maxlength="300" minlength="4" required rows="2" placeholder="Indica instrucciones de reunión, no publiques tracks sensibles."></textarea></div>
+        <div class="rutas-wide"><button class="rutas-btn rutas-btn--primary" id="rutas-crear" type="submit">Publicar salida</button></div>
+      </form>
+      <p id="rutas-admin-estado" role="status" aria-live="polite"></p>
+    </section>
+    <aside class="rutas-nota">
+      <h2>Rutas responsables</h2>
+      <p>La inscripción no garantiza la celebración de una salida. El club deberá confirmar los cambios por sus canales habituales. Respeta la normativa de circulación y acceso a montes, las propiedades privadas y los espacios protegidos. No compartimos tracks GPX ni coordenadas privadas en el listado público.</p>
+      <p>Para apuntarte solo guardamos tu identificador de cuenta, la ruta y la fecha de inscripción. Consulta la <a href="privacidad.html">política de privacidad</a>. Puedes darte de baja desde esta página.</p>
+    </aside>
+  </main>
+  <footer class="rutas-footer">© <span id="rutas-anio"></span> Enduro Nalón · <a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a> · <a href="politica-cookies.html">Cookies</a></footer>
+  <noscript><p>Activa JavaScript para consultar e inscribirte en las rutas.</p></noscript>
+</body>
+</html>
