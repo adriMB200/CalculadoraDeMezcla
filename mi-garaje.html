@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111714">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Mi Garaje privado de Enduro Nalón: tus motos y su historial de mantenimientos.">
+  <title>Mi Garaje · Enduro Nalón</title>
+  <link rel="icon" href="imagen/img.jpg">
+  <link rel="stylesheet" href="css/estilo.css">
+  <link rel="stylesheet" href="css/privacidad.css">
+  <link rel="stylesheet" href="css/mi-garaje.css">
+  <script defer src="js/auth.js"></script>
+  <script defer type="module" src="js/mi-garaje.js"></script>
+  <script defer src="js/legal.js"></script>
+  <script defer src="js/cookies.js"></script>
+</head>
+<body class="garage-body">
+  <a class="garage-skip" href="#garage-main">Saltar al contenido</a>
+  <header class="garage-header">
+    <a href="index.html" class="garage-logo" aria-label="Enduro Nalón, ir al inicio"><span aria-hidden="true">EN</span> ENDURO <strong>NALÓN</strong></a>
+    <nav class="garage-nav" aria-label="Menú principal">
+      <a href="index.html">Inicio</a>
+      <a href="buscar-moto.html">Buscador</a>
+      <a href="mantenimientos.html">Mantenimientos</a>
+      <a href="foro.html">Foro</a>
+    </nav>
+    <div class="auth-topbar" id="authTopbar"></div>
+  </header>
+
+  <main id="garage-main" class="garage-main">
+    <section class="garage-hero" aria-labelledby="garage-title">
+      <div class="garage-hero__content">
+        <p class="garage-kicker">ENDURO NALÓN · ZONA PRIVADA</p>
+        <h1 id="garage-title">Mi <span>Garaje</span></h1>
+        <p>Consulta tus motos, registra sus mantenimientos y encuentra los manuales y pares disponibles desde un solo lugar.</p>
+      </div>
+    </section>
+
+    <section class="garage-panel" aria-labelledby="garage-list-title">
+      <div class="garage-panel__header">
+        <div>
+          <p class="garage-kicker">MIS MOTOS</p>
+          <h2 id="garage-list-title">Tu garaje personal</h2>
+          <p>Solo tú puedes consultar la información de tu garaje mientras tienes una sesión válida.</p>
+        </div>
+        <button class="garage-btn garage-btn--accent" type="button" id="garage-show-form" hidden>+ Añadir moto</button>
+      </div>
+      <div id="garage-status" class="garage-status" role="status" aria-live="polite">Comprobando sesión...</div>
+      <div id="garage-list" class="garage-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="garage-panel" id="garage-create" aria-labelledby="garage-create-title" hidden>
+      <div class="garage-panel__header">
+        <div><p class="garage-kicker">AÑADIR MOTO</p><h2 id="garage-create-title">Registrar una moto</h2></div>
+        <button class="garage-btn garage-btn--ghost" type="button" id="garage-hide-form">Cerrar</button>
+      </div>
+      <p class="garage-form-intro">Usamos un identificador privado para asociar los mantenimientos. Puedes utilizar un alias exclusivo en vez de la matrícula real (por ejemplo, <code>MI-KTM-2021</code>). No se publicará en tu perfil.</p>
+      <p id="garage-form-message" class="garage-form-message" role="alert" aria-live="assertive"></p>
+      <form id="garage-bike-form" class="garage-form" autocomplete="off">
+        <div><label for="garage-brand">Marca</label>
+          <select id="garage-brand" required><option value="">Selecciona marca</option><option>KTM</option><option>GasGas</option><option>Rieju</option><option>BMW</option></select></div>
+        <div><label for="garage-model">Modelo</label><select id="garage-model" required disabled><option value="">Selecciona modelo</option></select></div>
+        <div><label for="garage-year">Año</label><select id="garage-year" required><option value="">Selecciona año</option></select></div>
+        <div><label for="garage-ref">Identificador privado</label><input id="garage-ref" type="text" minlength="3" maxlength="20" pattern="[A-Za-z0-9_-]{3,20}" placeholder="MI-KTM-2021" autocomplete="off" required aria-describedby="garage-ref-help"><small id="garage-ref-help">Entre 3 y 20 caracteres: letras, números, guiones o guiones bajos. Debe ser único.</small></div>
+        <div class="garage-form-actions"><button class="garage-btn garage-btn--accent" id="garage-save-bike" type="submit">Guardar moto</button></div>
+      </form>
+    </section>
+
+    <section class="garage-panel" id="garage-service" aria-labelledby="garage-service-title" hidden>
+      <div class="garage-panel__header"><div><p class="garage-kicker">HISTORIAL</p><h2 id="garage-service-title">Añadir mantenimiento</h2><p id="garage-service-bike"></p></div>
+        <button class="garage-btn garage-btn--ghost" type="button" id="garage-close-service">Cerrar</button></div>
+      <p id="garage-service-message" class="garage-form-message" role="alert" aria-live="assertive"></p>
+      <form id="garage-service-form" class="garage-form">
+        <div class="garage-form--wide"><label for="garage-description">Trabajo realizado</label><textarea id="garage-description" required maxlength="2000" rows="3" placeholder="Ej.: cambio de aceite y limpieza del filtro"></textarea></div>
+        <div><label for="garage-hours">Horas de motor en ese mantenimiento</label><input id="garage-hours" type="number" min="0" max="1000000" step="1" inputmode="numeric" required placeholder="Ej.: 120"><small>Es una lectura registrada, no las horas actuales en tiempo real.</small></div>
+        <div class="garage-form-actions"><button class="garage-btn garage-btn--accent" id="garage-save-service" type="submit">Guardar mantenimiento</button></div>
+      </form>
+    </section>
+
+    <aside class="garage-note" aria-label="Privacidad y recomendaciones">
+      <h2>Tu información, bajo control</h2>
+      <p>Las motos y los mantenimientos se consultan con tu cuenta; no se publican aquí datos de otros usuarios ni se guardan copias del historial en el navegador. Los datos mecánicos y pares de apriete deben contrastarse con el manual exacto de la versión de tu moto.</p>
+      <div class="garage-actions"><a href="mantenimientos.html">Abrir libro de mantenimientos</a><a href="buscar-moto.html">Buscar manuales y pares</a></div>
+    </aside>
+    <noscript><p class="garage-note">Este garaje necesita JavaScript. Tu libro de mantenimientos anterior sigue disponible en <a href="mantenimientos.html">Mantenimientos</a>.</p></noscript>
+  </main>
+  <footer class="garage-footer"><span>© <span id="garage-year-footer"></span> Enduro Nalón</span><a href="privacidad.html">Privacidad</a><a href="politica-cookies.html">Cookies</a><a href="aviso-legal.html">Aviso legal</a></footer>
+</body>
+</html>
