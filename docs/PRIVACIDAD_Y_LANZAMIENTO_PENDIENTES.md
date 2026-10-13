@@ -1,0 +1,18 @@
+# Revisión obligatoria previa a publicar el paquete
+
+Este paquete es una entrega técnica, no una certificación de cumplimiento legal ni de seguridad. Debe probarse en rama Neon de ensayo y revisarse con asesoría competente en RGPD/LOPDGDD, LSSI y Reglamento (UE) 2022/2065 (DSA) según la naturaleza y escala del servicio.
+
+1. **Responsable y política:** verificar identidad/domicilio/contacto real y actualizar privacidad.html y aviso-legal.html. Incluir expresamente perfiles públicos voluntarios, participación en quedadas, imágenes, chat vendedor-comprador, denunciantes (si registrados), gestión de incidencias y moderación. Definir bases de licitud, destinatarios/proveedores (Neon, Netlify, etc.), transferencias internacionales, conservación, derecho de acceso, supresión, oposición y reclamación. No publicar páginas con [COMPLETAR].
+2. **Mensajería:** los mensajes permanecen en Neon y los ven las dos partes; no son E2EE. No permitir claves, teléfonos ni documentos; valorar moderación reactiva si denuncian abusos. Definir plazo de retención, exportación/supresión y respuestas a solicitudes de derechos. Restringir queries exclusivamente en el servidor.
+3. **Fotos:** solo imágenes aprobadas por el club, con derecho de difusión; pedir consentimiento adecuado cuando sea la base pertinente y extremar cautela con menores. Retirar metadatos GPS y verificar que las fotografías no revelan matrículas ni pistas sensibles. Alojamiento manual en `imagen/galeria` en formato optimizado. No hay subida pública.
+4. **Mercadillo:** política clara de vendedores particulares y profesionales, no se admiten categorías restringidas; confirmar requisitos DSA de notificación y acción, motivos de decisiones, procedimiento de recurso y trazabilidad de comerciantes cuando proceda. Si se permitiera perfeccionar contratos con comerciantes, revisar obligaciones adicionales antes de activarlo. Valorar requisitos fiscales y de consumo; este software no incluye checkout ni garantías de la plataforma.
+5. **Medidas de infraestructura:** habilitar rate limiting para Functions con CDN/WAF o equivalente, registro mínimo de abuso sin revelar secretos, backups con caducidad, alertas de errores y monitorización de reportes. Limitación en código por usuario no sustituye controles por IP para reportes anónimos. Aplicar `JWT_SECRET` seguro y `ENDURO_ADMIN_IDS` explícito. Revisar seguridad de cookies y tokens, HTTPS, CSP sin romper scripts existentes.
+6. **Pruebas obligatorias:** ensayar sesiones expiradas, permisos con DOS cuentas distintas, propietario y no propietario, administrador y no admin; solicitudes directas a endpoints, concurrencia en plazas, enlaces a imágenes, salidas canceladas, email/teléfono en anuncios, denuncias no autenticadas y rechazo de contenido inadecuado.
+7. **Acceso y eliminación:** establecer flujo documentado para retirar perfil, anuncio, fotografías, mensajes y datos de cuenta conforme a la ley, con excepciones legales de conservación debidamente justificadas. La fase entregada permite retirar un anuncio pero no constituye por sí sola un sistema completo de ejercicio de derechos.
+
+## Riesgos que permanecen
+- Antispam de mensajes por usuario (20/día) y denuncias por anuncio (25/día) son medidas básicas, no protección completa contra automatización.
+- Mensajes no cifrados extremo a extremo; minimización de información personal es imprescindible.
+- Roles admin mediante variable de entorno; su revocación debe verificarse.
+- No se han probado transacciones reales con tu base Neon. Se requiere ensayo real antes de despliegue.
+- Precio y descripción son datos aportados por usuarios, no certificados por el club.

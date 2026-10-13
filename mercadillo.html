@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111714">
+<meta name="description" content="Mercadillo moderado de Enduro Nalón: motos, equipación, recambios y herramientas de segunda mano, entre usuarios del club.">
+<title>Mercadillo Enduro · Enduro Nalón</title>
+<link rel="icon" href="imagen/img.jpg">
+<link rel="stylesheet" href="css/estilo.css"><link rel="stylesheet" href="css/comunidad.css"><link rel="stylesheet" href="css/mercadillo.css"><link rel="stylesheet" href="css/privacidad.css">
+<script defer src="js/auth.js"></script><script defer src="js/mercadillo.js"></script><script defer src="js/legal.js"></script><script defer src="js/cookies.js"></script>
+</head><body class="com-body merc-body">
+<a class="com-skip" href="#contenido">Saltar al contenido</a>
+<header class="com-header"><a class="com-brand" href="index.html">ENDURO <strong>NALÓN</strong></a>
+<nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="rutas.html">Rutas</a><a href="galeria.html">Galería</a><a href="club.html">El club</a><a href="mercadillo.html" aria-current="page">Mercadillo</a><a href="foro.html">Foro</a></nav>
+<div id="authTopbar" class="auth-topbar"></div></header>
+<main class="com-main" id="contenido">
+<section class="com-hero merc-hero"><p class="com-overline">ENTRE ENDUREROS · SEGUNDA MANO</p><h1>Mercadillo <span>Enduro</span></h1>
+<p>Motos, recambios y equipación entre usuarios. Publicaciones revisadas por el club y contacto dentro de la web, sin compartir teléfonos públicos.</p>
+<p class="merc-notice">Enduro Nalón no cobra ni procesa pagos, no organiza envíos ni garantiza las compraventas. Comprueba el estado y la titularidad del artículo. <a href="normas-mercadillo.html">Normas y seguridad</a>.</p></section>
+<section class="com-panel" aria-labelledby="merc-list-title"><div class="com-section-head"><div><p class="com-overline">ANUNCIOS APROBADOS</p><h2 id="merc-list-title">Explorar artículos</h2></div><button type="button" id="merc-recargar" class="com-btn">Actualizar</button></div>
+<div class="merc-filtros"><label for="merc-categoria">Categoría<select id="merc-categoria"><option value="todas">Todas</option><option value="motos">Motos</option><option value="recambios">Recambios</option><option value="equipacion">Equipación</option><option value="herramientas">Herramientas</option><option value="otros">Otros</option></select></label><label for="merc-buscar">Buscar por nombre<input type="search" id="merc-buscar" maxlength="80" placeholder="Ej.: cubrecárter, botas, llantas"></label></div>
+<p id="merc-estado" role="status" aria-live="polite">Cargando anuncios…</p><div id="merc-lista" class="com-grid"></div></section>
+<section class="com-panel" id="merc-publicar" hidden aria-labelledby="merc-publicar-titulo"><h2 id="merc-publicar-titulo">Publicar un anuncio</h2><p>Solo se admiten artículos permitidos y de procedencia legítima. El anuncio debe ser aprobado antes de mostrarse.</p>
+<form id="merc-form" class="com-form">
+<label>Título del anuncio<input id="merc-titulo" required minlength="8" maxlength="100" placeholder="Botas de enduro talla 43"></label>
+<label>Categoría<select id="merc-tipo" required><option value="equipacion">Equipación</option><option value="recambios">Recambios</option><option value="motos">Motos</option><option value="herramientas">Herramientas</option><option value="otros">Otros</option></select></label>
+<label>Estado del artículo<select id="merc-condicion"><option value="usado">Usado</option><option value="nuevo">Nuevo</option></select></label>
+<label>Precio (€)<input id="merc-precio" required type="number" min="0" max="100000" step="0.01" placeholder="65.00"></label>
+<label>Zona aproximada<input id="merc-zona" required minlength="2" maxlength="70" placeholder="Langreo, Asturias"></label>
+<label class="com-wide">Descripción del estado real<textarea id="merc-descripcion" required minlength="20" maxlength="1000" rows="4" placeholder="Marca, talla o compatibilidad; desperfectos y uso. Sin datos personales ni teléfonos."></textarea></label>
+<label class="com-check com-wide"><input id="merc-acepta" required type="checkbox"><span>He leído las <a href="normas-mercadillo.html">normas del mercadillo</a> y confirmo que el artículo es mío, de procedencia legítima y está permitido.</span></label>
+<div class="com-wide"><button class="com-btn com-btn--primary" id="merc-enviar" type="submit">Solicitar publicación</button></div>
+</form><p id="merc-form-estado" role="status" aria-live="polite"></p></section>
+<section class="com-panel" id="merc-mios" hidden aria-labelledby="merc-mios-titulo"><h2 id="merc-mios-titulo">Mis anuncios</h2><p>Comprueba si están pendientes, aprobados, rechazados, vendidos o retirados. Puedes retirar tus anuncios cuando quieras.</p><div id="merc-mios-lista" class="com-grid"></div></section>
+<section class="com-panel" id="merc-chats" hidden aria-labelledby="merc-chats-titulo"><h2 id="merc-chats-titulo">Mensajes privados</h2><p>Conversaciones entre comprador y vendedor. No compartas datos bancarios ni documentos de identidad.</p><div id="merc-chats-lista" class="merc-chats"></div><div id="merc-conversacion" hidden><h3 id="merc-conversacion-titulo">Conversación</h3><div id="merc-mensajes-lista" class="merc-mensajes"></div><form id="merc-reply-form" class="merc-reply"><label for="merc-respuesta">Responder</label><textarea id="merc-respuesta" maxlength="1000" minlength="5" rows="3" required></textarea><button class="com-btn com-btn--primary" type="submit">Enviar respuesta</button></form></div><p id="merc-chat-estado" role="status" aria-live="polite"></p></section>
+<section class="com-panel" id="merc-admin" hidden aria-labelledby="merc-admin-titulo"><h2 id="merc-admin-titulo">Moderación del mercadillo</h2><p>Revisa anuncios antes de publicar y atiende denuncias de contenido.</p><h3>Pendientes de aprobación</h3><div id="merc-pendientes"></div><h3>Denuncias recibidas</h3><div id="merc-reportes"></div><p id="merc-admin-estado" role="status" aria-live="polite"></p></section>
+<section class="com-panel"><h2>Compra con prudencia</h2><p>No se permiten anuncios de artículos robados, falsificaciones, armas o productos peligrosos, ni contenido ilegal. Los anuncios pueden denunciarse sin iniciar sesión. Consulta las <a href="normas-mercadillo.html">normas de publicación, moderación y reclamaciones</a>, así como la <a href="privacidad.html">política de privacidad</a>.</p></section>
+</main><footer class="com-footer">Enduro Nalón · <a href="normas-mercadillo.html">Normas mercadillo</a> · <a href="privacidad.html">Privacidad</a> · <a href="aviso-legal.html">Aviso legal</a></footer>
+<dialog id="merc-dialog" class="merc-dialog" aria-labelledby="merc-dialog-titulo"><form method="dialog" class="merc-dialog-head"><h2 id="merc-dialog-titulo">Contactar</h2><button value="cancel" type="submit" aria-label="Cerrar ventana">✕</button></form><form id="merc-dialog-form" class="merc-dialog-form"><p id="merc-dialog-descripcion"></p><label for="merc-dialog-cuerpo">Mensaje<textarea id="merc-dialog-cuerpo" maxlength="1000" minlength="5" rows="5" required></textarea></label><button id="merc-dialog-enviar" class="com-btn com-btn--primary" type="submit">Enviar</button></form><p id="merc-dialog-estado" role="status" aria-live="polite"></p></dialog>
+<noscript>Activa JavaScript para consultar y gestionar anuncios.</noscript>
+</body></html>

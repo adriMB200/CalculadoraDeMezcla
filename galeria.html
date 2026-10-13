@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111714">
+<meta name="description" content="Fotos y crónicas de las salidas de Enduro Nalón, publicadas con autorización.">
+<title>Galería y diario · Enduro Nalón</title>
+<link rel="icon" href="imagen/img.jpg"><link rel="stylesheet" href="css/estilo.css"><link rel="stylesheet" href="css/comunidad.css"><link rel="stylesheet" href="css/privacidad.css">
+<script defer src="js/auth.js"></script><script defer src="js/galeria.js"></script><script defer src="js/legal.js"></script><script defer src="js/cookies.js"></script>
+</head><body class="com-body">
+<a class="com-skip" href="#contenido">Saltar al contenido</a>
+<header class="com-header"><a class="com-brand" href="index.html">ENDURO <strong>NALÓN</strong></a><nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="rutas.html">Rutas</a><a href="galeria.html" aria-current="page">Galería</a><a href="club.html">El club</a><a href="mercadillo.html">Mercadillo</a><a href="mi-garaje.html">Mi garaje</a></nav><div id="authTopbar" class="auth-topbar"></div></header>
+<main class="com-main" id="contenido">
+<section class="com-hero"><p class="com-overline">SALIDAS · FOTOS · RECUERDOS</p><h1>Galería <span>Enduro Nalón</span></h1><p>Crónicas cortas y fotos autorizadas de las salidas del club. Los lugares exactos de encuentro y los tracks privados no se publican aquí.</p></section>
+<section class="com-panel" aria-labelledby="galeria-titulo"><div class="com-section-head"><div><p class="com-overline">EL DIARIO DEL CLUB</p><h2 id="galeria-titulo">Últimas salidas</h2></div><button type="button" id="galeria-recargar" class="com-btn">Actualizar</button></div><p id="galeria-estado" role="status" aria-live="polite">Cargando…</p><div id="galeria-lista" class="com-grid"></div></section>
+<section class="com-panel" id="galeria-admin" hidden aria-labelledby="galeria-admin-titulo"><p class="com-overline">SOLO ADMINISTRADORES</p><h2 id="galeria-admin-titulo">Publicar una crónica</h2>
+<form id="galeria-form" class="com-form">
+<label>Título<input id="ga-titulo" maxlength="100" minlength="4" required placeholder="Salida de otoño"></label>
+<label>Fecha de la salida<input id="ga-fecha" type="date" required></label>
+<label class="com-wide">Crónica pública<textarea id="ga-descripcion" minlength="10" maxlength="800" rows="4" required placeholder="Resumen sin datos personales ni ubicaciones sensibles"></textarea></label>
+<label class="com-wide">Ruta de imagen autorizada (opcional)<input id="ga-imagen" maxlength="200" placeholder="imagen/galeria/salida-otono.webp"></label>
+<p class="com-wide com-help">Solo imágenes revisadas y guardadas manualmente en <code>imagen/galeria/</code>. No se permite subir fotos desde esta pantalla. Comprueba los permisos de quienes aparecen en ellas.</p>
+<div class="com-wide"><button class="com-btn com-btn--primary" type="submit">Publicar crónica</button></div></form><p id="galeria-admin-estado" role="status" aria-live="polite"></p>
+</section>
+<section class="com-panel"><h2>Fotografías y privacidad</h2><p>La galería está moderada: el club decide qué fotos publicar. No se deben incluir menores identificables sin autorización adecuada, matrículas, geolocalizaciones privadas ni imágenes de terceros sin derechos de uso. Para solicitar la retirada de una imagen consulta <a href="privacidad.html">Privacidad</a>.</p></section>
+</main><footer class="com-footer">Enduro Nalón · <a href="privacidad.html">Privacidad</a> · <a href="aviso-legal.html">Aviso legal</a></footer>
+<noscript>Activa JavaScript para consultar las crónicas.</noscript></body></html>

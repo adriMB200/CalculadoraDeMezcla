@@ -1,0 +1,16 @@
+/* Fase 6 · aislado del resto de páginas */
+.merc-body .com-hero{background:linear-gradient(95deg,rgba(4,13,8,.87),rgba(8,25,13,.57))}
+.merc-body .merc-notice{padding:12px 15px;background:rgba(0,0,0,.55);border-left:3px solid #dfff45;border-radius:7px;font-size:14px;max-width:760px}
+.merc-body .merc-filtros{display:flex;gap:14px;flex-wrap:wrap;margin:20px 0}
+.merc-body .merc-filtros label{display:grid;gap:6px;font-size:14px;min-width:min(100%,230px);flex:1}
+.merc-body :is(input,textarea,select){background:#142218;color:#fff;border:1px solid #9aac9b;border-radius:8px;padding:11px;font:inherit;width:100%;max-width:100%}
+.merc-body :is(input,textarea,select):focus-visible{outline:3px solid #ddff48;outline-offset:2px}
+.merc-body :is(input,textarea)::placeholder{color:#b2c4b3}
+.merc-body .com-form label{min-width:0}
+.merc-card{background:rgba(12,26,17,.92);border:1px solid #829984;border-radius:13px;padding:20px;overflow-wrap:anywhere;display:flex;flex-direction:column;gap:10px;min-width:0}
+.merc-card h3{font-size:20px;margin:2px 0;color:#fff}.merc-card p{margin:0;line-height:1.5}.merc-price{font-size:27px;font-weight:900;color:#dbff48}.merc-meta{font-size:13px;color:#d0e3d0}.merc-controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}.merc-controls button{min-height:43px}
+.merc-pill{border:1px solid #98b398;color:#fff;padding:3px 8px;border-radius:999px;font-size:12px;align-self:flex-start}
+.merc-chats{display:flex;flex-direction:column;gap:8px}.merc-thread{background:#213829;border:1px solid #aec1a7;border-radius:8px;padding:10px;color:#fff;text-align:left;cursor:pointer}
+.merc-mensajes{display:flex;flex-direction:column;gap:8px;max-height:380px;overflow:auto;margin:12px 0}.merc-message{padding:12px;background:#243a28;border-radius:10px;overflow-wrap:anywhere}.merc-message--own{border-left:3px solid #dfff45}.merc-message small{display:block;color:#d1dece;margin-top:7px}
+.merc-reply{display:grid;gap:9px}.merc-dialog{width:min(94vw,540px);max-height:88vh;overflow:auto;border:1px solid #a6b9a5;border-radius:16px;padding:22px;background:#111d14;color:white;box-shadow:0 10px 60px #0009}.merc-dialog::backdrop{background:#000b}.merc-dialog-head{display:flex;align-items:center;justify-content:space-between}.merc-dialog-head button{background:#2b3d30;color:white;border:1px solid #abbcaa;padding:8px 14px;border-radius:7px;cursor:pointer}.merc-dialog-form{display:grid;gap:12px}.merc-dialog-form label{display:grid;gap:8px}.merc-dialog h2{color:#fff}.merc-warning{color:#ffe5a0}
+@media(max-width:640px){.merc-body .com-main{padding:0 12px 24px}.merc-body .com-panel{padding:18px}.merc-body .com-hero{padding:42px 20px}.merc-body .merc-filtros{display:grid}.merc-body .merc-filtros label{min-width:0}.merc-body .com-grid{grid-template-columns:1fr}.merc-card{padding:16px}}
