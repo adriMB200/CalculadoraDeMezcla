@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111815">
+  <meta name="description" content="Busca manuales, fichas técnicas y pares de apriete de motos enduro por marca, modelo y año en Enduro Nalón.">
+  <title>Busca tu moto | Manuales y pares de apriete | Enduro Nalón</title>
+  <link rel="icon" href="imagen/img.jpg">
+  <link rel="stylesheet" href="css/buscador-moto.css">
+  <link rel="stylesheet" href="css/privacidad.css">
+  <script type="module" src="js/buscador-moto.js"></script>
+</head>
+<body class="bm-body">
+  <a class="bm-saltar" href="#bm-principal">Saltar al contenido</a>
+  <header class="bm-cabecera">
+    <a class="bm-marca" href="index.html" aria-label="Enduro Nalón, volver al inicio"><span class="bm-marca-sello" aria-hidden="true">EN</span><span>ENDURO <strong>NALÓN</strong></span></a>
+    <nav aria-label="Navegación principal" class="bm-navegacion">
+      <a href="index.html">Inicio</a>
+      <a href="tablas.html">Taller</a>
+      <a href="foro.html">Foro</a>
+    </nav>
+  </header>
+
+  <main id="bm-principal">
+    <section class="bm-intro" aria-labelledby="bm-titulo">
+      <div class="bm-intro-contenido">
+        <span class="bm-eyebrow">TALLER ENDURO · DOCUMENTACIÓN</span>
+        <h1 id="bm-titulo">Encuentra la información de <em>tu moto.</em></h1>
+        <p>Selecciona marca, modelo y año para localizar las fichas técnicas, los pares de apriete y los manuales que ya están publicados en Enduro Nalón.</p>
+      </div>
+      <div class="bm-intro-imagen" role="img" aria-label="Emblema de Enduro Nalón con piloto de enduro"></div>
+    </section>
+
+    <section class="bm-panel" aria-labelledby="bm-buscar-titulo">
+      <div class="bm-panel-encabezado">
+        <div>
+          <p class="bm-eyebrow">PASO 1 DE 1</p>
+          <h2 id="bm-buscar-titulo">Busca por moto</h2>
+          <p>El catálogo incluye únicamente modelos y años con documentación disponible. No necesitas registrarte.</p>
+        </div>
+        <span class="bm-catalogo-cifra">3 marcas</span>
+      </div>
+      <form class="bm-form" id="bm-form" autocomplete="off">
+        <div class="bm-campo">
+          <label for="bm-marca">Marca</label>
+          <select id="bm-marca" name="marca" required>
+            <option value="">Selecciona la marca</option>
+          </select>
+        </div>
+        <div class="bm-campo">
+          <label for="bm-modelo">Modelo</label>
+          <select id="bm-modelo" name="modelo" required disabled>
+            <option value="">Selecciona el modelo</option>
+          </select>
+        </div>
+        <div class="bm-campo">
+          <label for="bm-anio">Año</label>
+          <select id="bm-anio" name="anio" required disabled>
+            <option value="">Selecciona el año</option>
+          </select>
+        </div>
+        <div class="bm-acciones">
+          <button class="bm-boton bm-boton-primario" type="submit">Ver documentación <span aria-hidden="true">→</span></button>
+          <button class="bm-boton bm-boton-secundario" id="bm-limpiar" type="button">Limpiar</button>
+        </div>
+      </form>
+      <p class="bm-mensaje" id="bm-mensaje" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="bm-resultados" id="bm-resultados" aria-labelledby="bm-resultado-titulo" hidden></section>
+
+    <aside class="bm-nota" aria-labelledby="bm-nota-titulo">
+      <h2 id="bm-nota-titulo">Antes de trabajar en tu moto</h2>
+      <p>Los valores disponibles en algunas fichas son orientativos y pueden variar con el año, motor y versión. Comprueba los datos en la documentación oficial correspondiente y utiliza herramientas calibradas. Enduro Nalón no sustituye las instrucciones de seguridad del fabricante.</p>
+      <p>¿No encuentras tu modelo? Puedes consultar el <a href="tablas.html">índice completo de fichas y manuales</a> mientras ampliamos el catálogo.</p>
+    </aside>
+    <noscript><p class="bm-nota">Este buscador necesita JavaScript. Puedes abrir las <a href="tablas.html">fichas técnicas y manuales</a> sin utilizarlo.</p></noscript>
+  </main>
+
+  <footer class="bm-pie">
+    <p>© <span id="bm-anio-pie"></span> Enduro Nalón. Herramientas para aficionados al enduro.</p>
+    <p><a href="index.html">Inicio</a> · <a href="tablas.html">Todas las fichas</a> · <a href="foro.html">Foro</a></p>
+  </footer>
+  <script src="js/legal.js"></script>
+  <script src="js/cookies.js"></script>
+  <script>document.getElementById('bm-anio-pie').textContent = new Date().getFullYear();</script>
+</body>
+</html>

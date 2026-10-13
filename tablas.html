@@ -8,9 +8,17 @@
     <title>Fichas Técnicas | Enduro Nalón</title>
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/privacidad.css">
+    <link rel="stylesheet" href="css/buscador-moto.css">
 </head>
 
 <body>
+    <!-- FASE 1 · acceso al buscador -->
+    <div class="bm-tablas-entry">
+       <div><strong>¿Buscas datos de un modelo concreto?</strong><span>Filtra por marca, modelo y año en lugar de revisar toda la tabla.</span></div>
+       <a href="buscar-moto.html">Buscar documentación →</a>
+    </div>
+
 
     <div style="display:flex; justify-content:center; gap:15px; margin-bottom:20px;">
         <button class="operator" onclick="location.href='index.html'">🏠 Home</button>
@@ -183,7 +191,7 @@
     </div>
 
     <script src="/js/chatbot.js"></script>
-    ript>
+    <script>
     window.PROD_URL = "https://enduronalon.netlify.app";
 
     window.getEndpoint = function (path) {
@@ -211,6 +219,8 @@
         document.getElementById("year").textContent = new Date().getFullYear();
     </script>
 
+    <script src="js/legal.js"></script>
+    <script src="js/cookies.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,59 @@
+/* Enduro Nalón · Privacidad · Fase 0.2: estilos aislados */
+.en-cookie-banner, .en-privacy-overlay, .en-privacy-links, .en-legal-page { box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; }
+.en-cookie-banner *, .en-privacy-overlay *, .en-privacy-links *, .en-legal-page * { box-sizing: border-box; }
+.en-cookie-banner[hidden], .en-privacy-overlay[hidden] { display: none !important; }
+.en-cookie-banner {
+  position: fixed; z-index: 30000; inset: auto 16px 16px;
+  display: flex; align-items: center; gap: 24px; justify-content: space-between;
+  padding: 20px 24px; border: 1px solid rgba(255,255,255,.25); border-radius: 16px;
+  color: #fff; background: #111815; box-shadow: 0 16px 46px rgba(0,0,0,.42);
+  line-height: 1.5;
+}
+.en-cookie-copy { max-width: 760px; }
+.en-cookie-copy strong { font-size: 17px; color: #fff; }
+.en-cookie-copy p { margin: 6px 0 6px; color: #e6eee8; font-size: 14px; }
+.en-cookie-copy a, .en-privacy-dialog a { color: #dbff83; text-underline-offset: 3px; }
+.en-cookie-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.en-cookie-actions button, .en-privacy-controls button { cursor: pointer; border-radius: 8px; min-height: 44px; font: 600 14px system-ui, sans-serif; padding: 10px 17px; }
+.en-cookie-choice { background: #dfff45; border: 1px solid #dfff45; color: #151b13; min-width: 105px; }
+.en-cookie-choice:hover, .en-privacy-controls #en-privacy-save:hover { background: #c5e63c; }
+.en-cookie-configure { background: transparent; border: 1px solid #a8b4ab; color: white; }
+.en-cookie-configure:hover { background: #304036; }
+.en-privacy-overlay { z-index: 31000; position: fixed; inset: 0; display: grid; place-items: center; padding: 14px; background: rgba(0,0,0,.72); }
+.en-privacy-dialog { width: min(100%,560px); max-height: 90dvh; overflow: auto; border-radius: 18px; padding: 26px; background: #17211c; color: #fff; line-height: 1.5; box-shadow: 0 18px 54px #0009; }
+.en-privacy-dialog h2 { margin: 0 0 8px; font-size: 23px; }
+.en-privacy-dialog p { font-size: 14px; margin: 6px 0 16px; color: #dfebe0; }
+.en-privacy-setting { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 0; border-top: 1px solid #506052; color: white; }
+.en-privacy-setting > div, .en-privacy-setting > span { min-width: 0; }
+.en-privacy-setting strong { display: block; }
+.en-privacy-setting span[aria-label] { font-size: 12px; color: #dfff45; }
+.en-privacy-description { display: block; font-size: 13px; color: #e2e8e2; margin-top: 3px; }
+#en-analytics-toggle { appearance: auto; width: 23px; height: 23px; flex: none; accent-color: #b8e732; }
+.en-privacy-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.en-privacy-controls #en-privacy-save { background: #dfff45; color: #171a13; border: 1px solid #dfff45; }
+.en-privacy-controls #en-privacy-cancel { background: #303d34; color: #fff; border: 1px solid #8b9d90; }
+.en-privacy-links { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; width: 100%; padding: 16px; background: #111815; color: #fff; font-size: 13px; }
+.en-privacy-links a, .en-privacy-links button { color: #fff !important; font: inherit; border: 0; background: transparent; padding: 6px 0; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.en-privacy-links a:hover, .en-privacy-links button:hover { color: #dfff45 !important; }
+.en-cookie-banner :focus-visible, .en-privacy-overlay :focus-visible, .en-privacy-links :focus-visible { outline: 3px solid #dfff45; outline-offset: 3px; }
+/* Páginas legales autónomas: no se mezclan con la portada */
+body.en-legal-body { margin: 0; min-height: 100dvh; background: #111815; color: #e7f0e8; font-family: system-ui, sans-serif; }
+.en-legal-page { max-width: 850px; margin: 0 auto; padding: clamp(22px,5vw,54px); line-height: 1.75; }
+.en-legal-page a { color: #e5ff8e; }
+.en-legal-page h1 { color: #fff; font-size: clamp(28px,5vw,44px); line-height: 1.15; }
+.en-legal-page h2 { color: #dfff45; margin-top: 30px; font-size: 21px; }
+.en-legal-page p, .en-legal-page li { color: #e7f0e8; }
+.en-legal-alert { background: #4b291e; border: 1px solid #ffb58b; border-radius: 10px; padding: 15px; color: #fff; }
+.en-legal-page code { color: #dfff45; overflow-wrap: anywhere; }
+@media (max-width: 720px) {
+  .en-cookie-banner { inset: auto 10px 10px; flex-direction: column; align-items: stretch; gap: 12px; padding: 16px; max-height: 86dvh; overflow-y: auto; }
+  .en-cookie-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .en-cookie-actions button { width: 100%; }
+  .en-cookie-configure { grid-column: 1/-1; }
+  .en-cookie-copy p { font-size: 14px; }
+  .en-privacy-dialog { padding: 20px; }
+}
+.en-register-privacy { margin: 10px 0; font: 13px/1.5 system-ui, sans-serif; color: #222; }
+.en-register-privacy a { color: #174c60; text-decoration: underline; }
+
+.en-legal-page table {width:100%;border-collapse:collapse;} .en-legal-page th,.en-legal-page td {border:1px solid #516259;padding:10px;text-align:left;}
