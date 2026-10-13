@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111714">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Recordatorios de mantenimiento privados en el garaje de Enduro Nalón.">
+  <title>Recordatorios · Mi Garaje · Enduro Nalón</title>
+  <link rel="icon" href="imagen/img.jpg">
+  <link rel="stylesheet" href="css/estilo.css">
+  <link rel="stylesheet" href="css/mi-garaje.css">
+  <link rel="stylesheet" href="css/garage-avisos.css">
+  <script defer src="js/auth.js"></script>
+  <script defer type="module" src="js/garage-avisos.js"></script>
+  <script defer src="js/legal.js"></script>
+  <script defer src="js/cookies.js"></script>
+</head>
+<body class="garage-body aviso-body">
+  <a class="garage-skip" href="#avisos-main">Saltar al contenido</a>
+  <header class="garage-header">
+    <a href="index.html" class="garage-logo" aria-label="Enduro Nalón, inicio"><span aria-hidden="true">EN</span> ENDURO <strong>NALÓN</strong></a>
+    <nav class="garage-nav" aria-label="Menú principal">
+      <a href="index.html">Inicio</a>
+      <a href="mi-garaje.html">Mi garaje</a>
+      <a href="mantenimientos.html">Libro de mantenimientos</a>
+      <a href="buscar-moto.html">Manuales</a>
+    </nav>
+    <div class="auth-topbar" id="authTopbar"></div>
+  </header>
+
+  <main id="avisos-main" class="garage-main">
+    <section class="garage-hero aviso-hero" aria-labelledby="avisos-titulo">
+      <div class="garage-hero__content">
+        <p class="garage-kicker">MI GARAJE · CONTROL PERSONAL</p>
+        <h1 id="avisos-titulo">Mis <span>recordatorios</span></h1>
+        <p>Configura los intervalos de mantenimiento de cada moto y consulta cuándo toca el siguiente trabajo.</p>
+      </div>
+    </section>
+
+    <section class="garage-panel" aria-labelledby="avisos-moto-titulo">
+      <div class="garage-panel__header">
+        <div>
+          <p class="garage-kicker">CONFIGURACIÓN PERSONAL</p>
+          <h2 id="avisos-moto-titulo">Selecciona tu moto</h2>
+          <p>Los intervalos son tuyos, no recomendaciones automáticas del fabricante.</p>
+        </div>
+        <a class="garage-btn garage-btn--ghost" href="mi-garaje.html">Volver a Mi Garaje</a>
+      </div>
+      <div id="avisos-estado" class="garage-status" role="status" aria-live="polite">Comprobando sesión…</div>
+      <div class="aviso-selector" id="avisos-selector-area" hidden>
+        <label for="avisos-moto">Moto registrada</label>
+        <select id="avisos-moto"><option value="">Selecciona una moto</option></select>
+      </div>
+    </section>
+
+    <section class="garage-panel" id="avisos-lecturas-panel" aria-labelledby="avisos-lecturas-titulo" hidden>
+      <p class="garage-kicker">PASO 1</p>
+      <h2 id="avisos-lecturas-titulo">Lectura actual</h2>
+      <p class="aviso-description">Indica las horas o los kilómetros reales del contador. Deja vacío el dato que no quieras actualizar.</p>
+      <form id="avisos-lecturas-form" class="garage-form" autocomplete="off">
+        <div>
+          <label for="avisos-horas">Horas actuales del motor</label>
+          <input id="avisos-horas" type="number" min="0" max="1000000" step="1" inputmode="numeric" placeholder="Ej.: 124">
+        </div>
+        <div>
+          <label for="avisos-km">Kilómetros actuales</label>
+          <input id="avisos-km" type="number" min="0" max="10000000" step="1" inputmode="numeric" placeholder="Ej.: 3678">
+        </div>
+        <div class="garage-form-actions"><button class="garage-btn garage-btn--accent" id="avisos-guardar-lectura" type="submit">Guardar lectura</button></div>
+      </form>
+      <p id="avisos-lecturas-mensaje" class="garage-form-message" role="alert"></p>
+    </section>
+
+    <section class="garage-panel" id="avisos-reglas-panel" aria-labelledby="avisos-reglas-titulo" hidden>
+      <div class="garage-panel__header">
+        <div>
+          <p class="garage-kicker">PASO 2</p>
+          <h2 id="avisos-reglas-titulo">Plan de mantenimiento</h2>
+          <p>Avisos basados en la lectura guardada y los intervalos que hayas configurado.</p>
+        </div>
+      </div>
+      <div id="avisos-reglas" class="aviso-grid" aria-live="polite"></div>
+      <h3 class="aviso-subtitle">Crear o modificar recordatorio</h3>
+      <form id="avisos-regla-form" class="garage-form" autocomplete="off">
+        <div>
+          <label for="avisos-categoria">Trabajo</label>
+          <select id="avisos-categoria" required>
+            <option value="">Selecciona una categoría</option>
+            <option value="aceite_motor">Aceite del motor</option>
+            <option value="aceite_caja">Aceite de la caja</option>
+            <option value="filtro_aire">Filtro de aire</option>
+            <option value="piston">Pistón</option>
+            <option value="transmision">Transmisión</option>
+            <option value="refrigerante">Refrigerante</option>
+            <option value="bujia">Bujía</option>
+            <option value="frenos">Frenos</option>
+            <option value="otros">Otros</option>
+          </select>
+        </div>
+        <div>
+          <label for="avisos-unidad">Unidad de control</label>
+          <select id="avisos-unidad" required>
+            <option value="h">Horas de motor</option>
+            <option value="km">Kilómetros</option>
+          </select>
+        </div>
+        <div>
+          <label for="avisos-intervalo">Cada cuántas horas o km</label>
+          <input id="avisos-intervalo" type="number" min="1" max="1000000" step="1" inputmode="numeric" placeholder="Ej.: 15" required>
+          <small>El valor es orientativo según lo que decidas; verifica el manual de tu moto.</small>
+        </div>
+        <div>
+          <label for="avisos-ultima">Lectura del último mantenimiento</label>
+          <input id="avisos-ultima" type="number" min="0" max="10000000" step="1" inputmode="numeric" placeholder="Ej.: 110" required>
+          <small>No es una fecha: es el valor del contador cuando realizaste el trabajo.</small>
+        </div>
+        <div class="garage-form-actions"><button class="garage-btn garage-btn--accent" id="avisos-guardar-regla" type="submit">Guardar recordatorio</button></div>
+      </form>
+      <p id="avisos-regla-mensaje" class="garage-form-message" role="alert"></p>
+    </section>
+
+    <aside class="garage-note">
+      <h2>Antes de hacer mantenimiento</h2>
+      <p>Los avisos son una ayuda para organizarte y dependen de los datos que introduzcas. No sustituyen el manual del fabricante, la inspección de seguridad ni una revisión profesional. Esta versión no envía correos, notificaciones push ni registra automáticamente un mantenimiento cuando pulsas «Realizado».</p>
+      <div class="garage-actions"><a href="buscar-moto.html">Ver documentación técnica</a><a href="mantenimientos.html">Abrir libro de mantenimientos</a><a href="privacidad.html">Privacidad</a></div>
+    </aside>
+    <noscript><p class="garage-note">Para utilizar los recordatorios necesitas habilitar JavaScript.</p></noscript>
+  </main>
+  <footer class="garage-footer"><span>© <span id="avisos-year"></span> Enduro Nalón</span><a href="privacidad.html">Privacidad</a><a href="politica-cookies.html">Cookies</a><a href="aviso-legal.html">Aviso legal</a></footer>
+</body>
+</html>

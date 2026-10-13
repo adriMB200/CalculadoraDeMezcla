@@ -1,0 +1,38 @@
+/* Fase 2.2 · Solo se aplica en avisos.html; no altera otras herramientas. */
+.aviso-body { color-scheme:dark; }
+.aviso-hero { min-height:240px; }
+.aviso-selector { display:flex; flex-wrap:wrap; align-items:center; gap:12px; }
+.aviso-selector label { font-weight:750; }
+.aviso-selector select {
+  min-width:min(100%,340px); max-width:100%; min-height:48px; border:1px solid #91a494;
+  border-radius:8px; background:#101914; color:#fff; padding:10px 12px; font-size:16px;
+}
+.aviso-description { color:var(--g-muted); max-width:670px; }
+.aviso-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr)); gap:15px; margin-bottom:22px; }
+.aviso-card { background:rgba(21,33,25,.93); padding:20px; border-radius:12px; border:1px solid var(--g-line); min-width:0; }
+.aviso-card h3 { font-size:20px; margin:0 0 6px; overflow-wrap:anywhere; }
+.aviso-card p { margin:8px 0; color:#e1ece0; }
+.aviso-card small { color:var(--g-muted); display:block; line-height:1.5; }
+.aviso-card__status { display:inline-block; border:1px solid #87c497; color:#e9ffe5; background:#24442b;
+  border-radius:999px; font-weight:750; font-size:12px; padding:5px 10px; margin:6px 0 9px; }
+.aviso-card[data-estado="vencido"] .aviso-card__status { background:#622c29; border-color:#e48d85; color:#ffedeb; }
+.aviso-card[data-estado="proximo"] .aviso-card__status { background:#644c18; border-color:#e6ca78; color:#fff7db; }
+.aviso-card[data-estado="sin-datos"] .aviso-card__status,
+.aviso-card[data-estado="revisar"] .aviso-card__status { background:#353d43; border-color:#a1b5be; color:#f4f5f6; }
+.aviso-card progress { width:100%; height:11px; accent-color:#cdeb48; }
+.aviso-card__actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+.aviso-card__actions button { flex:1 1 110px; }
+.aviso-subtitle { border-top:1px solid var(--g-line); padding-top:24px; font-size:23px; }
+.aviso-empty { padding:22px; background:rgba(255,255,255,.055); border-radius:10px; color:var(--g-muted); }
+.aviso-body .garage-form-message { margin-top:12px; }
+.aviso-body .garage-form-message:not(:empty) { background:#40291f; border:1px solid #ca957d; border-radius:8px; padding:12px; }
+.aviso-body .garage-form input:focus-visible, .aviso-body .garage-form select:focus-visible, .aviso-body .aviso-selector select:focus-visible { outline:3px solid var(--g-accent); outline-offset:2px; }
+@media(max-width:640px) {
+  .aviso-hero { min-height:180px; padding:27px 18px; }
+  .aviso-hero h1 { font-size:clamp(38px,10vw,58px); overflow-wrap:anywhere; }
+  .aviso-grid { grid-template-columns:1fr; }
+  .aviso-selector { display:block; }
+  .aviso-selector label { display:block; margin-bottom:8px; }
+  .aviso-selector select { width:100%; }
+  .aviso-card__actions button { min-height:48px; }
+}
