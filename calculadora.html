@@ -8,16 +8,23 @@
     <title>Calculadora de Mezcla | Enduro Nalón</title>
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="css/privacidad.css">
+    <link rel="stylesheet" href="css/enduro-interiores.css">
 </head>
 
-<body>
+<body class="en-interior en-calculadora">
 
-    <div style="text-align:center; margin-bottom:20px;">
-        <button class="operator" onclick="location.href='index.html'">🏠 Home</button>
-    </div>
+    <header class="en-subnav">
+      <a class="en-subnav__brand" href="index.html" aria-label="Enduro Nalón, inicio"><span class="en-subnav__mark" aria-hidden="true">EN</span><span>ENDURO <strong>NALÓN</strong></span></a>
+      <nav class="en-subnav__links" aria-label="Navegación de herramientas"><a href="index.html">Inicio</a><a href="buscar-moto.html">Buscar moto</a><a href="calculadora.html" aria-current="page">Calculadora</a><a href="tablas.html">Pares y manuales</a><a href="mantenimientos.html">Mantenimientos</a><a href="mi-garaje.html">Mi garaje</a></nav>
+    </header>
 
+    <main class="en-workspace" id="contenido-principal">
+      <section class="en-page-intro" aria-labelledby="enPageTitle">
+        <div><p class="en-page-eyebrow">TALLER ENDURO · HERRAMIENTAS</p><h1 id="enPageTitle">Calculadora de mezcla</h1><p>Calcula la cantidad de aceite para tu mezcla de dos tiempos, de forma rápida y desde cualquier dispositivo.</p></div>
+        <span class="en-page-chip">MEZCLA 2T</span>
+      </section>
     <div id="calculatorContainer" class="calculator mix-calculator">
-        <h1>Calculadora de Mezcla</h1>
+        <h2>Calculadora de mezcla</h2>
         <p class="mix-subtitle">
             Calcula cuántos ml de aceite necesitas según los litros de gasolina y el porcentaje de mezcla.
         </p>
@@ -71,6 +78,8 @@
             </ul>
         </div>
     </div>
+
+    </main>
 
     <script>
         window.PROD_URL = "https://enduronalon.netlify.app";
@@ -137,6 +146,8 @@
 
     <script src="js/legal.js"></script>
     <script src="js/cookies.js"></script>
+<footer class="en-interior-footer"><p>© <span id="year"></span> Enduro Nalón · Taller Enduro</p></footer>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 
 </html>

@@ -4,47 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor de Motos y Mantenimientos</title>
+    <title>Libro de mantenimientos | Enduro Nalón</title>
     <link rel="stylesheet" href="css/estilo.css">
     <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/privacidad.css">
+    <link rel="stylesheet" href="css/enduro-interiores.css">
 </head>
 
-<body>
+<body class="en-interior en-mantenimientos">
 
-    <div style="display:flex; justify-content:center; gap:15px; margin-bottom:20px;">
-        <button class="operator" onclick="location.href='index.html'">🏠 Home</button>
-        <a class="operator" href="mi-garaje.html" style="display:inline-block;padding:14px;text-decoration:none">🏍 Mi garaje</a>
-    </div>
+    <header class="en-subnav">
+      <a class="en-subnav__brand" href="index.html" aria-label="Enduro Nalón, inicio"><span class="en-subnav__mark" aria-hidden="true">EN</span><span>ENDURO <strong>NALÓN</strong></span></a>
+      <nav class="en-subnav__links" aria-label="Navegación de herramientas"><a href="index.html">Inicio</a><a href="buscar-moto.html">Buscar moto</a><a href="calculadora.html">Calculadora</a><a href="tablas.html">Pares y manuales</a><a href="mantenimientos.html" aria-current="page">Mantenimientos</a><a href="mi-garaje.html">Mi garaje</a></nav>
+    </header>
 
+    <main class="en-workspace" id="contenido-principal">
+      <section class="en-page-intro" aria-labelledby="enPageTitle">
+        <div><p class="en-page-eyebrow">MI GARAJE · HISTORIAL</p><h1 id="enPageTitle">Libro de mantenimientos</h1><p>Registra motos y trabajos de mantenimiento en tu historial personal. Tu información se consulta con tu cuenta de Enduro Nalón.</p></div>
+        <span class="en-page-chip">HISTORIAL PERSONAL</span>
+      </section>
     <div class="info-container">
-        <h2>📘 Mis Motos y Mantenimientos</h2>
+        <h2>Mis motos y mantenimientos</h2>
+        <p class="en-helper">Añade una moto o consulta los servicios realizados. Para recordatorios personalizados, entra en Mi garaje.</p>
 
         <form id="motoForm">
-            <label>Marca:</label>
+            <div class="en-form-field"><label for="marca">Marca</label>
             <select id="marca" required onchange="actualizarModelos()">
                 <option value="">Selecciona una marca</option>
                 <option value="KTM">KTM</option>
                 <option value="GasGas">GasGas</option>
                 <option value="Rieju">Rieju</option>
                 <option value="BMW">BMW</option>
-            </select>
+            </select></div>
 
-            <label>Modelo:</label>
+            <div class="en-form-field"><label for="modelo">Modelo</label>
             <select id="modelo" required>
                 <option value="">Selecciona un modelo</option>
-            </select>
+            </select></div>
 
-            <label>Año:</label>
+            <div class="en-form-field"><label for="anio">Año</label>
             <select id="anio" required>
                 <option value="">Selecciona un año</option>
-            </select>
+            </select></div>
 
             <button type="submit">➕ Añadir Moto</button>
         </form>
 
         <div id="motoList"></div>
     </div>
+
+    </main>
 
     <script>
         const PROD_URL = "https://enduronalon.netlify.app";
@@ -285,7 +294,7 @@
     </script>
     <script src="js/auth.js"></script>
 
-    <footer>
+    <footer class="en-interior-footer">
         <p>© <span id="year"></span> Enduronalon. Todos los derechos reservados.</p>
     </footer>
 

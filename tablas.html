@@ -10,19 +10,24 @@
     <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/privacidad.css">
     <link rel="stylesheet" href="css/buscador-moto.css">
+    <link rel="stylesheet" href="css/enduro-interiores.css">
 </head>
 
-<body>
+<body class="en-interior en-tablas">
+    <header class="en-subnav">
+      <a class="en-subnav__brand" href="index.html" aria-label="Enduro Nalón, inicio"><span class="en-subnav__mark" aria-hidden="true">EN</span><span>ENDURO <strong>NALÓN</strong></span></a>
+      <nav class="en-subnav__links" aria-label="Navegación de herramientas"><a href="index.html">Inicio</a><a href="buscar-moto.html">Buscar moto</a><a href="calculadora.html">Calculadora</a><a href="tablas.html" aria-current="page">Pares y manuales</a><a href="mantenimientos.html">Mantenimientos</a><a href="mi-garaje.html">Mi garaje</a></nav>
+    </header>
+
+    <main class="en-workspace" id="contenido-principal">
+      <section class="en-page-intro" aria-labelledby="enPageTitle">
+        <div><p class="en-page-eyebrow">TALLER ENDURO · DOCUMENTACIÓN</p><h1 id="enPageTitle">Pares de apriete y manuales</h1><p>Consulta fichas técnicas, pares orientativos y documentación. Comprueba siempre el año y la versión exacta antes de intervenir en tu moto.</p></div>
+        <span class="en-page-chip">FICHAS TÉCNICAS</span>
+      </section>
     <!-- FASE 1 · acceso al buscador -->
     <div class="bm-tablas-entry">
        <div><strong>¿Buscas datos de un modelo concreto?</strong><span>Filtra por marca, modelo y año en lugar de revisar toda la tabla.</span></div>
        <a href="buscar-moto.html">Buscar documentación →</a>
-    </div>
-
-
-    <div style="display:flex; justify-content:center; gap:15px; margin-bottom:20px;">
-        <button class="operator" onclick="location.href='index.html'">🏠 Home</button>
-        <button class="operator" onclick="location.href='calculadora.html'">🧮 Calculadora</button>
     </div>
 
     <div class="info-container">
@@ -33,6 +38,7 @@
             <strong>Consulta siempre</strong> el manual oficial del modelo exacto (año y cilindrada).
         </div>
 
+        <div class="en-table-scroll" role="region" aria-label="Tabla de documentación y pares de apriete" tabindex="0">
         <table>
             <thead>
                 <tr>
@@ -173,14 +179,15 @@
                 </tr>
             </tbody>
         </table>
+        </div>
 
-        <div style="display:flex; gap:15px; margin:20px 0;">
+        <div class="en-related-links">
             <button class="operator" onclick="location.href='ktm450_2003.html'">🔩 KTM 450 2003</button>
             <button class="operator" onclick="location.href='ktm300_2017.html'">🔩 KTM 300 2017</button>
             <button class="operator" onclick="location.href='gg_04-06.html'">🔩 GG 2004-2006</button>
         </div>
 
-        <div style="display:flex; gap:15px; margin-bottom:15px;">
+        <div class="en-related-links">
             <button class="operator" onclick="location.href='mantenimientos.html'">🔧 Libro de mantenimientos</button>
         </div>
 
@@ -189,6 +196,8 @@
             Un par incorrecto puede dañar cárteres de aluminio.
         </div>
     </div>
+
+    </main>
 
     <script src="/js/chatbot.js"></script>
     <script>
@@ -211,7 +220,7 @@
     </script>
     <script src="js/auth.js"></script>
 
-    <footer>
+    <footer class="en-interior-footer">
         <p>© <span id="year"></span> Enduronalon. Todos los derechos reservados.</p>
     </footer>
 
