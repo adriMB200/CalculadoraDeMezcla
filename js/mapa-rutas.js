@@ -7,6 +7,21 @@
  const notice=(id,t)=>{$(id).textContent=t;};
  let rows=[],admin=false,map=null,leaflet=null,layer=null,editingLayer=null,points=[],drawing=false, outings=[];
  const routeLayers=new Map();
+ // EJEMPLO VISUAL. No representa una ruta transitable ni un GPX real.
+ const DEMO_POINTS=[[43.3592,-5.8480],[43.3603,-5.8454],[43.3595,-5.8428],[43.3612,-5.8409],[43.3621,-5.8383]];
+ let demoLine=null;
+ function demoVisible(){return rows.length===0;}
+ function demoCard(){
+   const card=el('article','enmap-route enmap-route--demo');
+   card.append(el('span','enmap-tag','SIMULACIÓN · NO ES RUTA REAL'));
+   card.append(el('h4','','Ejemplo de trazado en el mapa'));
+   card.append(el('p','','Línea ficticia para enseñar el funcionamiento. No es un camino, track GPX ni recomendación de circulación.'));
+   card.append(btn('Localizar ejemplo',()=>{
+     if(!map){notice('map-state','Primero pulsa «Cargar mapa» para ver la simulación.');return;}
+     if(demoLine)map.fitBounds(demoLine.getBounds(),{padding:[45,45]});
+   }));
+   return card;
+ }
  async function request(action,body){
    const t=token();const headers={...(t?{Authorization:'Bearer '+t}:{}),...(body?{'Content-Type':'application/json'}:{})};
    const r=await fetch('/.netlify/functions/'+action,{method:body?'POST':'GET',headers,body:body?JSON.stringify(body):undefined,cache:'no-store'});
@@ -40,7 +55,13 @@
  }
  function renderRoutes(){
    const target=$('routes-list');target.replaceChildren();const filtered=rows.filter(filters);
-   if(!filtered.length)target.append(el('p','','No hay recorridos que coincidan con los filtros.'));
+   if(!filtered.length){
+     const empty=rows.length===0;
+     target.append(el('p','',empty
+       ? 'Aún no hay recorridos públicos aprobados. Importa tu propio GPX o propón una ruta para revisión.'
+       : 'No hay recorridos que coincidan con los filtros.'));
+     if(empty)target.append(demoCard());
+   }
    for(const item of filtered){
      const card=el('article','enmap-route');
      card.append(el('span','enmap-tag',item.estado==='pendiente'?'PENDIENTE DE REVISIÓN':item.estado==='rechazado'?'RECHAZADO':item.acceso==='inscritos'?'SOLO INSCRITOS':'PUBLICADO'));
@@ -54,12 +75,17 @@
      }
      target.append(card);
    }
-   notice('routes-state',`${filtered.length} recorrido(s). Los pendientes propios solo los ves tú y el administrador.`);
+   notice('routes-state',`${filtered.length} recorrido(s) visible(s). ${rows.length===0?'El ejemplo es solo una simulación local.':'Los pendientes propios solo los ves tú y el administrador.'}`);
    drawExisting();
  }
  function drawExisting(){
    if(!map)return;
    if(layer)layer.clearLayers();routeLayers.clear();
+   if(demoLine){map.removeLayer(demoLine);demoLine=null;}
+   if(demoVisible()){
+     demoLine=leaflet.polyline(DEMO_POINTS,{color:'#f1abff',weight:5,opacity:.88,dashArray:'10 9'}).addTo(layer);
+     demoLine.bindPopup('SIMULACIÓN VISUAL: no representa un camino ni una ruta autorizada.');
+   }
    for(const r of rows.filter(filters)){
      const coords=validPts(r.puntos);if(coords.length<2)continue;
      const line=leaflet.polyline(coords,{color:r.estado==='publicado'?'#dfff45':'#ffb66a',weight:5,opacity:.91});
@@ -71,10 +97,17 @@
  async function refresh(){
    try{let result;
     try{result=await request('clubTrazados');}
-    catch(e){if(token() && /sesión caducada/i.test(e.message)){result=await fetch('/.netlify/functions/clubTrazados',{cache:'no-store'}).then(r=>r.json());}else throw e;}
+    catch(e){
+      if(token() && /sesión caducada/i.test(e.message)){
+        const response=await fetch('/.netlify/functions/clubTrazados',{cache:'no-store'});
+        const publicData=await response.json().catch(()=>({}));
+        if(!response.ok)throw Error(publicData.error||'Error consultando los trazados públicos');
+        result=publicData;
+      }else throw e;
+    }
     rows=Array.isArray(result.trazados)?result.trazados:[];admin=Boolean(result.administrador);
     $('admin-review').hidden=!admin;renderRoutes();renderAdmin();
-   }catch(e){notice('routes-state','No se pudieron cargar las rutas: '+e.message);}
+   }catch(e){rows=[];$('routes-list').replaceChildren();notice('routes-state','No se pudo consultar Neon: '+e.message+'. Verifica migración, sesión y Netlify Functions.');if(map && layer){layer.clearLayers();if(demoLine){map.removeLayer(demoLine);demoLine=null;}}}
  }
  async function loadOutings(){
    try{const d=await request('clubRutas');outings=Array.isArray(d.rutas)?d.rutas:[];const sel=$('admin-trip');sel.replaceChildren();const empty=el('option','', 'Sin vincular a quedada');empty.value='';sel.append(empty);
@@ -124,11 +157,11 @@
       points.push([Number(e.latlng.lat.toFixed(6)),Number(e.latlng.lng.toFixed(6))]);updateDrawing();
     });
     for(const id of ['map-draw','map-undo','map-clear','map-gpx'])$(id).disabled=false;
-    $('map-draw').addEventListener('click',()=>{if(!token()){window.openAuthModal?.();notice('map-state','Inicia sesión para dibujar y guardar un recorrido.');return;}drawing=!drawing;$('map-draw').textContent=drawing?'Terminar dibujo':'Empezar a dibujar';notice('map-state',drawing?'Pulsa el mapa para añadir puntos.':'Modo dibujo desactivado.');});
+    $('map-draw').addEventListener('click',()=>{drawing=!drawing;$('map-draw').textContent=drawing?'Terminar dibujo':'Empezar a dibujar';notice('map-state',drawing?'Pulsa el mapa para añadir puntos.':'Modo dibujo desactivado.');});
     $('map-undo').addEventListener('click',()=>{points.pop();updateDrawing();});
     $('map-clear').addEventListener('click',()=>{if(!points.length||confirm('¿Borrar el dibujo actual?')){points=[];updateDrawing();}});
-    $('map-gpx').addEventListener('click',()=>{if(!token()){window.openAuthModal?.();return;}$('gpx-file').click();});
-    drawExisting();notice('map-state','Mapa listo. Puedes seleccionar un recorrido o dibujar una propuesta.');
+    $('map-gpx').addEventListener('click',()=>$('gpx-file').click());
+    drawExisting();notice('map-state',demoVisible()?'Mapa cargado con una simulación en morado. No es una ruta real; importa un GPX propio para añadir recorridos.':'Mapa listo. Selecciona un recorrido real o importa tu GPX.');
     setTimeout(()=>map.invalidateSize(),100);
    } catch(e){notice('map-state',e.message);$('load-map').disabled=false;}
  }
@@ -143,7 +176,7 @@
      const list=xmlpts.map(p=>[Number(p.getAttribute('lat')),Number(p.getAttribute('lon'))]);
      if(list.some(([a,b])=>!Number.isFinite(a)||!Number.isFinite(b)||a<27||a>45||b< -19||b>5))throw Error('El GPX contiene coordenadas fuera de España o no válidas');
      points=list;drawing=false;$('map-draw').textContent='Empezar a dibujar';updateDrawing();map.fitBounds(leaflet.latLngBounds(points),{padding:[20,20]});
-     notice('map-state',`GPX importado: ${points.length} puntos. Revisa el recorrido y envía la propuesta.`);
+     notice('map-state',`GPX importado: ${points.length} puntos. Vista previa local; inicia sesión y envíalo a revisión si quieres compartirlo.`);
    }catch(err){notice('map-state',err.message);}finally{$('gpx-file').value='';}
  });
  $('create-form').addEventListener('submit',async e=>{

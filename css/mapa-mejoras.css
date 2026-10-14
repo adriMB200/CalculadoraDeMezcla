@@ -1,0 +1,6 @@
+/* Los ejemplos NO representan recorridos reales. No alterar estilo de recorridos privados. */
+.enmap-route--demo{border:2px dashed #dda4fa;background:rgba(64,33,67,.78)}
+.enmap-route--demo .enmap-tag{color:#f4c7ff}
+.enmap-route--demo button{border-color:#e6c6f5!important}
+.enmap-demo-legend{background:rgba(60,31,66,.88);border:1px solid #d9a0f0;border-radius:10px;color:#fff;padding:12px 15px;margin:12px 0;line-height:1.55}
+.enmap-demo-legend strong{color:#efd0ff}

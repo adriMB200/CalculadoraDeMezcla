@@ -1,0 +1,33 @@
+/* Fase 10.2 · Menú y herramientas independientes · no afecta a las otras páginas. */
+.entah-page{min-height:100vh}
+.entah-page .enta-hero{margin-bottom:20px}
+.entah-page .enta-hero p:last-child{max-width:66ch;color:#e0eddb}
+.entah-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:20px 0 24px}
+.entah-card{display:flex;flex-direction:column;gap:13px;min-height:245px;border-radius:17px;padding:22px;background:rgba(8,20,12,.92);border:1px solid rgba(195,221,179,.28);text-decoration:none;color:#f4f8f2!important;backdrop-filter:blur(6px);box-shadow:0 12px 28px rgba(0,0,0,.22);transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.entah-card:hover{transform:translateY(-3px);border-color:#dcff46;background:rgba(16,35,19,.97)}
+.entah-card:focus-visible{outline:3px solid #dcff46;outline-offset:4px}
+.entah-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.entah-icon{display:grid;place-items:center;width:52px;height:52px;border-radius:14px;background:#2b3f1d;color:#dcff46;font-size:1.75rem;font-weight:800;line-height:1}
+.entah-number{font-size:.78rem;letter-spacing:.08em;color:#c5d9bf;font-weight:700}
+.entah-card-name{font-size:clamp(1.2rem,2vw,1.5rem);line-height:1.25;font-weight:850;color:#fff}
+.entah-card-description{flex:1;color:#dae8d5;font-size:.94rem;line-height:1.55}
+.entah-card-action{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#dcff46;font-weight:800;border-top:1px solid rgba(195,221,179,.22);padding-top:13px}
+.entah-card-action span{font-size:1.5rem;line-height:1}
+.entah-footnote{font-size:.9rem;color:#d2dfcb;background:rgba(9,18,12,.88);padding:13px 18px;border-radius:11px;border-left:3px solid #b1d558}
+.entah-breadcrumb{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:7px 0 14px;padding:0 4px;color:#d7e6d2;font-size:.92rem}
+.entah-breadcrumb a{display:inline-block;text-decoration:none;font-weight:750;color:#dcff46;padding:7px 0}
+.entah-breadcrumb a:hover{text-decoration:underline}
+.entah-tool-hero{margin-top:0!important}
+.entah-tool-hero h1{font-size:clamp(2rem,4.3vw,3.4rem)}
+.entah-page .enta-panel{max-width:100%;overflow-wrap:break-word}
+.entah-page .enta-panel .enta-grid{align-items:end}
+.entah-page .enta-panel .enta-grid label{align-self:stretch}
+.entah-page .enta-grid .enta-btn{align-self:end}
+.entah-page .enta-grid input,.entah-page .enta-grid textarea,.entah-page .enta-grid select{font-size:16px}
+.entah-bottom{margin:26px 0 14px}
+.entah-bottom a{display:inline-flex;padding:12px 18px;border-radius:10px;border:1px solid rgba(195,221,179,.38);background:rgba(8,20,12,.92);text-decoration:none;font-weight:800;color:#dcff46}
+.entah-bottom a:hover{border-color:#dcff46}
+.entah-page .enta-result{overflow-wrap:anywhere}
+@media(max-width:900px){.entah-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.entah-cards{grid-template-columns:1fr;gap:13px}.entah-card{min-height:0;padding:19px;gap:9px}.entah-card-name{font-size:1.28rem}.entah-breadcrumb{font-size:.87rem}.entah-page .enta-hero,.entah-page .enta-panel{padding:19px}}
+@media(prefers-reduced-motion:reduce){.entah-card{transition:none}.entah-card:hover{transform:none}}

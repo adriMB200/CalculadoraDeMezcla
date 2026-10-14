@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#111714">
+ <meta name="description" content="Calcula gasolina, aceite, filtros, neumáticos y reparaciones por hora de uso.">
+ <title>Coste por hora · Enduro Nalón</title>
+ <link rel="icon" href="imagen/img.jpg">
+ <link rel="stylesheet" href="css/estilo.css">
+ <link rel="stylesheet" href="css/taller-avanzado.css">
+ 
+ <link rel="stylesheet" href="css/taller-paginas.css">
+ <script defer src="js/auth.js"></script>
+ <script defer src="js/legal.js"></script>
+ <script defer src="js/cookies.js"></script>
+ <script type="module" src="js/taller-avanzado-paginas.js"></script>
+</head>
+<body class="enta-page entah-page">
+ <a class="enta-skip" href="#main">Saltar al contenido</a>
+ <header class="enta-header">
+  <a class="enta-brand" href="index.html"><span>EN</span> ENDURO <strong>NALÓN</strong></a>
+  <nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="buscar-moto.html">Manuales</a><a href="mi-garaje.html">Garaje</a><a href="mapa-rutas.html">Mapa</a></nav>
+  <div id="authTopbar" class="auth-topbar"></div>
+ </header>
+ <main id="main" class="enta-main">
+  <nav class="entah-breadcrumb" aria-label="Ruta de navegación"><a href="taller-avanzado.html">← Volver al Taller Avanzado</a><span aria-hidden="true">/</span><span aria-current="page">Coste por hora</span></nav>
+  <section class="enta-hero entah-tool-hero" aria-labelledby="tool-title">
+   <p class="enta-kicker">01 / GASTOS</p>
+   <h1 id="tool-title">Coste real <span>por hora</span></h1>
+   <p>Averigua cuánto te cuesta cada hora de enduro y consulta el desglose de tus gastos.</p>
+  </section>
+  <section class="enta-panel" id="costes" aria-labelledby="costes-title"><p class="enta-kicker">01 / ECONOMÍA DE LA MOTO</p><h2 id="costes-title">¿Cuánto cuesta una hora de enduro?</h2><p>Introduce los gastos y las horas correspondientes al <strong>mismo período</strong>. Es una estimación, no una contabilidad oficial. No incluye amortización, seguro ni impuestos salvo que los introduzcas en «Otros».</p>
+   <form id="cost-form" class="enta-grid">
+    <label>Horas realizadas<input name="horas" type="number" step="0.1" min="0.1" max="100000" value="50" required></label>
+    <label>Litros de gasolina consumidos<input name="combustibleLitros" type="number" min="0" max="100000" step="0.01" value="140" required></label>
+    <label>Precio medio por litro (€)<input name="precioLitro" type="number" min="0" max="100" step="0.001" value="1.6" required></label>
+    <label>Aceite y filtros (€)<input name="aceite" type="number" min="0" max="1000000" step="0.01" value="110" required></label>
+    <label>Neumáticos y mousse (€)<input name="neumaticos" type="number" min="0" max="1000000" step="0.01" value="180" required></label>
+    <label>Recambios y reparaciones (€)<input name="recambios" type="number" min="0" max="1000000" step="0.01" value="160" required></label>
+    <label>Mano de obra / taller (€)<input name="taller" type="number" min="0" max="1000000" step="0.01" value="0" required></label>
+    <label>Otros gastos (€)<input name="otros" type="number" min="0" max="1000000" step="0.01" value="30" required></label>
+    <button type="submit" class="enta-btn">Calcular coste</button>
+   </form>
+   <div id="cost-result" class="enta-result" aria-live="polite" role="status">Rellena los importes y pulsa «Calcular coste».</div>
+  </section>
+  <div class="entah-bottom"><a href="taller-avanzado.html">← Todas las herramientas</a></div>
+ </main>
+ <footer class="enta-footer">Enduro Nalón · <a href="privacidad.html">Privacidad</a> · <a href="aviso-legal.html">Aviso legal</a></footer>
+</body>
+</html>

@@ -1,0 +1,15 @@
+/* Ampliación del taller: hereda el sistema visual de la Fase 10 */
+.enta-mecanica-intro{color:#e2efdd}
+.enta-mecanica-guidance{background:rgba(34,51,38,.9);border-left:4px solid #dfff45;padding:13px 17px;margin:16px 0;border-radius:6px;color:#fff}
+.enta-grid select{width:100%;min-height:46px;padding:12px;background:#09150d;border:1px solid #89977f;border-radius:8px;color:#fff;font:inherit}
+.enta-page input::placeholder{color:#b9c9b8}
+.enta-subtitle{font-size:1.16rem;font-weight:700;margin:26px 0 0;color:#dfff45}
+.enta-hint{font-size:.9rem;color:#dee8da;margin:0 0 6px}
+.enta-result.enta-error{border-color:#fdb4a4;color:#fff;background:#3c221f}
+.enta-result.enta-good{border-color:#b4d985;background:#193323}
+.enta-result p{margin:.3em 0;color:inherit}
+.enta-result strong{display:block;color:#dfff45;font-size:clamp(1.1rem,2.8vw,1.5rem)}
+.enta-warning{padding:14px 17px;border-radius:10px;background:rgba(72,49,15,.92);color:#fff1c9;border:1px solid #bba96f}
+.enta-tabs a{flex-grow:0}
+.enta-page select:focus-visible{outline:3px solid #dfff45;outline-offset:2px}
+@media(max-width:600px){.enta-mecanica-guidance{font-size:.94rem}.enta-subtitle{font-size:1.04rem}}

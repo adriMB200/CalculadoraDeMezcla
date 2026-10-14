@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#111714">
+ <meta name="description" content="Compara holguras de segmentos y biela, pistón-cilindro y gap de bujía.">
+ <title>Tolerancias de motor · Enduro Nalón</title>
+ <link rel="icon" href="imagen/img.jpg">
+ <link rel="stylesheet" href="css/estilo.css">
+ <link rel="stylesheet" href="css/taller-avanzado.css">
+ <link rel="stylesheet" href="css/taller-mecanica.css">
+ <link rel="stylesheet" href="css/taller-paginas.css">
+ <script defer src="js/auth.js"></script>
+ <script defer src="js/legal.js"></script>
+ <script defer src="js/cookies.js"></script>
+ <script type="module" src="js/taller-mecanica-paginas.js"></script>
+</head>
+<body class="enta-page entah-page">
+ <a class="enta-skip" href="#main">Saltar al contenido</a>
+ <header class="enta-header">
+  <a class="enta-brand" href="index.html"><span>EN</span> ENDURO <strong>NALÓN</strong></a>
+  <nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="buscar-moto.html">Manuales</a><a href="mi-garaje.html">Garaje</a><a href="mapa-rutas.html">Mapa</a></nav>
+  <div id="authTopbar" class="auth-topbar"></div>
+ </header>
+ <main id="main" class="enta-main">
+  <nav class="entah-breadcrumb" aria-label="Ruta de navegación"><a href="taller-avanzado.html">← Volver al Taller Avanzado</a><span aria-hidden="true">/</span><span aria-current="page">Tolerancias de motor</span></nav>
+  <section class="enta-hero entah-tool-hero" aria-labelledby="tool-title">
+   <p class="enta-kicker">04 / MECÁNICA</p>
+   <h1 id="tool-title">Tolerancias <span>de motor</span></h1>
+   <p>Comprueba segmentos, biela, pistón y bujía con los límites del manual de tu moto.</p>
+  </section>
+  <section class="enta-panel" id="tolerancias" aria-labelledby="tolerancias-title">
+   <p class="enta-kicker">04 / MEDICIONES DE MOTOR</p>
+   <h2 id="tolerancias-title">Tolerancias de segmentos, biela y bujía</h2>
+   <p class="enta-mecanica-intro">Compara tus mediciones con el intervalo del <strong>manual de tu moto, año y motor</strong>. No hay valores predeterminados: cada fabricante y pieza puede exigir tolerancias distintas.</p>
+   <form id="mecanica-form" class="enta-grid">
+    <label>Componente
+     <select id="mecanica-tipo" name="tipo">
+      <option value="segmentos">Abertura entre extremos de segmento</option>
+      <option value="ranura">Juego lateral de segmento en ranura</option>
+      <option value="biela-axial">Holgura axial / lateral de biela</option>
+      <option value="biela-radial">Juego radial de biela</option>
+      <option value="bujia">Gap o separación de electrodos de bujía</option>
+     </select>
+    </label>
+    <label>Medida obtenida (mm)<input name="medida" type="number" min="0" max="50" step="any" required placeholder="Ej.: 0,40"></label>
+    <label>Mínimo según manual (mm)<input name="minimo" type="number" min="0" max="50" step="any" placeholder="Introducir dato manual"></label>
+    <label>Máximo según manual (mm)<input name="maximo" type="number" min="0" max="50" step="any" placeholder="Introducir dato manual"></label>
+    <p id="mecanica-guia" class="enta-mecanica-guidance" style="grid-column:1/-1">Segmento colocado a escuadra dentro del cilindro; medir la abertura entre extremos con galgas. Confirmar qué segmento es y la posición de medida del manual.</p>
+    <button class="enta-btn" type="submit">Comprobar tolerancia</button>
+   </form>
+   <div id="mecanica-resultado" class="enta-result" role="status" aria-live="polite">Indica tu medición. Los límites del manual son opcionales, pero necesarios para comprobar si está dentro de tolerancia.</div>
+   <h3 class="enta-subtitle">Holgura pistón–cilindro</h3>
+   <p class="enta-hint">Diferencia entre el diámetro interno del cilindro y el diámetro del pistón; verifica los puntos y condiciones de medición del fabricante.</p>
+   <form id="diametral-form" class="enta-grid">
+    <label>Diámetro cilindro medido (mm)<input name="cilindro" type="number" step="any" min="1" max="150" required placeholder="Ej.: 72,02"></label>
+    <label>Diámetro pistón medido (mm)<input name="piston" type="number" step="any" min="1" max="150" required placeholder="Ej.: 71,97"></label>
+    <label>Mínimo según manual (mm)<input name="minimo" type="number" step="any" min="0" max="10" placeholder="Límite del fabricante"></label>
+    <label>Máximo según manual (mm)<input name="maximo" type="number" step="any" min="0" max="10" placeholder="Límite del fabricante"></label>
+    <button class="enta-btn" type="submit">Calcular holgura</button>
+   </form>
+   <div id="diametral-resultado" class="enta-result" role="status" aria-live="polite">Introduce ambas medidas en milímetros.</div>
+  </section>
+  <div class="entah-bottom"><a href="taller-avanzado.html">← Todas las herramientas</a></div>
+ </main>
+ <footer class="enta-footer">Enduro Nalón · <a href="privacidad.html">Privacidad</a> · <a href="aviso-legal.html">Aviso legal</a></footer>
+</body>
+</html>

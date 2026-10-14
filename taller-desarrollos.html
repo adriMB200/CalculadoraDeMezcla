@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#111714">
+ <meta name="description" content="Compara relaciones finales de transmisión y sus variaciones porcentuales.">
+ <title>Piñón y corona · Enduro Nalón</title>
+ <link rel="icon" href="imagen/img.jpg">
+ <link rel="stylesheet" href="css/estilo.css">
+ <link rel="stylesheet" href="css/taller-avanzado.css">
+ 
+ <link rel="stylesheet" href="css/taller-paginas.css">
+ <script defer src="js/auth.js"></script>
+ <script defer src="js/legal.js"></script>
+ <script defer src="js/cookies.js"></script>
+ <script type="module" src="js/taller-avanzado-paginas.js"></script>
+</head>
+<body class="enta-page entah-page">
+ <a class="enta-skip" href="#main">Saltar al contenido</a>
+ <header class="enta-header">
+  <a class="enta-brand" href="index.html"><span>EN</span> ENDURO <strong>NALÓN</strong></a>
+  <nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="buscar-moto.html">Manuales</a><a href="mi-garaje.html">Garaje</a><a href="mapa-rutas.html">Mapa</a></nav>
+  <div id="authTopbar" class="auth-topbar"></div>
+ </header>
+ <main id="main" class="enta-main">
+  <nav class="entah-breadcrumb" aria-label="Ruta de navegación"><a href="taller-avanzado.html">← Volver al Taller Avanzado</a><span aria-hidden="true">/</span><span aria-current="page">Piñón y corona</span></nav>
+  <section class="enta-hero entah-tool-hero" aria-labelledby="tool-title">
+   <p class="enta-kicker">02 / TRANSMISIÓN</p>
+   <h1 id="tool-title">Comparador de <span>desarrollos</span></h1>
+   <p>Compara cambios de piñón y corona y descubre cómo varía tu desarrollo final.</p>
+  </section>
+  <section class="enta-panel" id="desarrollos" aria-labelledby="gears-title"><p class="enta-kicker">02 / TRANSMISIÓN</p><h2 id="gears-title">Comparador de desarrollos</h2><p>Compara el efecto del número de dientes del piñón y la corona. No calcula velocidad máxima real ni comprueba compatibilidad de cadena, guía o espacio físico.</p>
+   <form id="gear-form" class="enta-grid">
+    <label>Piñón actual (dientes)<input type="number" name="pinionActual" min="9" max="80" step="1" value="13" required></label>
+    <label>Corona actual (dientes)<input type="number" name="coronaActual" min="9" max="80" step="1" value="50" required></label>
+    <label>Piñón propuesto (dientes)<input type="number" name="pinionNuevo" min="9" max="80" step="1" value="13" required></label>
+    <label>Corona propuesta (dientes)<input type="number" name="coronaNueva" min="9" max="80" step="1" value="52" required></label>
+    <button type="submit" class="enta-btn">Comparar desarrollo</button>
+   </form><div id="gear-result" class="enta-result" aria-live="polite" role="status">Indica ambas combinaciones.</div>
+  </section>
+  <div class="entah-bottom"><a href="taller-avanzado.html">← Todas las herramientas</a></div>
+ </main>
+ <footer class="enta-footer">Enduro Nalón · <a href="privacidad.html">Privacidad</a> · <a href="aviso-legal.html">Aviso legal</a></footer>
+</body>
+</html>

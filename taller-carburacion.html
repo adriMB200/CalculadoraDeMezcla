@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#111714">
+ <meta name="description" content="Calcula el cambio aproximado de densidad del aire y revisa síntomas.">
+ <title>Carburación · Enduro Nalón</title>
+ <link rel="icon" href="imagen/img.jpg">
+ <link rel="stylesheet" href="css/estilo.css">
+ <link rel="stylesheet" href="css/taller-avanzado.css">
+ <link rel="stylesheet" href="css/taller-mecanica.css">
+ <link rel="stylesheet" href="css/taller-paginas.css">
+ <script defer src="js/auth.js"></script>
+ <script defer src="js/legal.js"></script>
+ <script defer src="js/cookies.js"></script>
+ <script type="module" src="js/taller-mecanica-paginas.js"></script>
+</head>
+<body class="enta-page entah-page">
+ <a class="enta-skip" href="#main">Saltar al contenido</a>
+ <header class="enta-header">
+  <a class="enta-brand" href="index.html"><span>EN</span> ENDURO <strong>NALÓN</strong></a>
+  <nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="buscar-moto.html">Manuales</a><a href="mi-garaje.html">Garaje</a><a href="mapa-rutas.html">Mapa</a></nav>
+  <div id="authTopbar" class="auth-topbar"></div>
+ </header>
+ <main id="main" class="enta-main">
+  <nav class="entah-breadcrumb" aria-label="Ruta de navegación"><a href="taller-avanzado.html">← Volver al Taller Avanzado</a><span aria-hidden="true">/</span><span aria-current="page">Carburación</span></nav>
+  <section class="enta-hero entah-tool-hero" aria-labelledby="tool-title">
+   <p class="enta-kicker">05 / CARBURACIÓN</p>
+   <h1 id="tool-title">Asistente de <span>carburación</span></h1>
+   <p>Compara altitud y temperatura y consulta los circuitos relacionados con cada síntoma.</p>
+  </section>
+  <section class="enta-panel" id="carburacion" aria-labelledby="carburacion-title">
+   <p class="enta-kicker">05 / MOTOR 2T Y 4T CON CARBURADOR</p>
+   <h2 id="carburacion-title">Asistente de carburación</h2>
+   <p>Compara la densidad aproximada del aire entre tu carburación de referencia y el lugar donde circulas. <strong>No calcula chiclés de forma automática</strong>: la numeración varía entre fabricantes y el ajuste depende del carburador, aguja, combustible y motor.</p>
+   <form id="carburacion-form" class="enta-grid">
+    <label>Altitud de referencia (m)<input name="altitudBase" type="number" min="0" max="4500" step="1" value="500" required></label>
+    <label>Temperatura de referencia (°C)<input name="tempBase" type="number" min="-30" max="65" step="0.1" value="20" required></label>
+    <label>Altitud actual (m)<input name="altitudActual" type="number" min="0" max="4500" step="1" value="1200" required></label>
+    <label>Temperatura actual (°C)<input name="tempActual" type="number" min="-30" max="65" step="0.1" value="15" required></label>
+    <label>Chiclé principal actual (opcional)<input name="principal" maxlength="16" placeholder="Ej.: 170"></label>
+    <label>Chiclé de baja actual (opcional)<input name="baja" maxlength="16" placeholder="Ej.: 38"></label>
+    <label>Síntoma a investigar
+     <select name="sintoma">
+      <option value="ninguno">Sin síntomas / comparación general</option>
+      <option value="baja">Problemas a poco gas</option>
+      <option value="media">Problemas a medio gas</option>
+      <option value="alta">Problemas a gas muy abierto</option>
+      <option value="arranque">Dificultad de arranque</option>
+     </select>
+    </label>
+    <button type="submit" class="enta-btn">Analizar condiciones</button>
+   </form>
+   <div id="carburacion-resultado" class="enta-result" role="status" aria-live="polite">Compara altitud y temperatura para ver cómo cambia la densidad del aire.</div>
+   <p class="enta-warning">Una mezcla excesivamente pobre puede sobrecalentar o dañar el motor. No uses este cálculo como autorización para modificar chiclés ni para hacer pruebas sostenidas a plena carga. Comprueba el manual específico y el estado mecánico.</p>
+  </section>
+  <div class="entah-bottom"><a href="taller-avanzado.html">← Todas las herramientas</a></div>
+ </main>
+ <footer class="enta-footer">Enduro Nalón · <a href="privacidad.html">Privacidad</a> · <a href="aviso-legal.html">Aviso legal</a></footer>
+</body>
+</html>

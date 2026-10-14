@@ -13,6 +13,7 @@
  <script defer src="js/mapa-rutas.js"></script>
  <script defer src="js/legal.js"></script>
  <script defer src="js/cookies.js"></script>
+ <link rel="stylesheet" href="css/mapa-mejoras.css">
 </head>
 <body class="enmap-page">
  <a class="enmap-skip" href="#contenido">Saltar al contenido</a>
@@ -39,9 +40,10 @@
        <button type="button" id="map-draw" disabled>Empezar a dibujar</button>
        <button type="button" id="map-undo" disabled>Deshacer punto</button>
        <button type="button" id="map-clear" disabled>Limpiar dibujo</button>
-       <button type="button" id="map-gpx" disabled>Importar GPX</button>
+       <button type="button" id="map-gpx" disabled>Previsualizar GPX propio</button>
        <input type="file" id="gpx-file" accept=".gpx,application/gpx+xml,application/xml,text/xml" hidden>
      </div>
+     <p class="enmap-demo-legend"><strong>Importante:</strong> si no hay recorridos aprobados, se muestra una línea morada de simulación. <strong>No es un camino ni una ruta real.</strong> Importa tu GPX propio para ver rutas reales.</p>
      <p id="map-state" class="enmap-status" role="status" aria-live="polite">Activa el mapa para dibujar un trazado.</p>
     </div>
     <div class="enmap-sidebar"><h3>Recorridos disponibles</h3><p id="routes-state" role="status" aria-live="polite">Cargando recorridos…</p><div class="enmap-routelist" id="routes-list"></div></div>

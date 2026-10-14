@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="theme-color" content="#111714">
+ <meta name="description" content="Mide el SAG y copia tus ajustes personales de compresión y rebote.">
+ <title>Suspensiones y SAG · Enduro Nalón</title>
+ <link rel="icon" href="imagen/img.jpg">
+ <link rel="stylesheet" href="css/estilo.css">
+ <link rel="stylesheet" href="css/taller-avanzado.css">
+ 
+ <link rel="stylesheet" href="css/taller-paginas.css">
+ <script defer src="js/auth.js"></script>
+ <script defer src="js/legal.js"></script>
+ <script defer src="js/cookies.js"></script>
+ <script type="module" src="js/taller-avanzado-paginas.js"></script>
+</head>
+<body class="enta-page entah-page">
+ <a class="enta-skip" href="#main">Saltar al contenido</a>
+ <header class="enta-header">
+  <a class="enta-brand" href="index.html"><span>EN</span> ENDURO <strong>NALÓN</strong></a>
+  <nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="buscar-moto.html">Manuales</a><a href="mi-garaje.html">Garaje</a><a href="mapa-rutas.html">Mapa</a></nav>
+  <div id="authTopbar" class="auth-topbar"></div>
+ </header>
+ <main id="main" class="enta-main">
+  <nav class="entah-breadcrumb" aria-label="Ruta de navegación"><a href="taller-avanzado.html">← Volver al Taller Avanzado</a><span aria-hidden="true">/</span><span aria-current="page">Suspensiones y SAG</span></nav>
+  <section class="enta-hero entah-tool-hero" aria-labelledby="tool-title">
+   <p class="enta-kicker">03 / SUSPENSIONES</p>
+   <h1 id="tool-title">Suspensiones <span>y SAG</span></h1>
+   <p>Calcula el hundimiento con y sin piloto y guarda un reglaje para tu terreno.</p>
+  </section>
+  <section class="enta-panel" id="sag" aria-labelledby="sag-title"><p class="enta-kicker">03 / SUSPENSIONES</p><h2 id="sag-title">Configurador básico de SAG</h2><p>Mide siempre entre los mismos puntos. Para el eje delantero o trasero, anota la distancia con la suspensión extendida, con la moto apoyada y con el piloto equipado. El fabricante establece sus objetivos y procedimientos; esta herramienta no los inventa.</p>
+   <form id="sag-form" class="enta-grid">
+    <label>Con suspensión extendida (mm)<input type="number" name="extendida" min="1" max="2000" step="0.1" value="600" required></label>
+    <label>Moto apoyada sin piloto (mm)<input type="number" name="libre" min="1" max="2000" step="0.1" value="570" required></label>
+    <label>Moto con piloto equipado (mm)<input type="number" name="piloto" min="1" max="2000" step="0.1" value="500" required></label>
+    <label>Recorrido útil de la suspensión (mm)<input type="number" name="recorrido" min="1" max="1000" step="0.1" value="300" required></label>
+    <button type="submit" class="enta-btn">Calcular SAG</button>
+   </form><div id="sag-result" class="enta-result" aria-live="polite" role="status">Introduce tus cuatro medidas.</div>
+   <h3>Registro de reglaje personal</h3><p class="enta-muted">Puedes copiar estos valores en tu libro de mantenimiento. Por ahora <strong>no se guardan ni se transmiten</strong>.</p>
+   <div class="enta-grid"><label>Compresión (clics desde cerrado)<input type="number" id="click-comp" min="0" max="100" step="1" placeholder="Ej.: 12"></label><label>Rebote (clics desde cerrado)<input type="number" id="click-reb" min="0" max="100" step="1" placeholder="Ej.: 14"></label><label>Terreno / observaciones<textarea id="setup-notes" maxlength="400" rows="2" placeholder="Barro, piedra, sensación de la moto…"></textarea></label><button type="button" id="copy-setup" class="enta-btn">Copiar reglaje</button></div><p id="copy-state" class="enta-muted" role="status"></p>
+  </section>
+  <div class="entah-bottom"><a href="taller-avanzado.html">← Todas las herramientas</a></div>
+ </main>
+ <footer class="enta-footer">Enduro Nalón · <a href="privacidad.html">Privacidad</a> · <a href="aviso-legal.html">Aviso legal</a></footer>
+</body>
+</html>
