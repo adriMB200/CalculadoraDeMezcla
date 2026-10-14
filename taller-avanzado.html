@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="theme-color" content="#111714">
+ <meta name="description" content="Calculadora de costes por hora, comparador de desarrollos y medición de SAG para motos de enduro.">
+ <title>Taller avanzado · Enduro Nalón</title>
+ <link rel="icon" href="imagen/img.jpg">
+ <link rel="stylesheet" href="css/estilo.css"><link rel="stylesheet" href="css/taller-avanzado.css">
+ <script defer src="js/auth.js"></script><script defer src="js/legal.js"></script><script defer src="js/cookies.js"></script>
+ <script type="module" src="js/taller-avanzado.js"></script>
+</head>
+<body class="enta-page">
+ <a class="enta-skip" href="#main">Saltar al contenido</a>
+ <header class="enta-header"><a class="enta-brand" href="index.html"><span>EN</span> ENDURO <strong>NALÓN</strong></a><nav aria-label="Navegación"><a href="index.html">Inicio</a><a href="buscar-moto.html">Manuales</a><a href="mi-garaje.html">Garaje</a><a href="mapa-rutas.html">Mapa</a></nav><div id="authTopbar" class="auth-topbar"></div></header>
+ <main id="main" class="enta-main">
+  <section class="enta-hero"><p class="enta-kicker">ENDURO NALÓN · UTILIDADES</p><h1>Taller <span>Avanzado</span></h1><p>Tres herramientas para conocer mejor tu moto, sin depender de servicios de pago y sin enviar tus cálculos a un servidor.</p></section>
+  <nav class="enta-tabs" aria-label="Herramientas disponibles"><a href="#costes">Coste por hora</a><a href="#desarrollos">Piñón y corona</a><a href="#sag">Suspensiones / SAG</a></nav>
+  <section class="enta-panel" id="costes" aria-labelledby="costes-title"><p class="enta-kicker">01 / ECONOMÍA DE LA MOTO</p><h2 id="costes-title">¿Cuánto cuesta una hora de enduro?</h2><p>Introduce los gastos y las horas correspondientes al <strong>mismo período</strong>. Es una estimación, no una contabilidad oficial. No incluye amortización, seguro ni impuestos salvo que los introduzcas en «Otros».</p>
+   <form id="cost-form" class="enta-grid">
+    <label>Horas realizadas<input name="horas" type="number" step="0.1" min="0.1" max="100000" value="50" required></label>
+    <label>Litros de gasolina consumidos<input name="combustibleLitros" type="number" min="0" max="100000" step="0.01" value="140" required></label>
+    <label>Precio medio por litro (€)<input name="precioLitro" type="number" min="0" max="100" step="0.001" value="1.6" required></label>
+    <label>Aceite y filtros (€)<input name="aceite" type="number" min="0" max="1000000" step="0.01" value="110" required></label>
+    <label>Neumáticos y mousse (€)<input name="neumaticos" type="number" min="0" max="1000000" step="0.01" value="180" required></label>
+    <label>Recambios y reparaciones (€)<input name="recambios" type="number" min="0" max="1000000" step="0.01" value="160" required></label>
+    <label>Mano de obra / taller (€)<input name="taller" type="number" min="0" max="1000000" step="0.01" value="0" required></label>
+    <label>Otros gastos (€)<input name="otros" type="number" min="0" max="1000000" step="0.01" value="30" required></label>
+    <button type="submit" class="enta-btn">Calcular coste</button>
+   </form>
+   <div id="cost-result" class="enta-result" aria-live="polite" role="status">Rellena los importes y pulsa «Calcular coste».</div>
+  </section>
+  <section class="enta-panel" id="desarrollos" aria-labelledby="gears-title"><p class="enta-kicker">02 / TRANSMISIÓN</p><h2 id="gears-title">Comparador de desarrollos</h2><p>Compara el efecto del número de dientes del piñón y la corona. No calcula velocidad máxima real ni comprueba compatibilidad de cadena, guía o espacio físico.</p>
+   <form id="gear-form" class="enta-grid">
+    <label>Piñón actual (dientes)<input type="number" name="pinionActual" min="9" max="80" step="1" value="13" required></label>
+    <label>Corona actual (dientes)<input type="number" name="coronaActual" min="9" max="80" step="1" value="50" required></label>
+    <label>Piñón propuesto (dientes)<input type="number" name="pinionNuevo" min="9" max="80" step="1" value="13" required></label>
+    <label>Corona propuesta (dientes)<input type="number" name="coronaNueva" min="9" max="80" step="1" value="52" required></label>
+    <button type="submit" class="enta-btn">Comparar desarrollo</button>
+   </form><div id="gear-result" class="enta-result" aria-live="polite" role="status">Indica ambas combinaciones.</div>
+  </section>
+  <section class="enta-panel" id="sag" aria-labelledby="sag-title"><p class="enta-kicker">03 / SUSPENSIONES</p><h2 id="sag-title">Configurador básico de SAG</h2><p>Mide siempre entre los mismos puntos. Para el eje delantero o trasero, anota la distancia con la suspensión extendida, con la moto apoyada y con el piloto equipado. El fabricante establece sus objetivos y procedimientos; esta herramienta no los inventa.</p>
+   <form id="sag-form" class="enta-grid">
+    <label>Con suspensión extendida (mm)<input type="number" name="extendida" min="1" max="2000" step="0.1" value="600" required></label>
+    <label>Moto apoyada sin piloto (mm)<input type="number" name="libre" min="1" max="2000" step="0.1" value="570" required></label>
+    <label>Moto con piloto equipado (mm)<input type="number" name="piloto" min="1" max="2000" step="0.1" value="500" required></label>
+    <label>Recorrido útil de la suspensión (mm)<input type="number" name="recorrido" min="1" max="1000" step="0.1" value="300" required></label>
+    <button type="submit" class="enta-btn">Calcular SAG</button>
+   </form><div id="sag-result" class="enta-result" aria-live="polite" role="status">Introduce tus cuatro medidas.</div>
+   <h3>Registro de reglaje personal</h3><p class="enta-muted">Puedes copiar estos valores en tu libro de mantenimiento. Por ahora <strong>no se guardan ni se transmiten</strong>.</p>
+   <div class="enta-grid"><label>Compresión (clics desde cerrado)<input type="number" id="click-comp" min="0" max="100" step="1" placeholder="Ej.: 12"></label><label>Rebote (clics desde cerrado)<input type="number" id="click-reb" min="0" max="100" step="1" placeholder="Ej.: 14"></label><label>Terreno / observaciones<textarea id="setup-notes" maxlength="400" rows="2" placeholder="Barro, piedra, sensación de la moto…"></textarea></label><button type="button" id="copy-setup" class="enta-btn">Copiar reglaje</button></div><p id="copy-state" class="enta-muted" role="status"></p>
+  </section>
+  <aside class="enta-panel enta-muted"><strong>Precaución:</strong> verifica pares de apriete, compatibilidad de transmisión y reglajes con el manual de tu modelo y año. Los cálculos son orientativos, no instrucciones de seguridad o mecánica certificadas.</aside>
+ </main>
+ <footer class="enta-footer">Enduro Nalón · <a href="privacidad.html">Privacidad</a> · <a href="aviso-legal.html">Aviso legal</a></footer>
+</body>
+</html>

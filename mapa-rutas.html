@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="theme-color" content="#111714">
+ <meta name="description" content="Mapa interactivo de rutas compartidas y quedadas de Enduro Nalón. Los tracks se publican tras revisión.">
+ <title>Mapa de rutas · Enduro Nalón</title>
+ <link rel="icon" href="imagen/img.jpg">
+ <link rel="stylesheet" href="css/estilo.css">
+ <link rel="stylesheet" href="css/mapa-rutas.css">
+ <script defer src="js/auth.js"></script>
+ <script defer src="js/session.js"></script>
+ <script defer src="js/mapa-rutas.js"></script>
+ <script defer src="js/legal.js"></script>
+ <script defer src="js/cookies.js"></script>
+</head>
+<body class="enmap-page">
+ <a class="enmap-skip" href="#contenido">Saltar al contenido</a>
+ <header class="enmap-header">
+   <a href="index.html" class="enmap-brand"><span aria-hidden="true">EN</span> ENDURO <strong>NALÓN</strong></a>
+   <nav aria-label="Principal"><a href="index.html">Inicio</a><a href="rutas.html">Quedadas</a><a aria-current="page" href="mapa-rutas.html">Mapa de rutas</a><a href="taller-avanzado.html">Taller avanzado</a></nav>
+   <div id="authTopbar" class="auth-topbar"></div>
+ </header>
+ <main id="contenido" class="enmap-main">
+  <section class="enmap-intro"><p class="enmap-kicker">ENDURO NALÓN · RUTAS COMPARTIDAS</p><h1>Explora <span>rutas</span></h1><p>Consulta trazados publicados y crea tus propuestas sobre el mapa. Las propuestas necesitan aprobación. La existencia de un track <strong>no autoriza circular</strong> por un camino: comprueba siempre las normas aplicables.</p></section>
+  <section class="enmap-panel" aria-labelledby="mapa-titulo">
+   <div class="enmap-heading"><div><p class="enmap-kicker">RUTAS DEL CLUB</p><h2 id="mapa-titulo">Mapa interactivo</h2></div><a class="enmap-button enmap-button--quiet" href="rutas.html">Ver quedadas e inscribirme ↗</a></div>
+   <p class="enmap-note">El mapa utiliza OpenStreetMap y Leaflet. Para proteger tu privacidad, <strong>no se carga hasta que pulses «Cargar mapa»</strong>. Se conectará con servidores externos que pueden tratar tu dirección IP. <a href="privacidad.html">Política de privacidad</a>.</p>
+   <div class="enmap-filter">
+     <label>Buscar ruta<input id="filter-text" type="search" placeholder="Nombre o descripción" maxlength="80"></label>
+     <label>Provincia<input id="filter-province" type="search" placeholder="Ej.: Asturias" maxlength="70"></label>
+     <label>Dificultad<select id="filter-level"><option value="">Todas</option><option value="facil">Fácil</option><option value="media">Media</option><option value="alta">Alta</option></select></label>
+   </div>
+   <div class="enmap-layout">
+    <div class="enmap-maparea">
+     <div id="map-placeholder" class="enmap-placeholder"><div><h3>Tu mapa, cuando quieras</h3><p>Carga el mapa para ver y dibujar recorridos. No se descargarán mosaicos mientras permanezca cerrado.</p><button type="button" id="load-map" class="enmap-button">Cargar mapa</button></div></div>
+     <div id="route-map" class="enmap-map" hidden role="application" aria-label="Mapa de recorridos"></div>
+     <div class="enmap-mapactions">
+       <button type="button" id="map-draw" disabled>Empezar a dibujar</button>
+       <button type="button" id="map-undo" disabled>Deshacer punto</button>
+       <button type="button" id="map-clear" disabled>Limpiar dibujo</button>
+       <button type="button" id="map-gpx" disabled>Importar GPX</button>
+       <input type="file" id="gpx-file" accept=".gpx,application/gpx+xml,application/xml,text/xml" hidden>
+     </div>
+     <p id="map-state" class="enmap-status" role="status" aria-live="polite">Activa el mapa para dibujar un trazado.</p>
+    </div>
+    <div class="enmap-sidebar"><h3>Recorridos disponibles</h3><p id="routes-state" role="status" aria-live="polite">Cargando recorridos…</p><div class="enmap-routelist" id="routes-list"></div></div>
+   </div>
+  </section>
+  <section class="enmap-panel" id="map-create" aria-labelledby="create-title">
+    <p class="enmap-kicker">SOCIOS REGISTRADOS · MODERACIÓN PREVIA</p><h2 id="create-title">Propón un nuevo recorrido</h2>
+    <p>Pulsa «Empezar a dibujar» y marca puntos sobre el mapa, o importa un GPX propio. No se ajusta automáticamente a caminos ni se comprueba su legalidad. El trazado solo lo verá su autor y los administradores hasta que se apruebe.</p>
+    <form id="create-form" class="enmap-form">
+      <label>Título<input required name="titulo" minlength="4" maxlength="100" placeholder="Ej.: Ruta autorizada de fin de semana"></label>
+      <label>Provincia<input required name="provincia" minlength="2" maxlength="70" placeholder="Ej.: Asturias"></label>
+      <label>Dificultad<select name="dificultad" required><option value="facil">Fácil</option><option value="media">Media</option><option value="alta">Alta</option></select></label>
+      <label>Enlace a tu ruta en Wikiloc (opcional)<input name="wikiloc_url" type="url" maxlength="400" placeholder="https://www.wikiloc.com/..."></label>
+      <label class="enmap-wide">Descripción<textarea required name="descripcion" maxlength="1000" minlength="10" rows="3" placeholder="Terreno, nivel, precauciones y permisos comprobados"></textarea></label>
+      <label class="enmap-wide enmap-check"><input required name="confirmacion" type="checkbox"><span>Confirmo que tengo derecho a compartir este GPX o trazado, que no contiene ubicaciones privadas de terceros y que la circulación deberá verificarse según la normativa aplicable.</span></label>
+      <p class="enmap-wide enmap-note" id="point-counter">Puntos del recorrido: 0</p>
+      <button class="enmap-button" type="submit">Enviar propuesta a revisión</button>
+    </form>
+    <p id="create-state" class="enmap-status" role="status" aria-live="polite"></p>
+  </section>
+  <section class="enmap-panel" id="admin-review" hidden aria-labelledby="admin-title">
+    <p class="enmap-kicker">SOLO ADMINISTRACIÓN</p><h2 id="admin-title">Revisión de trazados pendientes</h2>
+    <p>Revisa manualmente legalidad, autorizaciones, derechos del track y ubicaciones sensibles antes de publicarlo. Si lo vinculas a una salida, puedes mostrarlo exclusivamente a los participantes inscritos.</p>
+    <label>Salida existente a la que vincularlo (opcional)<select id="admin-trip"><option value="">Sin vincular a quedada</option></select></label>
+    <label>Acceso al aprobar<select id="admin-access"><option value="publico">Público: cualquier visitante</option><option value="inscritos">Privado: solo participantes inscritos</option></select></label>
+    <p id="admin-state" role="status"></p>
+    <div id="admin-list" class="enmap-adminlist"></div>
+  </section>
+  <aside class="enmap-panel enmap-note"><strong>Wikiloc:</strong> puedes enlazar tu propia ruta y compartir mapas concretos mediante la función oficial de incrustación de Wikiloc, pero no existe una API pública para indexar automáticamente su catálogo. No copiamos tracks de terceros. El mapa no ofrece navegación turn-by-turn ni garantiza acceso legal.</aside>
+ </main>
+ <footer class="enmap-footer">Enduro Nalón · <a href="privacidad.html">Privacidad</a> · <a href="aviso-legal.html">Aviso legal</a> · <a href="politica-cookies.html">Cookies</a></footer>
+ <noscript>Activa JavaScript para utilizar el mapa interactivo.</noscript>
+</body>
+</html>

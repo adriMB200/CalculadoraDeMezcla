@@ -1,0 +1,125 @@
+/* =============================================================
+   ENDURO NALÓN · Fase 8.1 · Contraste de la calculadora de mezcla
+   Cargar DESPUÉS de css/estilo.css y css/enduro-interiores.css.
+   No modifica cálculos, IDs, navegación ni el resto del Taller.
+   ============================================================= */
+
+/* Los controles nativos (incluidas las flechas numéricas) siguen
+   el tema oscuro del formulario. */
+body.en-interior.en-calculadora #calculatorContainer {
+  color-scheme: dark;
+}
+
+/* CORRECCIÓN: estilo.css usa #result-container (selector por ID).
+   Esa especificidad dejaba un fondo gris claro bajo texto blanco.
+   Dos IDs anclan esta regla al componente correcto y ganan la cascada. */
+body.en-interior.en-calculadora #calculatorContainer #result-container {
+  display: block;
+  margin-top: 22px;
+  padding: clamp(18px, 3vw, 26px);
+  width: 100%;
+  background: linear-gradient(130deg, rgba(16, 36, 22, .97), rgba(7, 18, 12, .97));
+  color: #f6fbf2;
+  border: 1px solid rgba(223, 255, 69, .42);
+  border-left: 4px solid #dfff45;
+  border-radius: 14px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, .24);
+  text-align: left;
+  text-shadow: none;
+}
+
+body.en-interior.en-calculadora #calculatorContainer #result-container::before {
+  content: "RESULTADO DE LA MEZCLA";
+  display: block;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(234, 247, 226, .22);
+  color: #dfff45;
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: .09em;
+}
+
+body.en-interior.en-calculadora #calculatorContainer #result-container p {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 30px;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0;
+  padding: 10px 0;
+  color: #f6fbf2;
+  font-size: clamp(14px, 1.2vw, 16px);
+  line-height: 1.55;
+  border-bottom: 1px solid rgba(234, 247, 226, .11);
+}
+
+body.en-interior.en-calculadora #calculatorContainer #result-container p:last-child {
+  border-bottom: none;
+}
+
+body.en-interior.en-calculadora #calculatorContainer #result-container p strong {
+  font-weight: 750;
+  color: #f6fbf2;
+}
+
+body.en-interior.en-calculadora #calculatorContainer #result-container p span {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+/* El valor de aceite es el dato principal: más grande y destacado. */
+body.en-interior.en-calculadora #calculatorContainer #result-container p:nth-of-type(3) {
+  margin: 7px -10px;
+  padding: 14px 10px;
+  border: 1px solid rgba(223, 255, 69, .23);
+  border-radius: 9px;
+  background: rgba(223, 255, 69, .10);
+}
+
+body.en-interior.en-calculadora #calculatorContainer #result-container #result-output {
+  color: #dfff45;
+  font-size: clamp(23px, 2.5vw, 31px);
+  font-weight: 900;
+}
+
+/* Asegurar un contraste consistente en la zona de ayuda y botones. */
+body.en-interior.en-calculadora #calculatorContainer .mix-help {
+  background: rgba(8, 21, 13, .93);
+  color: #eef6e8;
+  border-color: rgba(223, 255, 69, .30);
+  border-left-color: #dfff45;
+}
+body.en-interior.en-calculadora #calculatorContainer .mix-help li {
+  color: #eff7e9;
+}
+body.en-interior.en-calculadora #calculatorContainer .operator {
+  color: #121810;
+  background: #dfff45;
+}
+
+@media (max-width: 600px) {
+  body.en-interior.en-calculadora #calculatorContainer #result-container {
+    padding: 16px 13px;
+  }
+  body.en-interior.en-calculadora #calculatorContainer #result-container p {
+    grid-template-columns: minmax(0, 1fr) auto 25px;
+    gap: 7px;
+    font-size: 14px;
+  }
+  body.en-interior.en-calculadora #calculatorContainer #result-container p span {
+    font-size: 15px;
+  }
+  body.en-interior.en-calculadora #calculatorContainer #result-container #result-output {
+    font-size: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.en-interior.en-calculadora #calculatorContainer button {
+    transition: none;
+  }
+}
