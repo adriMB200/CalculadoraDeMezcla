@@ -10,8 +10,8 @@ export const handler: Handler = async (event) => {
         const body = readBody(event);
         const username = stringField(body.username, "Usuario", 40, 3);
         const password = body.password;
-        if (typeof password !== "string" || password.length < 12 || password.length > 256) {
-            return json(400, { error: "La contraseña debe tener entre 12 y 256 caracteres" });
+        if (typeof password !== "string" || password.length < 3 || password.length > 12) {
+            return json(400, { error: "La contraseña debe tener entre 3 y 12 caracteres" });
         }
         if (!/^[A-Za-z0-9_.-]+$/.test(username)) {
             throw new ApiError(400, "El usuario solo puede contener letras, números, guion, punto y guion bajo");
