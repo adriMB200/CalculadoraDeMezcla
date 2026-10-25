@@ -11,7 +11,7 @@ const formulario = $('garage-bike-form');
 const formServicio = $('garage-service-form');
 const campos = {
   marca: $('garage-brand'), modelo: $('garage-model'), anio: $('garage-year'),
-  ref: $('garage-ref'), descripcion: $('garage-description'), horas: $('garage-hours')
+  ref: $('garage-ref'), descripcion: $('garage-description'), horas: $('garage-hours'), unidad: $('garage-unit')
 };
 const MODELOS = MARCAS_MODELOS_GARAJE;
 let matriculaServicio = null;
@@ -91,8 +91,14 @@ function renderMoto(moto) {
   card.append(encabezado);
 
   const maint = Array.isArray(moto.mantenimientos) ? moto.mantenimientos : [];
-  const lecturas = maint.map(m => Number(m.horas)).filter(n => Number.isFinite(n) && n >= 0);
-  const ultimaLectura = lecturas.length ? Math.max(...lecturas) + ' h' : '—';
+  const horas = maint.filter(m => m.unidad !== 'km' && m.horas !== null && m.horas !== undefined)
+    .map(m => Number(m.horas)).filter(n => Number.isSafeInteger(n) && n >= 0);
+  const kilometros = maint.filter(m => m.unidad === 'km' && m.kilometros !== null && m.kilometros !== undefined)
+    .map(m => Number(m.kilometros)).filter(n => Number.isSafeInteger(n) && n >= 0);
+  const lecturas = [];
+  if (horas.length) lecturas.push(Math.max(...horas) + ' h');
+  if (kilometros.length) lecturas.push(Math.max(...kilometros) + ' km');
+  const ultimaLectura = lecturas.length ? lecturas.join(' · ') : '—';
   const metrics = nodo('div', 'garage-bike__metrics');
   const a = nodo('div', 'garage-metric'); a.append(nodo('strong', '', String(maint.length)), nodo('small', '', 'Mantenimientos'));
   const b = nodo('div', 'garage-metric'); b.append(nodo('strong', '', ultimaLectura), nodo('small', '', 'Mayor lectura anotada'));
@@ -102,7 +108,11 @@ function renderMoto(moto) {
   if (!maint.length) historial.append(nodo('li', '', 'Aún no hay mantenimientos registrados.'));
   maint.slice(0,3).forEach(m => {
     const item = nodo('li', '', m.descripcion || 'Mantenimiento');
-    item.append(nodo('small', '', `${m.fecha || 'Fecha no disponible'} · ${Number.isFinite(Number(m.horas)) ? m.horas + ' h' : 'sin horas'}`));
+        const fecha = m.fecha ? new Date(m.fecha) : null;
+    const fechaTexto = fecha && !Number.isNaN(fecha.getTime())
+      ? fecha.toLocaleDateString('es-ES') : 'Fecha no disponible';
+    const medida = m.unidad === 'km' ? (m.kilometros ?? '—') + ' km' : (m.horas ?? '—') + ' h';
+    item.append(nodo('small', '', `${fechaTexto} · ${medida}`));
     historial.append(item);
   });
   card.append(historial);
@@ -159,11 +169,19 @@ async function cargarMotos() {
     ponerEstado('No se han podido cargar las motos. ' + err.message);
   }
 }
+function actualizarUnidadServicio() {
+  const km = campos.unidad.value === 'km';
+  $('garage-reading-label').textContent = km ? 'Kilómetros en ese mantenimiento' : 'Horas de motor en ese mantenimiento';
+  campos.horas.max = km ? '10000000' : '1000000';
+  campos.horas.placeholder = km ? 'Ej.: 8450' : 'Ej.: 120';
+  campos.horas.value = '';
+}
 function abrirMantenimiento(moto) {
   matriculaServicio = String(moto.matricula);
   $('garage-service-bike').textContent = `${moto.marca} ${moto.modelo} (${moto.anio})`;
   $('garage-service-message').textContent = '';
   formServicio.reset();
+  actualizarUnidadServicio();
   $('garage-service').hidden = false;
   $('garage-service').scrollIntoView({ behavior: 'smooth', block: 'start' });
   campos.descripcion.focus({preventScroll:true});
@@ -193,6 +211,7 @@ function prepararFormulario() {
   });
   $('garage-hide-form').addEventListener('click', () => { $('garage-create').hidden = true; formulario.reset(); actualizarModelos(); });
   $('garage-close-service').addEventListener('click', cerrarMantenimiento);
+  campos.unidad.addEventListener('change', actualizarUnidadServicio);
   formulario.addEventListener('submit', async e => {
     e.preventDefault();
     if (!formulario.reportValidity()) return;
@@ -218,7 +237,7 @@ function prepararFormulario() {
     submit.disabled = true;
     try {
       await api('addMantenimiento', {method:'POST', body:JSON.stringify({
-        matricula:matriculaServicio, descripcion:campos.descripcion.value.trim(), horas:Number(campos.horas.value)
+        matricula:matriculaServicio, descripcion:campos.descripcion.value.trim(), unidad:campos.unidad.value, lectura:Number(campos.horas.value)
       })});
       cerrarMantenimiento();
       await cargarMotos();

@@ -1,0 +1,29 @@
+.enduro-dialogo-mantenimiento {
+  width: min(94vw, 520px);
+  max-height: min(90vh, 740px);
+  overflow-y: auto;
+  border: 1px solid rgba(195, 234, 110, .45);
+  border-radius: 18px;
+  padding: clamp(16px, 4vw, 28px);
+  background: #15231b;
+  color: #f5f7ef;
+  box-shadow: 0 20px 70px rgba(0,0,0,.7);
+}
+.enduro-dialogo-mantenimiento::backdrop { background: rgba(0,0,0,.75); }
+.enduro-dialogo-mantenimiento form { display: grid; gap: 13px; }
+.enduro-dialogo-mantenimiento label { display: block; font-weight: 700; color: #f1f7e4; }
+.enduro-dialogo-mantenimiento input,
+.enduro-dialogo-mantenimiento textarea,
+.enduro-dialogo-mantenimiento select {
+  box-sizing: border-box; width: 100%; min-width: 0; padding: 12px;
+  background: #22372a; color: #fff; border: 1px solid #748d78;
+  border-radius: 9px; font: inherit;
+}
+.enduro-dialogo-mantenimiento :focus-visible { outline: 2px solid #c3ea6e; outline-offset: 2px; }
+.enduro-dialogo-mantenimiento small { color: #d0decf; }
+.enduro-dialogo-mantenimiento [role="status"] { min-height: 1.4em; color: #eaf5df; }
+.enduro-dialogo-mantenimiento .acciones { display: flex; flex-wrap: wrap; gap: 10px; }
+.enduro-dialogo-mantenimiento button { cursor: pointer; flex: 1; min-height: 43px; border-radius: 9px; }
+.enduro-dialogo-mantenimiento #enduro-registro-guardar { background: #d2f26e; color: #17251a; font-weight: 800; }
+.enduro-dialogo-mantenimiento #enduro-registro-cancelar { background: #344c3b; color: #fff; }
+.enduro-dialogo-mantenimiento button:disabled { opacity: .6; cursor: wait; }

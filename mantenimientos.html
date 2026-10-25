@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/privacidad.css">
     <link rel="stylesheet" href="css/enduro-interiores.css">
+    <link rel="stylesheet" href="css/mantenimiento-unidades.css">
 </head>
 
 <body class="en-interior en-mantenimientos">
@@ -73,7 +74,7 @@
         };
 
         const selectAnio = document.getElementById("anio");
-        for (let i = 2025; i >= 1980; i--) {
+        for (let i = new Date().getFullYear() + 1; i >= 1980; i--) {
             const option = document.createElement("option");
             option.value = i;
             option.textContent = i;
@@ -169,7 +170,7 @@
                             }
                         }
                         li.appendChild(document.createTextNode(
-                            `📅 ${fechaStr} — 🕒 ${m.horas} h — ${m.descripcion} `
+                            `📅 ${fechaStr} — ${m.unidad === "km" ? "🛣️ " + m.kilometros + " km" : "🕒 " + m.horas + " h"} — ${m.descripcion} `
                         ));
                         const removeBtn = document.createElement("button");
                         removeBtn.textContent = "❌";
@@ -224,40 +225,12 @@
                 motoForm.reset();
             } catch (err) {
                 alert(err.message);
-            }
-        });
+           async function agregarMantenimiento(matricula) {
+            if (!isLogged()) { openAuthModal(); return; }
+            window.EnduroRegistroMantenimiento.abrir(matricula, renderMotos);
+        }
 
-        async function agregarMantenimiento(matricula) {
-            if (!isLogged()) {
-                openAuthModal();
-                return;
-            }
-
-            const descripcion = prompt("Descripción del mantenimiento");
-            if (!descripcion) return;
-
-            const horas = prompt("Horas del motor");
-            if (!horas || isNaN(horas)) return alert("Introduce horas válidas");
-
-            try {
-                const res = await fetch(getEndpoint("/.netlify/functions/addMantenimiento"), {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${getToken()}`
-                    },
-                    body: JSON.stringify({ matricula, descripcion, horas: Number(horas) })
-                });
-
-                const data = await res.json();
-
-                if (!res.ok) throw new Error(data.error || "Error");
-
-                alert(data.message || "Mantenimiento añadido");
-                renderMotos();
-            } catch (err) {
-                alert(err.message);
-            }
+           }
         }
 
         window.onAuthReady = function () {
@@ -303,6 +276,29 @@
     </script>
     <script src="js/legal.js"></script>
     <script src="js/cookies.js"></script>
+
+    <dialog id="enduro-registro-dialog" class="enduro-dialogo-mantenimiento" aria-labelledby="enduro-registro-titulo">
+      <form id="enduro-registro-form">
+        <h2 id="enduro-registro-titulo">Registrar mantenimiento</h2>
+        <label for="enduro-registro-descripcion">Trabajo realizado</label>
+        <textarea id="enduro-registro-descripcion" required maxlength="2000" rows="3" placeholder="Ej.: cambio de aceite y filtro"></textarea>
+        <label for="enduro-registro-unidad">Medir el mantenimiento por</label>
+        <select id="enduro-registro-unidad" required>
+          <option value="h">Horas de motor (h)</option>
+          <option value="km">Kilómetros (km)</option>
+        </select>
+        <label for="enduro-registro-lectura" id="enduro-registro-etiqueta">Horas de motor en el momento del mantenimiento</label>
+        <input id="enduro-registro-lectura" type="number" inputmode="numeric" min="0" max="1000000" step="1" required placeholder="Ej.: 125">
+        <small>Introduce la lectura del contador cuando hiciste el mantenimiento. Este registro se guarda en tu historial.</small>
+        <p id="enduro-registro-estado" role="status" aria-live="polite"></p>
+        <div class="acciones">
+          <button type="button" id="enduro-registro-cancelar">Cancelar</button>
+          <button type="submit" id="enduro-registro-guardar">Guardar</button>
+        </div>
+      </form>
+    </dialog>
+    <script src="/js/mantenimiento-unidades.js" defer></script>
+  
 </body>
 
 </html>

@@ -11,7 +11,9 @@ export const mantenimientos = pgTable('mantenimientos', {
     id: serial('id').primaryKey(),
     matricula: varchar({ length: 20 }).notNull(),
     fecha: text().notNull(),
-    horas: integer().notNull(),
+    horas: integer(),
+    kilometros: integer(),
+    unidad: varchar({ length: 2 }).notNull().default('h'),
     descripcion: text().notNull(),
 });
 

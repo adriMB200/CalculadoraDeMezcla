@@ -163,9 +163,7 @@ export const handler: Handler = async (event) => {
     }
 
     if (action === 'registrarYAnotar') {
-      // Operación atómica: registra la actuación en el libro y actualiza el aviso.
-      // El libro existente almacena HORAS (no kilómetros). Si una regla está en km,
-      // se requiere asimismo una lectura real de horas, y se anotan los km en el texto.
+      // Registra en el libro y actualiza el aviso en una única sentencia SQL.
       const operacion = body.operacion;
       if (typeof operacion !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(operacion)) {
         throw new ApiError(400, 'Identificador de operación no válido');
@@ -194,7 +192,6 @@ export const handler: Handler = async (event) => {
             AND r.usuario_id = ${userId} AND m.usuario_id = ${userId}
             AND l.usuario_id = ${userId}
             AND r.categoria = ${cat} AND r.unidad = ${un}
-            AND l.horas_actuales IS NOT NULL
             AND (CASE WHEN r.unidad = 'h' THEN l.horas_actuales ELSE l.kilometros_actuales END) IS NOT NULL
           FOR UPDATE OF r
         ),
@@ -213,20 +210,18 @@ export const handler: Handler = async (event) => {
           RETURNING r.matricula, r.ultima_lectura
         ),
         anotado AS (
-          INSERT INTO public.mantenimientos (matricula, descripcion, horas)
-          SELECT a.matricula,
-                 CASE WHEN ${un} = 'km'
-                   THEN (${descripcion} || ' · Lectura: ' || a.ultima_lectura || ' km')
-                   ELSE ${descripcion} END,
-                 l.horas_actuales
+          INSERT INTO public.mantenimientos (matricula, descripcion, horas, kilometros, unidad)
+          SELECT a.matricula, ${descripcion},
+                 CASE WHEN ${un} = 'h' THEN a.ultima_lectura ELSE NULL END,
+                 CASE WHEN ${un} = 'km' THEN a.ultima_lectura ELSE NULL END,
+                 ${un}
           FROM actualizado a
-          JOIN public.garage_lecturas l ON l.matricula = a.matricula AND l.usuario_id = ${userId}
           RETURNING matricula
         )
         SELECT matricula FROM anotado
       `;
       if (!guardado.length) {
-        throw new ApiError(409, 'La operación ya se registró o falta una lectura actual de horas/kilómetros. No se ha duplicado el historial.');
+        throw new ApiError(409, 'La operación ya se registró o no hay lectura disponible en la unidad del aviso. No se ha duplicado el historial.');
       }
       return json(200, { message: 'Mantenimiento registrado y aviso actualizado' });
     }

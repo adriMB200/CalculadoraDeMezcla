@@ -79,7 +79,11 @@
       <p id="garage-service-message" class="garage-form-message" role="alert" aria-live="assertive"></p>
       <form id="garage-service-form" class="garage-form">
         <div class="garage-form--wide"><label for="garage-description">Trabajo realizado</label><textarea id="garage-description" required maxlength="2000" rows="3" placeholder="Ej.: cambio de aceite y limpieza del filtro"></textarea></div>
-        <div><label for="garage-hours">Horas de motor en ese mantenimiento</label><input id="garage-hours" type="number" min="0" max="1000000" step="1" inputmode="numeric" required placeholder="Ej.: 120"><small>Es una lectura registrada, no las horas actuales en tiempo real.</small></div>
+        <div><label for="garage-unit">Registrar por</label>
+          <select id="garage-unit" required><option value="h">Horas de motor (h)</option><option value="km">Kilómetros (km)</option></select></div>
+        <div><label id="garage-reading-label" for="garage-hours">Horas de motor en ese mantenimiento</label>
+          <input id="garage-hours" type="number" min="0" max="1000000" step="1" inputmode="numeric" required placeholder="Ej.: 120">
+          <small>Es la lectura del contador cuando realizaste el mantenimiento.</small></div>
         <div class="garage-form-actions"><button class="garage-btn garage-btn--accent" id="garage-save-service" type="submit">Guardar mantenimiento</button></div>
       </form>
     </section>

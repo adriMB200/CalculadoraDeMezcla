@@ -120,13 +120,13 @@ function pintarReglas(ref) {
     const borrar = el('button','garage-btn garage-btn--ghost','Eliminar');
     borrar.type = 'button';
     borrar.addEventListener('click', () => accionRegla('eliminarRegla',regla));
-    // El historial antiguo solo tiene campo de HORAS, por eso es obligatorio
-    // tener horas actuales para registrar la intervención.
+    // La lectura de la propia regla determina el registro en el historial.
+    // La lectura seleccionada es suficiente para registrar.
     const registrar = el('button','garage-btn garage-btn--accent','Registrar en el libro');
     registrar.type = 'button';
-    registrar.disabled = lecturaActual(ref,'h') === null || actual === null || evalua.tipo === 'revisar';
+    registrar.disabled = actual === null || evalua.tipo === 'revisar';
     registrar.title = registrar.disabled
-      ? 'Guarda horas actuales en Mis avisos para usar el libro de mantenimientos.'
+      ? 'Guarda primero la lectura de la unidad elegida en Mis avisos.'
       : 'Guarda el mantenimiento y actualiza el aviso en una operación';
     registrar.addEventListener('click', () => registrarHistorial(regla));
         acciones.append(realizado,registrar,editar,borrar);
@@ -214,7 +214,7 @@ async function registrarHistorial(regla) {
     $('avisos-regla-mensaje').textContent = 'La nota no puede superar 500 caracteres.';
     return;
   }
-  if (!window.confirm('¿Confirmas que el trabajo SE HA REALIZADO? Se añadirá al libro con la lectura actual de horas y se actualizará el aviso.')) return;
+  if (!window.confirm('¿Confirmas que el trabajo SE HA REALIZADO? Se añadirá al libro con la lectura actual de la unidad elegida y se actualizará el aviso.')) return;
   enProceso = true;
   $('avisos-regla-mensaje').textContent = '';
   try {
