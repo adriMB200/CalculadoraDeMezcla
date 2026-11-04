@@ -3,6 +3,7 @@ import { neon } from '@netlify/neon';
 import { createHash, randomBytes } from 'node:crypto';
 import { ApiError, requireUser } from './security';
 const jwt = require('jsonwebtoken');
+import { enviarCorreoEnduro, mailDisponible } from './fase13Mail';
 
 export const isAdmin = (id: number) =>
  (process.env.ENDURO_ADMIN_IDS || '').split(',').some(x => /^\d+$/.test(x.trim()) && Number(x.trim()) === id);
@@ -51,6 +52,7 @@ export function recoveryLink(token:string,verify=false):string {
  return `${siteUrl()}/${verify?'mi-cuenta.html':'recuperar-clave.html'}?${verify?'verificar':'token'}=${encodeURIComponent(token)}`;
 }
 export async function sendEmail(to:string,subject:string,body:string):Promise<void>{
+ if(mailDisponible())return enviarCorreoEnduro(to,subject,body);
  const apiKey=process.env.RESEND_API_KEY, from=process.env.ENDURO_MAIL_FROM;
  if(!apiKey||!from)throw new ApiError(503,'Servicio de correo pendiente de configuración');
  const controller=new AbortController();

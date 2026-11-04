@@ -2,7 +2,9 @@
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
 <title>Mi cuenta | Enduro Nalón</title><link rel="icon" href="imagen/img.jpg"><link rel="stylesheet" href="css/cuentas-seguras.css">
-<script src="js/cuenta-segura.js" defer></script></head>
+<script src="js/cuenta-segura.js" defer></script><link rel="stylesheet" href="css/fase13.css">
+<script defer src="js/f13-profile.js"></script>
+</head>
 <body><header class="account-head"><a href="index.html">← ENDURO NALÓN</a><nav><a href="mi-garaje.html">Mi garaje</a><a href="rutas.html">Rutas</a></nav></header>
 <main class="account-layout"><p class="eyebrow">ZONA PRIVADA</p><h1>Mi cuenta</h1><p>Verifica tu correo para recuperar tu contraseña de forma segura. Tu correo no se mostrará públicamente.</p>
 <p id="mensaje" role="status" aria-live="polite"></p><section class="panel"><h2>Datos de la cuenta</h2><p id="datosCuenta">Comprobando sesión…</p></section>
@@ -16,4 +18,5 @@
 <label>Repetir contraseña<input name="confirmar" type="password" minlength="12" autocomplete="new-password" required></label>
 <button type="submit">Cambiar contraseña</button></form></section>
 <section class="panel"><h2>¿No recuerdas tu contraseña?</h2><a href="recuperar-clave.html">Solicitar recuperación por correo</a></section>
+<section class="panel"><h2>Mi foto de perfil</h2><p>La foto es privada de tu cuenta. Solo se admiten imágenes .jpg de hasta 2 MB, sin metadatos GPS.</p><div class="f13-profile-wrap"><img class="f13-avatar" id="f13-avatar-preview" alt="Mi foto de perfil"><form id="f13-avatar-form"><label>Seleccionar foto<input id="f13-avatar-file" type="file" accept=".jpg,image/jpeg" required></label><div class="f13-row"><button type="submit">Guardar foto</button><button id="f13-avatar-delete" type="button">Quitar foto</button></div></form></div><p id="f13-avatar-msg" role="status"></p></section>
 </main></body></html>

@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="css/privacidad.css">
     <link rel="stylesheet" href="css/enduro-interiores.css">
     <link rel="stylesheet" href="css/mantenimiento-unidades.css">
+<link rel="stylesheet" href="css/fase13.css">
+<script defer src="js/confirmar-borrado.js"></script>
 </head>
 
 <body class="en-interior en-mantenimientos">
@@ -98,7 +100,7 @@
         }
 
         async function eliminarMantenimiento(id) {
-            if (!confirm("¿Seguro que quieres eliminar este mantenimiento?")) return;
+            if (!(await window.confirmarBorradoMantenimiento())) return;
 
             try {
                 const res = await fetch(getEndpoint("/.netlify/functions/deleteMantenimiento"), {

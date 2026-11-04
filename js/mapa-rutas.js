@@ -133,7 +133,7 @@
    if(!target.children.length)target.append(el('p','','Sin propuestas pendientes.'));
  }
  function updateDrawing(){
-   $('point-counter').textContent=`Puntos del recorrido: ${points.length} (máximo 400)`;
+   $('point-counter').textContent=`Puntos del recorrido: ${points.length} (máximo 5000)`;
    if(!map)return;
    editingLayer.clearLayers();if(points.length>1)leaflet.polyline(points,{color:'#ffbc62',dashArray:'8 7',weight:5}).addTo(editingLayer);
    for(const p of points){leaflet.circleMarker(p,{radius:4,color:'#ffbc62',weight:2,fillOpacity:1}).addTo(editingLayer);}
@@ -153,7 +153,7 @@
     layer=leaflet.layerGroup().addTo(map);editingLayer=leaflet.layerGroup().addTo(map);
     map.on('click',e=>{
       if(!drawing)return;
-      if(points.length>=400){notice('map-state','Máximo 400 puntos. Importa un GPX simplificado.');return;}
+      if(points.length>=5000){notice('map-state','Máximo 5000 puntos. Importa un GPX simplificado.');return;}
       points.push([Number(e.latlng.lat.toFixed(6)),Number(e.latlng.lng.toFixed(6))]);updateDrawing();
     });
     for(const id of ['map-draw','map-undo','map-clear','map-gpx'])$(id).disabled=false;
@@ -166,13 +166,13 @@
    } catch(e){notice('map-state',e.message);$('load-map').disabled=false;}
  }
  $('gpx-file').addEventListener('change',async e=>{
-   const file=e.target.files?.[0];if(!file)return; if(file.size>1_000_000){notice('map-state','GPX demasiado grande. Máximo 1 MB.');return;}
+   const file=e.target.files?.[0];if(!file)return; if(file.size>8_000_000){notice('map-state','GPX demasiado grande. Máximo 8 MB.');return;}
    try{
      const data=new DOMParser().parseFromString(await file.text(),'application/xml');
      if(data.querySelector('parsererror'))throw Error('GPX no válido');
      const xmlpts=[...data.getElementsByTagNameNS('*','trkpt'),...data.getElementsByTagNameNS('*','rtept')];
      if(xmlpts.length<2)throw Error('El GPX necesita al menos dos puntos');
-     if(xmlpts.length>400)throw Error('El GPX tiene más de 400 puntos; simplifica el track antes de subirlo.');
+     if(xmlpts.length>5000)throw Error('El GPX tiene más de 5000 puntos; simplifica el track antes de subirlo.');
      const list=xmlpts.map(p=>[Number(p.getAttribute('lat')),Number(p.getAttribute('lon'))]);
      if(list.some(([a,b])=>!Number.isFinite(a)||!Number.isFinite(b)||a<27||a>45||b< -19||b>5))throw Error('El GPX contiene coordenadas fuera de España o no válidas');
      points=list;drawing=false;$('map-draw').textContent='Empezar a dibujar';updateDrawing();map.fitBounds(leaflet.latLngBounds(points),{padding:[20,20]});

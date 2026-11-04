@@ -98,6 +98,15 @@ function openAuthModal() {
     const errorBox = document.getElementById("authError");
 
     if (modal) modal.style.display = "flex";
+    const password=document.getElementById('authPassword');
+    if(password && !document.getElementById('authEmail')) {
+      const email=document.createElement('input');email.id='authEmail';email.type='email';
+      email.placeholder='Correo electrónico (para registrarse)';email.autocomplete='email';email.maxLength=254;
+      email.className='f13-register-email';email.setAttribute('aria-label','Correo electrónico para registro');
+      password.parentNode.insertBefore(email,password);
+      const tip=document.createElement('a');tip.href='verificar-cuenta.html';tip.textContent='¿No recibiste el correo de activación?';
+      tip.style.display='block';tip.style.margin='8px 0';password.parentNode.appendChild(tip);
+    }
     if (errorBox) errorBox.textContent = "";
 }
 
@@ -147,7 +156,8 @@ async function handleAuth(action) {
     const errorBox = document.getElementById("authError");
 
     const username = usernameInput.value.trim();
-    const password = passwordInput.value.trim();
+    const password = passwordInput.value;
+    const email = document.getElementById('authEmail')?.value?.trim() || '';
 
     if (!username || !password) {
         if (errorBox) errorBox.textContent = "Introduce usuario y contraseña";
@@ -167,7 +177,7 @@ async function handleAuth(action) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify({ username, password, ...(action === 'register' ? { email } : {}) })
         });
 
         const data = await safeJson(res);
@@ -177,13 +187,18 @@ async function handleAuth(action) {
             return;
         }
 
+        if (action === 'register' && res.status === 202) {
+            if (errorBox) errorBox.textContent = data.mensaje || 'Revisa tu correo y verifica tu cuenta.';
+            passwordInput.value='';
+            return;
+        }
         if (!data.token) {
             if (errorBox) errorBox.textContent = "El servidor no devolvió un token válido";
             return;
         }
 
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", username);
+        localStorage.setItem("user", data.username || username);
 
         passwordInput.value = "";
         closeAuthModal();

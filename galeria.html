@@ -6,9 +6,11 @@
 <title>Galería y diario · Enduro Nalón</title>
 <link rel="icon" href="imagen/img.jpg"><link rel="stylesheet" href="css/estilo.css"><link rel="stylesheet" href="css/comunidad.css"><link rel="stylesheet" href="css/privacidad.css">
 <script defer src="js/auth.js"></script><script defer src="js/galeria.js"></script><script defer src="js/legal.js"></script><script defer src="js/cookies.js"></script>
+<link rel="stylesheet" href="css/fase13.css">
+<script defer src="js/f13-gallery.js"></script>
 </head><body class="com-body">
 <a class="com-skip" href="#contenido">Saltar al contenido</a>
-<header class="com-header"><a class="com-brand" href="index.html">ENDURO <strong>NALÓN</strong></a><nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="rutas.html">Rutas</a><a href="galeria.html" aria-current="page">Galería</a><a href="club.html">El club</a><a href="mercadillo.html">Mercadillo</a><a href="mi-garaje.html">Mi garaje</a></nav><div id="authTopbar" class="auth-topbar"></div></header>
+<header class="com-header"><a class="com-brand" href="index.html">ENDURO <strong>NALÓN</strong></a><nav aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="rutas.html">Rutas</a><a href="galeria.html" aria-current="page">Galería</a><a href="club.html">El club</a><a href="mercadillo.html">Mercadillo</a><a href="tienda.html">Tienda</a><a href="mi-garaje.html">Mi garaje</a></nav><div id="authTopbar" class="auth-topbar"></div></header>
 <main class="com-main" id="contenido">
 <section class="com-hero"><p class="com-overline">SALIDAS · FOTOS · RECUERDOS</p><h1>Galería <span>Enduro Nalón</span></h1><p>Crónicas cortas y fotos autorizadas de las salidas del club. Los lugares exactos de encuentro y los tracks privados no se publican aquí.</p></section>
 <section class="com-panel" aria-labelledby="galeria-titulo"><div class="com-section-head"><div><p class="com-overline">EL DIARIO DEL CLUB</p><h2 id="galeria-titulo">Últimas salidas</h2></div><button type="button" id="galeria-recargar" class="com-btn">Actualizar</button></div><p id="galeria-estado" role="status" aria-live="polite">Cargando…</p><div id="galeria-lista" class="com-grid"></div></section>
@@ -17,10 +19,15 @@
 <label>Título<input id="ga-titulo" maxlength="100" minlength="4" required placeholder="Salida de otoño"></label>
 <label>Fecha de la salida<input id="ga-fecha" type="date" required></label>
 <label class="com-wide">Crónica pública<textarea id="ga-descripcion" minlength="10" maxlength="800" rows="4" required placeholder="Resumen sin datos personales ni ubicaciones sensibles"></textarea></label>
-<label class="com-wide">Ruta de imagen autorizada (opcional)<input id="ga-imagen" maxlength="200" placeholder="imagen/galeria/salida-otono.webp"></label>
+<label class="com-wide">Ruta de imagen autorizada (opcional)<input id="ga-imagen" maxlength="200" placeholder="imagen/galeria/salida-otono.jpg"></label>
 <p class="com-wide com-help">Solo imágenes revisadas y guardadas manualmente en <code>imagen/galeria/</code>. No se permite subir fotos desde esta pantalla. Comprueba los permisos de quienes aparecen en ellas.</p>
 <div class="com-wide"><button class="com-btn com-btn--primary" type="submit">Publicar crónica</button></div></form><p id="galeria-admin-estado" role="status" aria-live="polite"></p>
 </section>
 <section class="com-panel"><h2>Fotografías y privacidad</h2><p>La galería está moderada: el club decide qué fotos publicar. No se deben incluir menores identificables sin autorización adecuada, matrículas, geolocalizaciones privadas ni imágenes de terceros sin derechos de uso. Para solicitar la retirada de una imagen consulta <a href="privacidad.html">Privacidad</a>.</p></section>
+<section class="f13-panel" aria-label="Fotografías de la comunidad">
+ <h2>Comparte tu foto de enduro</h2><p>Abierto a cualquier visitante, sin necesidad de cuenta. Únicamente archivos .jpg. Las fotografías se revisan antes de publicarse.</p>
+ <form id="f13-galeria-form" class="f13-form"><label>Título<input name="titulo" required minlength="3" maxlength="85"></label><label>Tu nombre o alias público<input name="alias" required minlength="2" maxlength="40"></label><label class="f13-wide">Descripción<input name="descripcion" maxlength="450"></label><label class="f13-wide">Imagen .jpg (máximo 2,5 MB)<input name="imagen" type="file" accept=".jpg,image/jpeg" required></label><label class="f13-wide"><input name="consentimiento" type="checkbox" required> Tengo permiso para compartir esta foto y acepto su revisión.</label><label hidden>Sitio web<input name="website" tabindex="-1" autocomplete="off"></label><div class="f13-wide"><button class="f13-btn" type="submit">Enviar fotografía</button></div></form><p id="f13-galeria-estado" role="status" aria-live="polite"></p>
+ <div class="f13-section-title"><h2>Fotografías aprobadas</h2><button class="f13-btn f13-btn--plain" id="f13-fotos-recargar" type="button">Actualizar</button></div><p id="f13-fotos-estado" role="status"></p><div id="f13-fotos-publicas" class="f13-grid"></div></section>
+ <section id="f13-fotos-admin" hidden class="f13-panel"><h2>Fotos pendientes de revisión</h2><p id="f13-fotos-admin-estado" role="status"></p><div id="f13-fotos-pendientes" class="f13-grid"></div></section>
 </main><footer class="com-footer">Enduro Nalón · <a href="privacidad.html">Privacidad</a> · <a href="aviso-legal.html">Aviso legal</a></footer>
 <noscript>Activa JavaScript para consultar las crónicas.</noscript></body></html>

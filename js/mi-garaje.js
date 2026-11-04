@@ -113,6 +113,14 @@ function renderMoto(moto) {
       ? fecha.toLocaleDateString('es-ES') : 'Fecha no disponible';
     const medida = m.unidad === 'km' ? (m.kilometros ?? '—') + ' km' : (m.horas ?? '—') + ' h';
     item.append(nodo('small', '', `${fechaTexto} · ${medida}`));
+    const quitar = nodo('button','garage-btn garage-btn--ghost','Eliminar');
+    quitar.type='button';quitar.setAttribute('aria-label','Eliminar mantenimiento');
+    quitar.addEventListener('click', async () => {
+      if (!(await window.confirmarBorradoMantenimiento())) return;
+      try {await api('deleteMantenimiento',{method:'POST',body:JSON.stringify({id:Number(m.id)})});await cargarMotos();}
+      catch(e){ponerEstado('No se pudo eliminar: '+e.message);}
+    });
+    item.append(quitar);
     historial.append(item);
   });
   card.append(historial);

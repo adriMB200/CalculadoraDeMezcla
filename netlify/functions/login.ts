@@ -1,27 +1,22 @@
-import type { Handler } from "@netlify/functions";
-import { neon } from "@netlify/neon";
-import { requireMethod, readBody, stringField, json, handleError, signToken } from "../shared/security";
-const bcrypt = require("bcryptjs");
-
-export const handler: Handler = async (event) => {
-    try {
-        requireMethod(event, "POST");
-        const body = readBody(event);
-        const username = stringField(body.username, "Usuario", 50);
-        const password = body.password;
-        if (typeof password !== "string" || password.length < 1 || password.length > 256) {
-            return json(400, { error: "Contraseña no válida" });
-        }
-        const sql = neon();
-        const [user] = await sql`
-            SELECT id, username, password_hash, estado_cuenta, auth_version FROM public.usuarios WHERE username = ${username}
-        `;
-        // Mensaje uniforme para evitar enumeración de cuentas.
-        if (!user || !(await bcrypt.compare(password, user.password_hash))) {
-            return json(401, { error: "Usuario o contraseña incorrectos" });
-        }
-        if (user.estado_cuenta !== 'activo') return json(403, { error: 'Cuenta no disponible. Contacta con el administrador.' });
-        const token = signToken(user.id, user.username, Number(user.auth_version));
-        return json(200, { token });
-    } catch (error) { return handleError(error); }
+import type { Handler } from '@netlify/functions';
+import { neon } from '@netlify/neon';
+import { requireMethod,readBody,stringField,json,handleError,signToken } from '../shared/security';
+import { guardRequest,guardAccount } from '../shared/fase13Rate';
+const bcrypt=require('bcryptjs');
+export const handler:Handler=async event=>{
+ try{
+  requireMethod(event,'POST');const body=readBody(event);
+  const identificador=stringField(body.username,'Usuario o correo',254).toLowerCase();
+  await guardRequest(event,'login',35,{minuteMax:12,perMinutes:10});
+  await guardAccount('login',identificador,12,30);
+  const password=body.password;
+  if(typeof password!=='string'||!password.length||password.length>256)return json(400,{error:'Contraseña no válida'});
+  const sql=neon();
+  const [u]=await sql`SELECT id,username,password_hash,estado_cuenta,auth_version,email,email_verificado
+    FROM public.usuarios WHERE lower(username)=${identificador} OR (lower(email)=${identificador} AND email_verificado=TRUE) LIMIT 1`;
+  if(!u||!(await bcrypt.compare(password,u.password_hash))||u.estado_cuenta!=='activo')
+    return json(401,{error:'Usuario o contraseña incorrectos'});
+  if(u.email&&u.email_verificado!==true)return json(403,{error:'Debes verificar el correo electrónico antes de acceder. Revisa tu bandeja de entrada.'});
+  return json(200,{token:signToken(Number(u.id),String(u.username),Number(u.auth_version)),username:u.username});
+ }catch(e){return handleError(e);}
 };

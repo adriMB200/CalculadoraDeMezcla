@@ -27,7 +27,7 @@ export const handler:Handler=async event=>{
   const fecha=body.fecha;
   let imagen:string|null=null;
   if(body.imagen!==null&&body.imagen!==undefined&&body.imagen!=='') {
-    if(typeof body.imagen!=='string'|| !/^imagen\/galeria\/[a-zA-Z0-9_-]+\.(?:webp|jpg|jpeg|png)$/.test(body.imagen) || body.imagen.length>200)throw new ApiError(400,'Ruta de imagen no permitida');
+    if(typeof body.imagen!=='string'|| !/^imagen\/galeria\/[a-zA-Z0-9_-]+\.(?:jpg)$/.test(body.imagen) || body.imagen.length>200)throw new ApiError(400,'Ruta de imagen no permitida');
     imagen=body.imagen;
   }
   const rows=await sql`INSERT INTO public.club_albumes(titulo,fecha,descripcion,imagen,creado_por)

@@ -5,9 +5,15 @@ import { requireActiveUser, isAdmin, limit } from '../shared/accountSecurity';
 
 // El cliente nunca decide qué geometrías privadas puede consultar.
 const niv = ['facil','media','alta'];
+function readTrackBody(raw: string|null): Record<string,unknown> {
+ if(!raw||raw.length>300000)throw new ApiError(413,'GPX convertido a JSON demasiado grande');
+ try{const data=JSON.parse(raw);if(data&&typeof data==='object'&&!Array.isArray(data))return data;}catch{}
+ throw new ApiError(400,'JSON de trazado incorrecto');
+}
+
 function coordenadas(value: unknown): [number, number][] {
-  if (!Array.isArray(value) || value.length < 2 || value.length > 400)
-    throw new ApiError(400, 'El trazado debe tener entre 2 y 400 puntos');
+  if (!Array.isArray(value) || value.length < 2 || value.length > 5000)
+    throw new ApiError(400, 'El trazado debe tener entre 2 y 5000 puntos');
   return value.map((p: unknown) => {
     if (!Array.isArray(p) || p.length !== 2 || !p.every(x => typeof x === 'number' && Number.isFinite(x)))
       throw new ApiError(400,'Punto geográfico no válido');
@@ -25,7 +31,7 @@ function distanciaKm(points: [number, number][]): number {
     const delta1=(c-a)*Math.PI/180, delta2=(d-b)*Math.PI/180;
     const h=Math.sin(delta1/2)**2+Math.cos(ra)*Math.cos(rc)*Math.sin(delta2/2)**2;
     km += 12742 * Math.asin(Math.min(1,Math.sqrt(h)));
-    if (km > 500) throw new ApiError(400,'Recorrido demasiado largo (máximo 500 km)');
+    if (km > 2000) throw new ApiError(400,'Recorrido demasiado largo (máximo 2000 km)');
   }
   if (km < .05) throw new ApiError(400,'El trazado debe medir al menos 50 metros');
   return Math.round(km*100)/100;
@@ -70,7 +76,7 @@ export const handler: Handler = async event => {
     return json(200,{trazados:rows, administrador:admin});
   }
   if (!uid) throw new ApiError(401,'Debes iniciar sesión');
-  const b = readBody(event);
+  const b = readTrackBody(event.body);
   if (b.action === 'crear') {
     await limit(`trazados:${uid}`,10,1440);
     if (b.confirmacionLegal !== true) throw new ApiError(400,'Confirma que puedes compartir el trazado y que requiere revisión legal');
