@@ -1,3 +1,13 @@
+/*
+ * ENDURO_NALON_AUTORIA_V15
+ * ENDURO NALÓN — Enduro, rutas y compañerismo en Asturias
+ * Fundador y responsable del proyecto: Adrian Martis Blanco
+ * GitHub: https://github.com/adriMB200
+ * Web: https://enduronalon.netlify.app/
+ * Copyright (c) 2026 Adrian Martis Blanco. Derechos reservados sobre las contribuciones originales.
+ * Las bibliotecas, obras y contribuciones de terceros conservan sus licencias y autoría.
+ */
+
 :root{--lime:#dcff46;--white:#f5f8f3;--muted:#d2ddcf;--panel:rgba(10,18,14,.86);--border:rgba(190,224,173,.32)}
 *{box-sizing:border-box}html{scroll-behavior:smooth}.enmap-page{min-width:0;background:#101713 url('../imagen/img.jpg') center top / cover fixed no-repeat;color:var(--white);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
 .enmap-page a{color:var(--lime)}.enmap-skip{position:absolute;left:-999px}.enmap-skip:focus{left:1rem;top:1rem;z-index:9999;background:#111;padding:1rem}

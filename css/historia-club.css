@@ -1,0 +1,45 @@
+/*
+ * ENDURO_NALON_AUTORIA_V15
+ * ENDURO NALÓN — Enduro, rutas y compañerismo en Asturias
+ * Fundador y responsable del proyecto: Adrian Martis Blanco
+ * GitHub: https://github.com/adriMB200
+ * Web: https://enduronalon.netlify.app/
+ * Copyright (c) 2026 Adrian Martis Blanco. Derechos reservados sobre las contribuciones originales.
+ * Las bibliotecas, obras y contribuciones de terceros conservan sus licencias y autoría.
+ */
+
+/* Historia del club. Diseño independiente, sin modificar los estilos de otras secciones. */
+:root{color-scheme:dark;font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body.en14-history{margin:0;min-height:100vh;background:#101b13;color:#f4f7f0;background-image:linear-gradient(90deg,rgba(10,23,15,.94),rgba(10,23,15,.76),rgba(10,23,15,.94)),url('../imagen/img.jpg');background-size:cover;background-position:center;background-attachment:fixed}
+.en14-history-main{width:100%;margin:0 auto}
+.en14-history-hero{min-height:410px;display:flex;align-items:center;background:linear-gradient(90deg,rgba(6,18,11,.90),rgba(6,18,11,.60)),url('../imagen/img.jpg') center 52%/cover;border-bottom:1px solid rgba(194,233,128,.18);padding:clamp(35px,6vw,85px) clamp(18px,4vw,50px)}
+.en14-history-hero-inner{max-width:1130px;width:100%;margin:auto}
+.en14-history-kicker{color:#c7ec8e;font-size:12px;font-weight:850;letter-spacing:2px;margin:0 0 13px}
+.en14-history h1{font-size:clamp(38px,5.4vw,69px);line-height:1.07;letter-spacing:-1.8px;max-width:730px;margin:0 0 16px;color:#fff}
+.en14-history h1 span{display:block;color:#c9ed84}
+.en14-history-lead{max-width:590px;font-size:clamp(16px,1.8vw,20px);line-height:1.65;color:#e2e9dd;margin:0 0 24px}
+.en14-history-buttons{display:flex;gap:11px;flex-wrap:wrap}
+.en14-history-button{display:inline-flex;align-items:center;justify-content:center;min-height:45px;padding:12px 18px;color:#e7f3e1;text-decoration:none;font-weight:750;font-size:14px;border:1px solid #71896e;border-radius:10px;background:rgba(20,36,24,.88);transition:background .2s,transform .2s}
+.en14-history-button:hover{background:#263c2c;transform:translateY(-2px)}
+.en14-history-button:focus-visible{outline:3px solid #c9ef80;outline-offset:3px}
+.en14-history-primary{background:#d2f092;border-color:#d2f092;color:#172716}
+.en14-history-primary:hover{background:#bfe376}
+.en14-history-content{max-width:1130px;margin:0 auto;padding:clamp(20px,4vw,50px) 18px 70px;display:grid;gap:22px}
+.en14-history-card,.en14-history-join{border:1px solid rgba(173,212,142,.24);background:rgba(14,29,19,.89);border-radius:18px;padding:clamp(21px,3.3vw,37px);box-shadow:0 10px 29px rgba(0,0,0,.19);backdrop-filter:blur(9px)}
+.en14-history h2{font-size:clamp(25px,3vw,36px);line-height:1.2;letter-spacing:-.5px;color:#fff;margin:0 0 20px}
+.en14-history-story p:not(.en14-history-kicker){max-width:850px;color:#dce6d8;font-size:16px;line-height:1.8;margin:0 0 18px}
+.en14-history-story strong{color:#e2f7b5}
+.en14-history-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.en14-history-values article{padding:20px;border:1px solid #355039;border-radius:13px;background:#172a1c}
+.en14-history-values article span{color:#b9e57f;font-size:12px;font-weight:900}
+.en14-history-values h3{font-size:17px;color:#f1f7eb;margin:10px 0}
+.en14-history-values p{font-size:14px;color:#c8d4c7;line-height:1.6;margin:0}
+.en14-history-join{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.en14-history-join p:not(.en14-history-kicker){color:#d8e5d6;line-height:1.6;margin:0}
+.en14-history-join h2{margin-bottom:9px}
+.en14-history-footer{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:10px;padding:30px;color:#bacbb4;background:#0c170f;font-size:13px}
+.en14-history-footer a{color:#d1e9c0;text-decoration:none}
+@media(max-width:740px){body.en14-history{background-attachment:scroll}.en14-history-values{grid-template-columns:1fr}.en14-history-hero{min-height:350px}.en14-history h1{letter-spacing:-1px}.en14-history-join{align-items:flex-start;flex-direction:column}.en14-history-join .en14-history-buttons{width:100%}.en14-history-join .en14-history-button{flex:1}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.en14-history-button{transition:none}}

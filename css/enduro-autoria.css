@@ -1,0 +1,6 @@
+/* ENDURO_NALON_AUTORIA_V15 — Estilos de la firma visible. */
+.en15-author-line {box-sizing:border-box; flex-basis:100%; width:100%; text-align:center; margin:12px auto 0; padding:12px 8px; font:400 0.82rem/1.55 system-ui,-apple-system,Segoe UI,sans-serif; color:#dce8db; background:rgba(10,19,13,.84); border-radius:7px; overflow-wrap:anywhere;}
+.en15-author-line a {color:#c6f078; text-decoration:underline; text-underline-offset:3px;}
+.en15-author-line a:focus-visible {outline:2px solid #bfea6d;outline-offset:3px;}
+.en15-author-footer {background:rgba(10,19,13,.92);padding:14px 12px; border-top:1px solid rgba(183,228,120,.18);}
+@media(max-width:600px){.en15-author-line{font-size:.78rem;padding:12px 10px;}}

@@ -1,3 +1,13 @@
+/*
+ * ENDURO_NALON_AUTORIA_V15
+ * ENDURO NALÓN — Enduro, rutas y compañerismo en Asturias
+ * Fundador y responsable del proyecto: Adrian Martis Blanco
+ * GitHub: https://github.com/adriMB200
+ * Web: https://enduronalon.netlify.app/
+ * Copyright (c) 2026 Adrian Martis Blanco. Derechos reservados sobre las contribuciones originales.
+ * Las bibliotecas, obras y contribuciones de terceros conservan sus licencias y autoría.
+ */
+
 // Funciones matemáticas puras; no acceden a red, DOM ni almacenamiento.
 const valid = (n) => typeof n === 'number' && Number.isFinite(n) && n >= 0;
 export function calcularCostes({horas,combustibleLitros,precioLitro,aceite,neumaticos,recambios,taller,otros}) {

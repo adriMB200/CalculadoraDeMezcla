@@ -1,0 +1,113 @@
+/*
+ * ENDURO_NALON_AUTORIA_V15
+ * ENDURO NALÓN — Enduro, rutas y compañerismo en Asturias
+ * Fundador y responsable del proyecto: Adrian Martis Blanco
+ * GitHub: https://github.com/adriMB200
+ * Web: https://enduronalon.netlify.app/
+ * Copyright (c) 2026 Adrian Martis Blanco. Derechos reservados sobre las contribuciones originales.
+ * Las bibliotecas, obras y contribuciones de terceros conservan sus licencias y autoría.
+ */
+
+/* Fase 14: navegación compartida, accesible y adaptable. Afecta solo a la nueva cabecera. */
+.en14-enhanced > header:not(#en14-header) { display: none !important; }
+.en14-enhanced { overflow-x: clip; }
+.en14-enhanced main { min-width: 0; }
+.en14-enhanced .en14-header, .en14-enhanced .en14-header * { box-sizing: border-box; }
+.en14-skip {position:fixed;z-index:10050;left:12px;top:-90px;background:#e0f89b;color:#14210f;padding:12px 18px;border-radius:8px;font:700 15px system-ui,sans-serif;}
+.en14-skip:focus {top:12px;}
+.en14-header {position:sticky;top:0;z-index:9000;background:rgba(9,18,14,.98);color:#f4f9f1;border-bottom:1px solid rgba(198,237,145,.19);box-shadow:0 10px 30px rgba(0,0,0,.19);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;isolation:isolate;}
+.en14-shell {max-width:1380px;margin:0 auto;min-height:73px;display:flex;align-items:center;gap:clamp(12px,2vw,32px);padding:9px clamp(13px,2vw,24px);}
+.en14-brand {color:#f4f9f1!important;display:flex;flex:none;align-items:center;gap:10px;text-decoration:none!important;font-size:clamp(15px,1.5vw,19px);font-weight:800;letter-spacing:.4px;white-space:nowrap;}
+.en14-brand strong {color:#c0ec66;}
+.en14-mark {display:grid;place-items:center;width:39px;height:39px;border-radius:12px;background:#d1f18b;color:#1d3010;font-weight:900;font-size:13px;box-shadow:0 2px 13px rgba(173,221,102,.21);}
+.en14-nav {display:flex;align-items:center;justify-content:center;gap:2px;flex:1;min-width:0;}
+.en14-nav a,.en14-nav summary {color:#e1ecdf!important;font:600 14px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none!important;border-radius:9px;transition:background-color .15s,color .15s;}
+.en14-nav a:hover,.en14-nav summary:hover {background:#213627!important;color:#fff!important;}
+.en14-nav a:focus-visible,.en14-nav summary:focus-visible,.en14-menu-button:focus-visible,.en14-brand:focus-visible,.en14-shortcut:focus-visible {outline:3px solid #c6eb83;outline-offset:3px;}
+.en14-nav .en14-direct,.en14-nav summary {display:flex;align-items:center;gap:7px;padding:12px 11px;min-height:44px;white-space:nowrap;}
+.en14-nav .en14-direct[aria-current="page"],.en14-nav a[aria-current="page"],.en14-group[data-en14-section-current="true"]>summary {color:#d2f58e!important;background:rgba(162,212,90,.14)!important;}
+.en14-group {position:relative;margin:0;}
+.en14-group summary {cursor:pointer;list-style:none;user-select:none;}
+.en14-group summary::-webkit-details-marker {display:none;}
+.en14-chevron {width:7px;height:7px;display:block;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);margin-left:1px;transition:transform .15s;}
+.en14-group[open] .en14-chevron {transform:translateY(2px) rotate(225deg);}
+.en14-submenu {position:absolute;min-width:238px;top:calc(100% + 8px);left:0;display:flex;flex-direction:column;gap:3px;padding:9px;border:1px solid #38503b;border-radius:13px;background:#13221a;box-shadow:0 15px 38px rgba(0,0,0,.4);}
+.en14-group:nth-last-child(-n+2) .en14-submenu {right:0;left:auto;}
+.en14-submenu a {display:block;min-height:42px;padding:12px 11px;white-space:normal;}
+.en14-actions {display:flex;align-items:center;gap:7px;min-width:0;}
+.en14-auth {display:flex;align-items:center;gap:5px;min-width:0;max-width:245px;}
+.en14-auth:empty,.en14-auth #authTopbar:empty {display:none;}
+.en14-auth #authTopbar {position:static!important;top:auto!important;right:auto!important;left:auto!important;z-index:auto!important;display:flex!important;align-items:center;gap:6px;min-width:0;flex-wrap:wrap;}
+.en14-auth #authTopbar button,.en14-auth #authTopbar a {max-width:100%;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+.en14-menu-button {display:none;align-items:center;gap:8px;border:1px solid #6f8d61;background:#203827;color:#fff;border-radius:10px;padding:9px 14px;min-height:44px;font:700 14px system-ui,sans-serif;cursor:pointer;}
+.en14-menu-icon {font-size:22px;line-height:1;}
+.en14-backdrop {display:none!important;}
+.en14-breadcrumb {display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 20px;padding:10px 0;color:#dbe6d6!important;font:600 13px/1.5 system-ui,sans-serif;}
+.en14-breadcrumb a {color:#bfe98a!important;text-decoration:none!important;}
+.en14-breadcrumb a:hover {text-decoration:underline!important;}
+.en14-breadcrumb span[aria-current="page"] {color:inherit;}
+.en14-home-shortcuts {max-width:1190px;width:calc(100% - 32px);margin:clamp(20px,3vw,38px) auto clamp(36px,5vw,64px);padding:clamp(17px,3vw,32px);border:1px solid rgba(191,236,128,.22);border-radius:20px;background:rgba(6,19,12,.86);color:#f4f8ef;box-shadow:0 14px 35px rgba(0,0,0,.18);backdrop-filter:blur(12px);font-family:system-ui,sans-serif;}
+.en14-shortcuts-intro {margin:0 0 22px;}
+.en14-shortcuts-intro p {font-size:11px;color:#bce281;letter-spacing:1.7px;font-weight:900;margin:0 0 8px;}
+.en14-shortcuts-intro h2 {font-size:clamp(23px,3vw,34px);line-height:1.2;color:#fff;margin:0 0 8px;}
+.en14-shortcuts-intro>span {font-size:14px;color:#d2dfd0;}
+.en14-shortcuts-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+.en14-shortcut {display:flex;align-items:center;gap:12px;min-height:102px;padding:14px;border:1px solid #344b35;border-radius:13px;background:#16271d;text-decoration:none!important;color:#f1f5ed!important;transition:background .15s,transform .15s,border-color .15s;}
+.en14-shortcut:hover {background:#233b29;border-color:#bce281;transform:translateY(-2px);}
+.en14-shortcut-icon {display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:12px;background:#2b482b;color:#d7fa96;font-size:23px;font-weight:bold;}
+.en14-shortcut-copy {display:flex;flex-direction:column;gap:5px;min-width:0;}
+.en14-shortcut-copy strong {font-size:15px;line-height:1.35;color:#fff;}
+.en14-shortcut-copy small {font-size:12px;line-height:1.45;color:#c8d6c5;}
+.en14-shortcut-arrow {color:#d5f89c;font-size:23px;margin-left:auto;}
+@media(max-width:1100px){
+  .en14-shell {min-height:64px;gap:12px;}
+  .en14-brand {margin-right:auto;}
+  .en14-nav {display:none;position:absolute;left:0;right:0;top:100%;max-height:calc(100vh - 65px);max-height:calc(100dvh - 65px);overflow-y:auto;overscroll-behavior:contain;padding:13px clamp(12px,3vw,28px) max(22px,env(safe-area-inset-bottom));background:#0b1b11;border-bottom:1px solid #455c3d;box-shadow:0 22px 35px rgba(0,0,0,.42);flex-direction:column;align-items:stretch;gap:4px;}
+  .en14-menu-open .en14-nav {display:flex;}
+  .en14-menu-button {display:flex;}
+  .en14-nav .en14-direct,.en14-nav summary {width:100%;justify-content:space-between;padding:14px 15px;min-height:48px;font-size:16px;}
+  .en14-nav .en14-group {width:100%;}
+  .en14-submenu,.en14-group:nth-last-child(-n+2) .en14-submenu {position:static;min-width:0;box-shadow:none;margin:2px 0 8px;padding:5px 5px 5px 18px;border-color:#314730;background:#13241a;}
+  .en14-submenu a {min-height:44px;font-size:14px;padding:12px;}
+  .en14-backdrop {display:none!important;}
+  .en14-menu-open .en14-backdrop {display:block!important;position:fixed;z-index:8998;inset:0;appearance:none;border:0;background:rgba(0,0,0,.58);cursor:pointer;}
+  .en14-auth {max-width:min(32vw,210px);}
+  .en14-shortcuts-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(max-width:650px){
+  .en14-shell {padding:8px 12px;}
+  .en14-brand {font-size:14px;gap:8px;}
+  .en14-mark {width:35px;height:35px;border-radius:10px;}
+  .en14-actions {gap:5px;}
+  .en14-menu-button {padding:8px 11px;}
+  .en14-menu-label {display:none;}
+  .en14-auth {max-width:clamp(85px,27vw,155px);font-size:12px;}
+  .en14-shortcuts-grid {gap:9px;}
+  .en14-home-shortcuts {width:calc(100% - 20px);padding:16px 12px;border-radius:15px;}
+  .en14-shortcut {padding:11px;gap:8px;min-height:88px;}
+  .en14-shortcut-icon {width:33px;height:33px;font-size:19px;}
+  .en14-shortcut-copy strong {font-size:13px;}
+  .en14-shortcut-copy small {font-size:11px;}
+  .en14-shortcut-arrow {display:none;}
+  .en14-breadcrumb {margin-bottom:12px;}
+  .en14-enhanced main {max-width:100%;min-width:0;}
+  .en14-enhanced main img,.en14-enhanced main video {max-width:100%;}
+  .en14-enhanced input,.en14-enhanced select,.en14-enhanced textarea {max-width:100%;box-sizing:border-box;font-size:max(16px,1em);}
+  .en14-enhanced main table {display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+}
+@media(max-width:360px){
+  .en14-shortcuts-grid {grid-template-columns:1fr;}
+  .en14-auth {max-width:80px;}
+}
+@media(prefers-reduced-motion:reduce){ .en14-header *, .en14-home-shortcuts * {transition:none!important;animation:none!important;} }
+/* Presentación del enlace a la historia dentro de El club (solo este bloque). */
+.en14-history-teaser {background:linear-gradient(110deg,rgba(25,53,29,.94),rgba(17,36,23,.95))!important;border:1px solid rgba(188,231,131,.42)!important;}
+.en14-history-teaser .en14-teaser-top {font:850 12px/1.4 system-ui,sans-serif;color:#d5f6a7;letter-spacing:1.3px;margin:0 0 8px;}
+.en14-history-teaser h2 {color:#fff!important;margin:0 0 10px;}
+.en14-history-teaser p {color:#dfebd9;line-height:1.6;}
+.en14-history-teaser a {display:inline-flex;align-items:center;min-height:44px;padding:10px 15px;border:1px solid #b8e778;border-radius:9px;color:#d7f4ab!important;font-weight:750;text-decoration:none!important;}
+.en14-history-teaser a:hover {background:#293f27;}
+
+.en14-submenu a {text-align:left!important;}
+.en14-history-main > .en14-breadcrumb {max-width:1130px;margin:0 auto;padding:12px 18px;}
+@media(max-width:650px){.en14-home-shortcuts {width:calc(100% - 30px);max-width:calc(100vw - 44px);}}

@@ -22,7 +22,7 @@
   "name": "enduronalon-app",
   "version": "1.0.0",
   "description": "Develop by adriMB200",
-  "author": "adriMB200",
+  "author": "Adrian Martis Blanco (adriMB200)",
   "main": "main.cjs",
   "scripts": {
     "start": "electron .",
@@ -49,5 +49,7 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true
     }
-  }
+  },
+  "homepage": "https://enduronalon.netlify.app/",
+  "license": "UNLICENSED"
 }
