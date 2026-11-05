@@ -42,6 +42,8 @@ function copyTree(rel){
 }
 if(!fs.existsSync(path.join(root,'index.html')))throw Error('Falta index.html en la raíz');
 if(fs.existsSync(dist)&&fs.lstatSync(dist).isSymbolicLink())throw Error('dist no puede ser un enlace simbólico');
+// EN16: regenerar sitemap antes de copiar recursos públicos.
+require('./generar-sitemap.cjs');
 fs.rmSync(dist,{recursive:true,force:true});fs.mkdirSync(dist,{recursive:true});
 for(const e of fs.readdirSync(root,{withFileTypes:true})){
  if(e.isFile() && (e.name.toLowerCase().endsWith('.html') || ['favicon.ico','robots.txt','sitemap.xml','site.webmanifest','manifest.webmanifest','sw.js','service-worker.js'].includes(e.name)))copyFile(e.name);

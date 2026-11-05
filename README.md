@@ -538,3 +538,7 @@ No se declara una licencia de código abierto salvo que exista un archivo `LICEN
 Desarrollado por [adriMB200](https://github.com/adriMB200)
 
 </div>
+
+## SEO e indexación gratuita en Google (Fase 16)
+
+El sitio publica `robots.txt` y `sitemap.xml` y utiliza títulos, descripciones, URL canónicas y etiquetas para compartir. Se excluyen de la indexación las áreas privadas. Para solicitar la indexación, verifica `https://enduronalon.netlify.app/` en [Google Search Console](https://search.google.com/search-console/) como propiedad **Prefijo de URL** y envía `sitemap.xml`. La verificación con archivo HTML de Google debe conservarse en la raíz del sitio. La indexación es gratuita, pero no está garantizada.
