@@ -11,17 +11,18 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
+        "npm:@netlify/blobs@^11.1.7",
         "npm:@netlify/functions@^5.1.2",
         "npm:@netlify/neon@~0.1.2",
         "npm:bcryptjs@^3.0.3",
         "npm:drizzle-orm@~0.45.1",
-        "npm:electron-builder@^26.8.1",
-        "npm:electron-store@^11.0.2",
-        "npm:electron@^41.2.0",
         "npm:jsonwebtoken@^9.0.3",
         "npm:node-fetch@^3.3.2",
+        "npm:nodemailer@^10.3.1",
         "npm:pdf-parse@^2.4.5",
-        "npm:pg@^8.20.0"
+        "npm:pg@^8.20.0",
+        "npm:sharp@~0.35.4",
+        "npm:typescript@^5.9.3"
       ]
     }
   }

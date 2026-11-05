@@ -31,6 +31,7 @@
   <link rel="stylesheet" href="css/enduro-autoria.css">
 
   <meta name="robots" content="noindex,follow">
+  <link rel="stylesheet" href="css/fase18-mantenimiento.css">
 </head>
 
 <body class="en-interior en-mantenimientos">
@@ -45,13 +46,13 @@
         <div><p class="en-page-eyebrow">MI GARAJE · HISTORIAL</p><h1 id="enPageTitle">Libro de mantenimientos</h1><p>Registra motos y trabajos de mantenimiento en tu historial personal. Tu información se consulta con tu cuenta de Enduro Nalón.</p></div>
         <span class="en-page-chip">HISTORIAL PERSONAL</span>
       </section>
-    <div class="info-container">
+    <div class="info-container f18-libro">
         <h2>Mis motos y mantenimientos</h2>
         <p class="en-helper">Añade una moto o consulta los servicios realizados. Para recordatorios personalizados, entra en Mi garaje.</p>
 
         <form id="motoForm">
             <div class="en-form-field"><label for="marca">Marca</label>
-            <select id="marca" required onchange="actualizarModelos()">
+            <select id="marca" required>
                 <option value="">Selecciona una marca</option>
                 <option value="KTM">KTM</option>
                 <option value="GasGas">GasGas</option>
@@ -72,200 +73,12 @@
             <button type="submit">➕ Añadir Moto</button>
         </form>
 
-        <div id="motoList"></div>
+        <p id="f18-estado" role="status" aria-live="polite"></p><p id="f18-resumen" class="f18-resumen"></p><div id="motoList" class="f18-motos"></div>
     </div>
 
     </main>
 
-    <script>
-        const PROD_URL = "https://enduronalon.netlify.app";
-
-        function getEndpoint(path) {
-            if (window.location.protocol.startsWith('http')) {
-                return path;
-            }
-            return `${PROD_URL}${path}`;
-        }
-
-        const modelosPorMarca = {
-            "KTM": ["EXC 250", "EXC 300", "EXC-F 450"],
-            "GasGas": ["EC 200", "EC 250", "EC 300"],
-            "Rieju": ["MR 300"],
-            "BMW": ["Funduro 650"]
-        };
-
-        const selectAnio = document.getElementById("anio");
-        for (let i = new Date().getFullYear() + 1; i >= 1980; i--) {
-            const option = document.createElement("option");
-            option.value = i;
-            option.textContent = i;
-            selectAnio.appendChild(option);
-        }
-
-        function actualizarModelos() {
-            const marcaSeleccionada = document.getElementById("marca").value;
-            const selectModelo = document.getElementById("modelo");
-            selectModelo.innerHTML = "<option value=''>Selecciona un modelo</option>";
-
-            if (modelosPorMarca[marcaSeleccionada]) {
-                for (let i = 0; i < modelosPorMarca[marcaSeleccionada].length; i++) {
-                    const modelo = modelosPorMarca[marcaSeleccionada][i];
-                    const option = document.createElement("option");
-                    option.value = modelo;
-                    option.textContent = modelo;
-                    selectModelo.appendChild(option);
-                }
-            }
-        }
-
-        async function eliminarMantenimiento(id) {
-            if (!(await window.confirmarBorradoMantenimiento())) return;
-
-            try {
-                const res = await fetch(getEndpoint("/.netlify/functions/deleteMantenimiento"), {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${getToken()}`
-                    },
-                    body: JSON.stringify({ id })
-                });
-
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || "Error al eliminar mantenimiento");
-
-                alert(data.message);
-                renderMotos();
-            } catch (err) {
-                alert(err.message);
-            }
-        }
-
-        const motoList = document.getElementById("motoList");
-
-        async function renderMotos() {
-            if (!isLogged()) {
-                motoList.innerHTML = "<p>Debes iniciar sesión para ver tus motos.</p>";
-                return;
-            }
-
-            motoList.innerHTML = "<p>Cargando motos...</p>";
-
-            try {
-                const res = await fetch(getEndpoint("/.netlify/functions/getMotos"), {
-                    headers: { Authorization: `Bearer ${getToken()}` }
-                });
-
-                if (!res.ok) throw new Error("Error cargando motos");
-
-                const motos = await res.json();
-
-                if (motos.length === 0) {
-                    motoList.innerHTML = "<p>No hay motos registradas.</p>";
-                    return;
-                }
-
-                motoList.innerHTML = "";
-
-                for (let i = 0; i < motos.length; i++) {
-                    const moto = motos[i];
-                    const div = document.createElement("div");
-                    div.classList.add("moto-card");
-
-                    const title = document.createElement("h3");
-                    title.textContent = `🏍️ ${moto.marca} ${moto.modelo} (${moto.anio}) — Mat: ${moto.matricula}`;
-                    const addBtn = document.createElement("button");
-                    addBtn.textContent = "🛠️ Añadir mantenimiento";
-                    addBtn.addEventListener("click", () => agregarMantenimiento(moto.matricula));
-                    const list = document.createElement("ul");
-
-                    for (const m of moto.mantenimientos || []) {
-                        const li = document.createElement("li");
-                        let fechaStr = "";
-                        if (m.fecha) {
-                            const fecha = new Date(m.fecha);
-                            if (!Number.isNaN(fecha.getTime())) {
-                                fechaStr = fecha.toLocaleDateString("es-ES", {
-                                    day: "2-digit", month: "2-digit", year: "numeric"
-                                });
-                            }
-                        }
-                        li.appendChild(document.createTextNode(
-                            `📅 ${fechaStr} — ${m.unidad === "km" ? "🛣️ " + m.kilometros + " km" : "🕒 " + m.horas + " h"} — ${m.descripcion} `
-                        ));
-                        const removeBtn = document.createElement("button");
-                        removeBtn.textContent = "❌";
-                        removeBtn.setAttribute("aria-label", "Eliminar mantenimiento");
-                        removeBtn.addEventListener("click", () => eliminarMantenimiento(m.id));
-                        li.appendChild(removeBtn);
-                        list.appendChild(li);
-                    }
-                    div.append(title, addBtn, list);
-
-                    motoList.appendChild(div);
-                }
-
-            } catch (err) {
-                motoList.innerHTML = "<p>Error cargando motos</p>";
-                console.error(err);
-            }
-        }
-
-        const motoForm = document.getElementById("motoForm");
-        motoForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            if (!isLogged()) {
-                openAuthModal();
-                return;
-            }
-
-            const marca = document.getElementById("marca").value;
-            const modelo = document.getElementById("modelo").value;
-            const anio = parseInt(document.getElementById("anio").value);
-            const matricula = prompt("Introduce la matrícula de la moto (ej: 1234ABC)");
-
-            if (!matricula) return alert("Debes introducir una matrícula");
-
-            try {
-                const res = await fetch(getEndpoint("/.netlify/functions/addMoto"), {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${getToken()}`
-                    },
-                    body: JSON.stringify({ matricula, marca, modelo, anio })
-                });
-
-                const data = await res.json();
-
-                if (!res.ok) throw new Error(data.error || "Error");
-
-                alert(data.message || "Moto añadida");
-                renderMotos();
-                motoForm.reset();
-            } catch (err) {
-                alert(err.message);
-           async function agregarMantenimiento(matricula) {
-            if (!isLogged()) { openAuthModal(); return; }
-            window.EnduroRegistroMantenimiento.abrir(matricula, renderMotos);
-        }
-
-           }
-        }
-
-        window.onAuthReady = function () {
-            renderMotos();
-        };
-
-        window.onLoginSuccess = function () {
-            renderMotos();
-        };
-
-        window.onLogout = function () {
-            renderMotos();
-        };
-    </script>
+    
 
     <script src="/js/chatbot.js"></script>
     <script>
@@ -320,8 +133,19 @@
         </div>
       </form>
     </dialog>
-    <script src="/js/mantenimiento-unidades.js" defer></script>
+    
   
+
+<dialog id="f18-mant-dialog" class="f18-dialog" aria-labelledby="f18-mant-titulo">
+ <form id="f18-mant-form"><h2 id="f18-mant-titulo">Nuevo mantenimiento</h2>
+ <label>Trabajo realizado<textarea id="f18-mant-descripcion" required minlength="3" maxlength="2000" rows="3" placeholder="Ej.: cambio de aceite y filtro"></textarea></label>
+ <label>Medir por<select id="f18-mant-unidad"><option value="h">Horas de motor</option><option value="km">Kilómetros</option></select></label>
+ <label><span id="f18-lectura-label">Horas del contador</span><input id="f18-mant-lectura" inputmode="numeric" type="number" min="0" max="1000000" step="1" placeholder="Ej.: 125" required></label>
+ <p class="f18-help">Introduce la lectura que marcaba tu moto cuando realizaste el trabajo.</p>
+ <p id="f18-mant-estado" role="status" aria-live="polite"></p><div class="f18-actions"><button type="button" class="f18-cancel" id="f18-mant-cancelar">Cancelar</button><button type="submit" class="f18-save" id="f18-mant-guardar">Guardar mantenimiento</button></div>
+ </form></dialog>
+<dialog id="f18-borrar-dialog" class="f18-dialog" aria-labelledby="f18-borrar-titulo"><h2 id="f18-borrar-titulo">¿Eliminar mantenimiento?</h2><p id="f18-borrar-detalle"></p><p class="f18-help">Esta acción no se puede deshacer.</p><div class="f18-actions"><button type="button" class="f18-cancel" id="f18-borrar-cancelar">Cancelar</button><button type="button" class="f18-danger" id="f18-borrar-aceptar">Sí, eliminar</button></div></dialog>
+<script type="module" src="js/libro-mantenimientos.js"></script>
 </body>
 
 </html>

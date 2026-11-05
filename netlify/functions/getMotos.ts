@@ -11,35 +11,29 @@
 import type { Handler } from '@netlify/functions';
 import { neon } from '@netlify/neon';
 import { requireMethod, json, handleError } from '../shared/security';
-import { requireActiveUser } from '../shared/accountSecurity';
+import { requireActiveUser, limit } from '../shared/accountSecurity';
 
-export const handler: Handler = async (event) => {
+// Respuesta compatible con Mi Garaje y Libro: array de motos con mantenimientos.
+export const handler: Handler = async event => {
   try {
-    requireMethod(event, 'GET');
-    const userId = await requireActiveUser(event);
-    const sql = neon();
-    const motos = await sql`
-      SELECT * FROM public.motos WHERE usuario_id = ${userId} ORDER BY marca, modelo, anio
+    requireMethod(event,'GET');
+    const uid=await requireActiveUser(event);
+    await limit(`f18:lectura-motos:${uid}`,120,60);
+    const sql=neon();
+    const motos=await sql`
+      SELECT matricula, marca, modelo, anio FROM public.motos
+      WHERE usuario_id=${uid} ORDER BY marca,modelo,anio LIMIT 75
     `;
-    if (!motos.length) return json(200, []);
-
-    const registros = await sql`
-      SELECT r.* FROM public.mantenimientos AS r
-      INNER JOIN public.motos AS m ON m.matricula = r.matricula
-      WHERE m.usuario_id = ${userId}
-      ORDER BY r.fecha DESC, r.id DESC
+    if (!motos.length) return json(200,[]);
+    const registros=await sql`
+      SELECT r.id,r.matricula,r.descripcion,r.horas,r.kilometros,r.unidad,r.fecha
+      FROM public.mantenimientos r
+      JOIN public.motos m ON m.matricula=r.matricula
+      WHERE m.usuario_id=${uid}
+      ORDER BY r.fecha DESC,r.id DESC LIMIT 1000
     `;
-    const agrupados = new Map<string, typeof registros>();
-    for (const registro of registros) {
-      const matricula = String(registro.matricula);
-      if (!agrupados.has(matricula)) agrupados.set(matricula, []);
-      agrupados.get(matricula)!.push(registro);
-    }
-    return json(200, motos.map(moto => ({
-      ...moto,
-      mantenimientos: agrupados.get(String(moto.matricula)) ?? []
-    })));
-  } catch (error) {
-    return handleError(error);
-  }
+    const agrupados=new Map<string,typeof registros>();
+    for(const r of registros){const key=String(r.matricula);if(!agrupados.has(key))agrupados.set(key,[]);agrupados.get(key)!.push(r);}
+    return json(200,motos.map(m=>({...m,mantenimientos:agrupados.get(String(m.matricula))||[]})));
+  }catch(err){return handleError(err);}
 };

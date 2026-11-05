@@ -1,3 +1,4 @@
+import { integrarCatalogo2026 } from './fase18-modelos.mjs'; // FASE18_MODELOS_TECNICOS
 /*
  * ENDURO_NALON_AUTORIA_V15
  * ENDURO NALÓN — Enduro, rutas y compañerismo en Asturias
@@ -84,6 +85,7 @@ export const CATALOGO_MOTOS = [
 ];
 
 integrarCatalogoExistente(CATALOGO_MOTOS);
+integrarCatalogo2026(CATALOGO_MOTOS);
 
 export function buscarMoto(marca, modeloId, anio) {
   const year = Number(anio);

@@ -12,7 +12,8 @@
    Usa exclusivamente las funciones autenticadas existentes de Netlify/Neon.
    No guarda matrículas ni mantenimientos en localStorage o sessionStorage. */
 import { CATALOGO_MOTOS, recursosParaAnio } from './catalogo-motos.js';
-import { MARCAS_MODELOS_GARAJE } from './catalogo-enduro-ampliado.js'; // FASE_2_3_MODELOS
+import { MARCAS_MODELOS_GARAJE } from './catalogo-enduro-ampliado.js';
+import { MODELOS_GARAJE_18, combinarModelos } from './fase18-modelos.mjs'; // FASE18_MODELOS_GARAJE // FASE_2_3_MODELOS
 
 const $ = id => document.getElementById(id);
 const lista = $('garage-list');
@@ -23,7 +24,7 @@ const campos = {
   marca: $('garage-brand'), modelo: $('garage-model'), anio: $('garage-year'),
   ref: $('garage-ref'), descripcion: $('garage-description'), horas: $('garage-hours'), unidad: $('garage-unit')
 };
-const MODELOS = MARCAS_MODELOS_GARAJE;
+const MODELOS = combinarModelos(MARCAS_MODELOS_GARAJE, MODELOS_GARAJE_18);
 let matriculaServicio = null;
 let versionCarga = 0;
 
